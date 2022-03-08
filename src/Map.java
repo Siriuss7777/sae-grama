@@ -201,14 +201,39 @@ public class Map {
     }
 
     public LinkedList<Node> getShortestPath(Node fromNode, Node toNode){
-        LinkedList<Node> searchedList;
-        Node shortestDistance = null;
+        LinkedList<Node> searchedList = this.nodes;
+        LinkedList<Node> returnedList = new LinkedList<>();
+        Node shortestDistance = new Node(null, null);
+        Node currentNode = fromNode;
+
+        for(Node node: searchedList){
+            node.setDistance(INFINITE);
+            node.setPredecessor(null);
+        }
+        fromNode.setDistance(0);
+
         do {
-            searchedList=this.getNeighbours(fromNode);
+            searchedList = this.getNeighbours(currentNode);
+            shortestDistance = this.getLowestDistance(currentNode);
+            for(Node node: this.nodes){
+                System.out.println(currentNode.getName());
+                System.out.println(node.getName());
+                this.updateDistances(currentNode, node);
+            }
 
+            for(Node node: searchedList){
+                if(node.getDistance()>currentNode.getDistance()){
+                    shortestDistance = node;
+                }
+            }
 
+            searchedList.remove(currentNode);
+            returnedList.add(currentNode);
+            currentNode = shortestDistance;
 
         }while(!searchedList.isEmpty());
+
+        return returnedList;
     }
 
     public Node getLowestDistance(Node node){
@@ -224,6 +249,16 @@ public class Map {
         return returnedNode;
     }
 
+    private void updateDistances(Node node1, Node node2) {
+        Link nodesLink = getLinkFromNodes(node1, node2);
+        if(nodesLink == null){
+            return;
+        }
+        if (node2.getDistance() > node1.getDistance() + nodesLink.getDistance()) {
+            node2.setDistance(node1.getDistance() + nodesLink.getDistance());
+            node2.setPredecessor(node1);
+        }
 
+    }
 }
 

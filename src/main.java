@@ -56,6 +56,8 @@ public class main {
         map.addLink(roma);
         map.addLink(ropa);
 
+        System.out.println("\n\n\n\n");
+
         for(Node node: map.getShortestPath(vaulx, rouen)){
             System.out.println(node.getName());
         }
