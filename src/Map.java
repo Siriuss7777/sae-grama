@@ -4,7 +4,7 @@ import java.util.LinkedList;
 public class Map {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
-    private final static int INFINITE = 1000000;
+    private final static int INFINITE = 100000;
 
     public Map() {
         this.nodes = new LinkedList<Node>();
@@ -201,42 +201,24 @@ public class Map {
     }
 
     public LinkedList<Node> getShortestPath(Node fromNode, Node toNode){
-        for(Node node: this.nodes){
-            node.setDistance(INFINITE);
-            node.setPredecessor(null);
-        }
-        fromNode.setDistance(0);
+        LinkedList<Node> searchedList;
+        Node shortestDistance = null;
+        do {
+            searchedList=this.getNeighbours(fromNode);
 
-        LinkedList<Node> nodesList = this.nodes;
-        LinkedList<Node> returnedList = null;
 
-        while(!nodesList.isEmpty()){
-            System.out.println(".");
-            Node minDist = minNodesDistance(nodesList);
-            if((minDist.getDistance() == INFINITE) || (minDist == toNode)){
-                break;
-            }
-            nodesList.remove(nodesList.indexOf(minDist));
-            for(Node neighbour: this.getNeighbours(minDist)){
-                if(minDist.getDistance() + this.getLinkFromNodes(minDist, neighbour).getDistance() > neighbour.getDistance()){
-                    neighbour.setDistance(minDist.getDistance() + this.getLinkFromNodes(minDist, neighbour).getDistance());
-                    neighbour.setPredecessor(minDist);
-                    returnedList.add(minDist);
-                }
-            }
 
-        }
-        return returnedList;
+        }while(!searchedList.isEmpty());
     }
 
-    private Node minNodesDistance(LinkedList<Node> list){
-        int min = INFINITE;
-        Node returnedNode = new Node(null, null);
-        for (Node node: list){
-            if(node.getDistance() > min){
-                min = node.getDistance();
-                returnedNode = node;
-                System.out.println(returnedNode.getName() == null ? "null" : returnedNode.getName());
+    public Node getLowestDistance(Node node){
+        int min = -1, tempMin;
+        Node returnedNode = null;
+        for(Node forNode: this.getNeighbours(node)){
+            tempMin = forNode.getDistance();
+            if((tempMin<min)||(min==-1)){
+                min = tempMin;
+                returnedNode = forNode;
             }
         }
         return returnedNode;

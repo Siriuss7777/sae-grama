@@ -19,6 +19,7 @@ public class Node {
     public void setName(String name) { this.name = name; }
 
     public boolean isFound() { return found; }
+    public void setFound(boolean found) {this.found = found;}
 
     public int getDistance() { return this.distance; }
     public void setDistance(int distance) { this.distance = distance; }
