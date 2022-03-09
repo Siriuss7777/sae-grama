@@ -15,8 +15,7 @@ public class main {
     static Link pla = new Link(lyon, paris, "A", 100);
     static Link lvd = new Link(lyon, vaulx, "D", 20);
     static Link vrd = new Link(vaulx, resto, "D", 5);
-    static Link lvn = new Link(lyon, vaulx, "N", 40);
-    static Link lrn = new Link(lyon, resto, "N", 15);
+    static Link lrn = new Link(lyon, resto, "N", 20);
     static Link hrn = new Link(rouen, heis, "N", 5);
     static Link hla = new Link(heis, lyon, "A", 20);
     static Link pma = new Link(paris, mars, "A", 70);
@@ -47,7 +46,6 @@ public class main {
         map.addLink(pla);
         map.addLink(lvd);
         map.addLink(vrd);
-        map.addLink(lvn);
         map.addLink(lrn);
         map.addLink(hrn);
         map.addLink(hla);
@@ -58,7 +56,10 @@ public class main {
 
         System.out.println("\n\n\n\n");
 
-        for(Node node: map.getShortestPath(vaulx, rouen)){
+
+
+
+        for(Node node: map.getShortestPath(mars, heis)){
             System.out.println(node.getName());
         }
     }
