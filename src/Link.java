@@ -1,21 +1,17 @@
 public class Link {
-    private Node fromNode;
-    private Node toNode;
-    private String type; /*"autoroute", "nationale", "départementale"*/
-    private int distance;
+    private String type;
+    private int length;
+    private Node node;
 
-    public Link(Node fromNode, Node toNode, String type, int distance) {
-        this.fromNode = fromNode;
-        this.toNode = toNode;
+    public Link(String type, int length, Node node) {
         this.type = type;
-        this.distance = distance;
+        this.length = length;
+        this.node = node;
     }
 
-    public Node getFromNode(){ return this.fromNode; }
-
-    public Node getToNode(){ return this.toNode; }
+    public Node getNode(){ return this.node; }
 
     public String getType() { return type; }
 
-    public int getDistance() { return distance; }
+    public int getLength() { return length; }
 }

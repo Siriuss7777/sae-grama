@@ -3,28 +3,34 @@ import java.util.LinkedList;
 public class Node {
     private String type; /*"ville", "restaurant", "centre de loisir"*/
     private String name;
-    private int distance;
-    private Node predecessor;
     private boolean found = false;
+    private LinkedList<Link> neighbours;
 
     public Node(String type, String name) {
         this.type = type;
         this.name = name;
+        this.neighbours = new LinkedList<Link>();
     }
 
     public String getType() { return type; }
+
     public void setType(String type) { this.type = type; }
 
     public String getName() { return name; }
+
     public void setName(String name) { this.name = name; }
 
     public boolean isFound() { return found; }
-    public void setFound(boolean found) {this.found = found;}
 
-    public int getDistance() { return this.distance; }
-    public void setDistance(int distance) { this.distance = distance; }
-    public Node getPredecessor() { return this.predecessor; }
-    public void setPredecessor(Node predecessor) { this.predecessor = predecessor; }
+    public LinkedList<Link> getNeighbours() { return neighbours; }
+
+    public void addLink(String type, int length, Node next){
+        Link tmpLink = new Link(type, length, next);
+        neighbours.add(tmpLink);
+    }
+    public void addLink(Link link){
+        neighbours.add(link);
+    }
 
 
 }
