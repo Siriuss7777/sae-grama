@@ -204,15 +204,11 @@ public class Map {
                 if(!treated.contains(neighbourNode)){
                     updateDistances(neighbourNode,lenght,currentNode);
                     notTreated.add(neighbourNode);
-                    System.out.println(currentNode + "  ");
-                    System.out.println(neighbourNode + " --- ");
-                    System.out.println(" ****** ");
-                    System.out.println(toNode.getDistance() + " --- ");
                 }
             }
             treated.add(currentNode);
         }
-        return fromNode.getShortestPath();
+        return toNode.getShortestPath();
     }
 
     public Node getLowestDistance(LinkedList<Node> notTreated) {
