@@ -1,18 +1,18 @@
 public class Link {
     private Node node;
     private String type;
-    private int length;
+    private int distance;
 
-    public Link(Node node, String type, int length) {
+    public Link(Node node, String type, int distance) {
         this.node = node;
         this.type = type;
-        this.length = length;
+        this.distance = distance;
     }
 
     public Node getNode(){ return this.node; }
 
     public String getType() { return type; }
 
-    public int getLength() { return length; }
+    public int getDistance() { return distance; }
 
 }
