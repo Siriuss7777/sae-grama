@@ -7,6 +7,7 @@ public class Node {
     private boolean found;
     private Node predecessor;
     private LinkedList<Link> neighbours;
+    private LinkedList<Node> shortestPath = new LinkedList<>();
 
     public Node(String type, String name) {
         this.type = type;
@@ -69,4 +70,11 @@ public class Node {
     }
 
 
+    public LinkedList<Node> getShortestPath() {
+        return shortestPath;
+    }
+
+    public void setShortestPath(LinkedList<Node> shortestPath) {
+        this.shortestPath = shortestPath;
+    }
 }

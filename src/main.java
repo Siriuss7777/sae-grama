@@ -34,10 +34,9 @@ public class main {
         map.linkNodes(mars, rouen, "A", 40);
         map.linkNodes(paris, rouen, "D", 20);
 
-        for(Node node: map.getShortestPath(mars, heis)){
+        for(Node node: map.getShortestPath(paris, lyon)){
             System.out.println(node.getName());
         }
 
-        System.out.println(map);
     }
 }
