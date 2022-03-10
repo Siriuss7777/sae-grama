@@ -16,9 +16,9 @@ public class Map {
         return this.nodes.get(i);
     }
     public Node getNode(String name){
-        for(int i = 0; i<nodes.size(); i++){
-            if(this.nodes.get(i).getName() == name){
-                return this.nodes.get(i);
+        for (Node node : nodes) {
+            if (node.getName().equals(name)) {
+                return node;
             }
         }
         return null;
