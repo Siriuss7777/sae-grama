@@ -183,63 +183,97 @@ public class Map {
         return returnedString;
     }
 
-    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) { /* PROBLEME: GETLOWERDISTANCE*/
-        LinkedList<Node> searchedList = this.nodes;
-        LinkedList<Node> returnedList = new LinkedList<>();
-        Node shortestDistance = new Node(null, null);
-        Node currentNode = fromNode;
-        for (Node node : searchedList) {
+//    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) {
+//        LinkedList<Node> tempList = fromNode.getNeighbourNodes();
+//
+//        for (Node node : tempList) {
+//            node.setDistance(INFINITE);
+//        }
+//        fromNode.setDistance(0);
+//
+//        LinkedList<Node> nodesList = this.nodes;
+//        LinkedList<Node> shortestPath = new LinkedList<>();
+//        Node node1 = new Node(null, null);
+//
+//        while(!nodesList.isEmpty()){
+//            System.out.println(".");
+//            node1 = getLowestDistance(fromNode);
+//            shortestPath.add(node1);
+//            for(Node node: node1.getNeighbourNodes()){
+//                updateDistances(node, node1);
+//            }
+//            nodesList.remove(node1);
+//        }
+//        while(toNode != fromNode){
+//            shortestPath.add(toNode);
+//            toNode = toNode.getPredecessor();
+//        }
+//        shortestPath.add(fromNode);
+//
+//        return shortestPath;
+//    }
+//
+//    public Node getLowestDistance(Node node) {
+//        int min = -1, tempMin;
+//        Node returnedNode = null;
+//        for (Link link : node.getNeighbours()) {
+//            if(!link.getNode().isFound()){
+//                tempMin = link.getNode().getDistance();
+//                if ((tempMin < min) || (min == -1)) {
+//                    min = tempMin;
+//                    returnedNode = link.getNode();
+//                }
+//            }
+//        }
+//        return returnedNode;
+//    }
+//
+//    private void updateDistances(Node node1, Node node2) {
+//        if (node1.getNeighbourNodes().contains(node2) && node2.getNeighbourNodes().contains(node1)){
+//            if (node2.getDistance() > node1.getDistance() + node1.getDistance()) {
+//                node2.setDistance(node1.getDistance() + node1.getNeighbour(node2).getDistance());
+//                node2.setPredecessor(node1);
+//            }
+//        }
+//    }
+
+    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode){
+        LinkedList<Node> searchedList = new LinkedList<>();
+        LinkedList<Node> shortestPath = new LinkedList<>();
+        Node currentNode = new Node(null, null);
+        for(Node node: this.nodes){
             node.setDistance(INFINITE);
-            node.setPredecessor(null);
+            node.setPredecessor(currentNode);
         }
         fromNode.setDistance(0);
 
-        do {
-            searchedList = new LinkedList<Node>();
-            for (Link link : currentNode.getNeighbours()) searchedList.add(link.getNode());
-            System.out.println("---");
-            for (Node node : searchedList) {
-                this.updateDistances(currentNode, node);
+        searchedList.add(fromNode);
+        while (!searchedList.isEmpty()){
+            System.out.println(".");
+            currentNode = searchedList.element();
+            searchedList.removeLast();
+
+            if(currentNode == toNode){
+                break;
             }
-
-            shortestDistance = this.getLowestDistance(fromNode);
-
-            searchedList.remove(currentNode);
-            returnedList.add(currentNode);
-            currentNode = shortestDistance;
-
-        } while (!searchedList.isEmpty());
-
-        returnedList.add(toNode);
-        int dist = 0;
-        for (Node node : returnedList) {
-            dist += node.getDistance();
+            currentNode.setFound(true);
+            for(Node node: currentNode.getNeighbourNodes()){
+                if(!node.isFound()){
+                    node.setDistance(currentNode.getDistance() + this.getLink(currentNode, node).getDistance());
+                    searchedList.add(node);
+                }
+            }
         }
-        System.out.println(dist);
 
-        return returnedList;
+        return shortestPath;
     }
 
-    public Node getLowestDistance(Node node) {
-        int min = -1, tempMin;
-        Node returnedNode = null;
-        for (Link link : node.getNeighbours()) {
-            tempMin = link.getNode().getDistance();
-            if ((tempMin < min) || (min == -1)) {
-                min = tempMin;
-                returnedNode = link.getNode();
-            }
+    public Link getLink(Node node1, Node node2) {
+        Link returnedLink = null;
+        if (node1.getNeighbourNodes().contains(node2) && node2.getNeighbourNodes().contains(node1)) {
+            returnedLink = node1.getNeighbour(node2);
         }
-        System.out.println(returnedNode);
-        return returnedNode;
-    }
-
-    private void updateDistances(Node node1, Node node2) {
-        if (node1.getNeighbourNodes().contains(node2) && node2.getNeighbourNodes().contains(node1)){
-            if (node2.getDistance() > node1.getDistance() + node1.getDistance()) {
-                node2.setDistance(node1.getDistance() + node1.getNeighbour(node2).getDistance());
-                node2.setPredecessor(node1);
-            }
-        }
+        return returnedLink;
     }
 }
+

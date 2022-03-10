@@ -4,6 +4,7 @@ public class Node {
     private String type; /*"ville", "restaurant", "centre de loisir"*/
     private String name;
     private int distance;
+    private boolean found;
     private Node predecessor;
     private LinkedList<Link> neighbours;
 
@@ -24,10 +25,16 @@ public class Node {
     public int getDistance(){ return this.distance; }
     public void setDistance(int distance){ this.distance = distance; }
 
-    public Node getPredecessor(){ return this.predecessor; }
-    public void setPredecessor(Node predecessor){ this.predecessor = predecessor; }
+    public boolean isFound(){ return this.found; }
+    public void setFound(boolean found){ this.found = found; }
 
+    public Node getPredecessor() {
+        return predecessor;
+    }
 
+    public void setPredecessor(Node predecessor) {
+        this.predecessor = predecessor;
+    }
 
     public LinkedList<Link> getNeighbours() { return neighbours; }
 
