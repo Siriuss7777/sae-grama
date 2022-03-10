@@ -6,6 +6,7 @@ public class Map {
 
     public Map() {
         this.nodes = new LinkedList<Node>();
+        this.links = new LinkedList<Link>();
     }
 
     /*----------------------------------------------------------------------------------------------------*/
@@ -86,6 +87,14 @@ public class Map {
     /*----------------------------------------------------------------------------------------------------*/
 
 
+    public void linkNodes(Node node1, Node node2, String type, int size){
+        Link link1 = node1.addLink(node2, type, size);
+        Link link2 = node2.addLink(node1, type, size);
+
+        this.links.add(link1);
+        this.links.add(link2);
+    }
+
     public LinkedList<Link> getAutoroutes(){
         LinkedList<Link> tempList = new LinkedList<Link>();
         for (Link link : this.links) {
@@ -141,6 +150,24 @@ public class Map {
             }
         }
         return count;
+    }
+
+    /*------------------------------------------------------------------------------------------------*/
+    /*------------------------------------- OPÉRATIONS GÉNÉRALES -------------------------------------*/
+    /*------------------------------------------------------------------------------------------------*/
+
+    public String toString(){
+        String returnedString = "Nodes:";
+        for(Node node: this.nodes){
+            returnedString += "\n\t" + node.getName();
+        }
+        returnedString += "\nLinks:";
+        for(Node node: this.nodes){
+            for(Link neighbour: node.getNeighbours()){
+                returnedString += "\n\t" + node.getName() + " -" + neighbour.getType() + "," + neighbour.getLength() + "- " + neighbour.getNode().getName();
+            }
+        }
+        return returnedString;
     }
 
 }

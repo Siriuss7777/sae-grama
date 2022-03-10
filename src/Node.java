@@ -24,12 +24,17 @@ public class Node {
 
     public LinkedList<Link> getNeighbours() { return neighbours; }
 
-    public void addLink(String type, int length, Node next){
-        Link tmpLink = new Link(type, length, next);
+    public Link addLink(Node node, String type, int length){
+        Link tmpLink = new Link(node, type, length);
         neighbours.add(tmpLink);
+        return tmpLink;
     }
     public void addLink(Link link){
         neighbours.add(link);
+    }
+
+    public String toString(){
+        return this.name;
     }
 
 

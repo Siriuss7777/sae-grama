@@ -1,12 +1,12 @@
 public class Link {
+    private Node node;
     private String type;
     private int length;
-    private Node node;
 
-    public Link(String type, int length, Node node) {
+    public Link(Node node, String type, int length) {
+        this.node = node;
         this.type = type;
         this.length = length;
-        this.node = node;
     }
 
     public Node getNode(){ return this.node; }
@@ -14,4 +14,5 @@ public class Link {
     public String getType() { return type; }
 
     public int getLength() { return length; }
+
 }
