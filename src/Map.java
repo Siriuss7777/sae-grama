@@ -241,6 +241,27 @@ public class Map {
         LinkedList<Node> shortestPath = this.getShortestPath(fromNode, toNode);
         return toNode.getDistance();
     }
+
+    public boolean nDistance(Node fromNode, Node toNode, int distance){
+        boolean result = false;
+        if(distance==0) {
+            return false;
+        }
+        for (Node node : fromNode.getNeighbourNodes()) {
+            if (!node.isFound() && node != toNode) {
+                System.out.println(node);
+                result = nDistance(node, toNode, distance-1);
+            }
+            System.out.println("___");
+            if(node == toNode){
+                result = true;
+            }
+        }
+        for (Node node1 : fromNode.getNeighbourNodes()) {
+            node1.setFound(true);
+        }
+        return result;
+    }
 }
 
 

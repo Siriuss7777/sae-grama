@@ -43,5 +43,6 @@ public class main {
         }
         System.out.println("Distance de : " + map.getShortestDistance(node1,node2));
 
+        System.out.println(map.nDistance(mars, heis, 2));
     }
 }
