@@ -244,21 +244,23 @@ public class Map {
 
     public boolean nDistance(Node fromNode, Node toNode, int distance){
         boolean result = false;
-        if(distance==0) {
+        fromNode.setFound(true);
+        if(distance == 0){
             return false;
         }
-        for (Node node : fromNode.getNeighbourNodes()) {
-            if (!node.isFound() && node != toNode) {
-                System.out.println(node);
-                result = nDistance(node, toNode, distance-1);
-            }
-            System.out.println("___");
-            if(node == toNode){
-                result = true;
-            }
-        }
+        /*  A OPTI AVEC CA
         for (Node node1 : fromNode.getNeighbourNodes()) {
             node1.setFound(true);
+        }
+
+         */
+        for (Node node : fromNode.getNeighbourNodes()) {
+            if (node != toNode) {
+                result = nDistance(node, toNode, distance-1);
+            }
+            if(node == toNode){
+                return true;
+            }
         }
         return result;
     }
