@@ -29,7 +29,7 @@ public class main {
         map.linkNodes(rouen, heis, "N", 5);
         map.linkNodes(heis, lyon, "A", 20);
         map.linkNodes(paris, mars, "A", 70);
-//        map.linkNodes(paris, mars, "N", 20);
+        map.linkNodes(paris, mars, "N", 20);
         map.linkNodes(mars, vaulx, "N", 10);
         map.linkNodes(mars, rouen, "A", 40);
         map.linkNodes(paris, rouen, "D", 20);

@@ -200,7 +200,7 @@ public class Map {
             Node currentNode = getLowestDistance(untreatedNodes);
             untreatedNodes.remove(currentNode);
             for(Node neighbourNode : currentNode.getNeighbourNodes()){
-                length = neighbourNode.getNeighbour(currentNode).getDistance();
+                length = neighbourNode.getClosestNeighbour(currentNode).getDistance();
                 if(!treatedNodes.contains(neighbourNode)){
                     updateDistances(neighbourNode, length, currentNode);
                     untreatedNodes.add(neighbourNode);

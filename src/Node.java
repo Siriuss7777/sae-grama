@@ -39,24 +39,29 @@ public class Node {
         return returnedList;
     }
 
-    public Link getNeighbour(Node node){
+    public LinkedList<Link> getNeighbour(Node node){
         LinkedList<Link> returnedList = new LinkedList<>();
-        Link minLink = null;
         for(Link link: this.neighbours){
             if(link.getNode() == node){
                 returnedList.add(link);
-                minLink = link;
-
             }
         }
-        if(returnedList.size()!=1){
-            for(Link link: returnedList){
+
+        return returnedList;
+    }
+
+    public Link getClosestNeighbour(Node node){
+
+        LinkedList<Link> neighboursList = this.getNeighbour(node);
+        Link minLink = neighboursList.element();
+
+        if(neighboursList.size()!=1){
+            for(Link link: neighboursList){
                 if (link.getDistance() < minLink.getDistance()){
                     minLink = link;
                 }
             }
         }
-
         return minLink;
     }
 
