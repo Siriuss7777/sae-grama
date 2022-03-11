@@ -185,37 +185,39 @@ public class Map {
 
 
     public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) {
-        LinkedList<Node> notTreated = new LinkedList<>();
-        LinkedList<Node> treated = new LinkedList<>();
+        LinkedList<Node> untreatedNodes = new LinkedList<>();
+        LinkedList<Node> treatedNodes = new LinkedList<>();
         LinkedList<Node> shortestPath = null;
+        int length;
 
         for (Node node : this.nodes) {
             node.setDistance(INFINITE);
         }
         fromNode.setDistance(0);
-        notTreated.add(fromNode);
+        untreatedNodes.add(fromNode);
 
-        while(notTreated.size()!=0){
-            Node currentNode = getLowestDistance(notTreated);
-            notTreated.remove(currentNode);
-            for(Node node : currentNode.getNeighbourNodes()){
-                Node neighbourNode = node;
-                int lenght = node.getNeighbour(currentNode).getDistance();
-                if(!treated.contains(neighbourNode)){
-                    updateDistances(neighbourNode,lenght,currentNode);
-                    notTreated.add(neighbourNode);
+        while(untreatedNodes.size()!=0){
+            Node currentNode = getLowestDistance(untreatedNodes);
+            untreatedNodes.remove(currentNode);
+            for(Node neighbourNode : currentNode.getNeighbourNodes()){
+                length = neighbourNode.getNeighbour(currentNode).getDistance();
+                if(!treatedNodes.contains(neighbourNode)){
+                    updateDistances(neighbourNode, length, currentNode);
+                    untreatedNodes.add(neighbourNode);
                 }
             }
-            treated.add(currentNode);
+            treatedNodes.add(currentNode);
         }
+        toNode.getShortestPath().add(toNode);
         return toNode.getShortestPath();
     }
 
-    public Node getLowestDistance(LinkedList<Node> notTreated) {
+    public Node getLowestDistance(LinkedList<Node> nodesList) {
         int min = INFINITE;
+        int nodeDistance;
         Node returnedNode = null;
-        for (Node node : notTreated) {
-            int nodeDistance = node.getDistance();
+        for (Node node : nodesList) {
+            nodeDistance = node.getDistance();
             if(nodeDistance < min){
                 min = nodeDistance;
                 returnedNode = node;
@@ -233,6 +235,11 @@ public class Map {
             node1.setShortestPath(shortestPath);
         }
 
+    }
+
+    public int getShortestDistance(Node fromNode, Node toNode){
+        LinkedList<Node> shortestPath = this.getShortestPath(fromNode, toNode);
+        return toNode.getDistance();
     }
 }
 

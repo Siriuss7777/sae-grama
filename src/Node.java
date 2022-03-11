@@ -5,9 +5,9 @@ public class Node {
     private String name;
     private int distance;
     private boolean found;
-    private Node predecessor;
     private LinkedList<Link> neighbours;
     private LinkedList<Node> shortestPath = new LinkedList<>();
+    private static int INFINITE = 100000;
 
     public Node(String type, String name) {
         this.type = type;
@@ -29,14 +29,6 @@ public class Node {
     public boolean isFound(){ return this.found; }
     public void setFound(boolean found){ this.found = found; }
 
-    public Node getPredecessor() {
-        return predecessor;
-    }
-
-    public void setPredecessor(Node predecessor) {
-        this.predecessor = predecessor;
-    }
-
     public LinkedList<Link> getNeighbours() { return neighbours; }
 
     public LinkedList<Node> getNeighbourNodes(){
@@ -48,12 +40,24 @@ public class Node {
     }
 
     public Link getNeighbour(Node node){
+        LinkedList<Link> returnedList = new LinkedList<>();
+        Link minLink = null;
         for(Link link: this.neighbours){
             if(link.getNode() == node){
-                return link;
+                returnedList.add(link);
+                minLink = link;
+
             }
         }
-        return null;
+        if(returnedList.size()!=1){
+            for(Link link: returnedList){
+                if (link.getDistance() < minLink.getDistance()){
+                    minLink = link;
+                }
+            }
+        }
+
+        return minLink;
     }
 
     public Link addLink(Node node, String type, int length){

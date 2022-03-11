@@ -22,7 +22,6 @@ public class main {
 
     public static void main(String[] args) {
 
-
         map.linkNodes(lyon, paris, "A", 100);
         map.linkNodes(lyon, vaulx, "D", 20);
         map.linkNodes(vaulx, resto, "D", 5);
@@ -30,15 +29,19 @@ public class main {
         map.linkNodes(rouen, heis, "N", 5);
         map.linkNodes(heis, lyon, "A", 20);
         map.linkNodes(paris, mars, "A", 70);
+//        map.linkNodes(paris, mars, "N", 20);
         map.linkNodes(mars, vaulx, "N", 10);
         map.linkNodes(mars, rouen, "A", 40);
         map.linkNodes(paris, rouen, "D", 20);
 
+        System.out.println(map);
 
-        for(Node node: map.getShortestPath(paris, lyon)){
+        Node node1 = paris;
+        Node node2 = mars;
+        for(Node node: map.getShortestPath(node1, node2)){
             System.out.println(node.getName());
         }
-        System.out.println("Distance de : " + lyon.getDistance());
+        System.out.println("Distance de : " + map.getShortestDistance(node1,node2));
 
     }
 }
