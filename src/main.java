@@ -34,7 +34,7 @@ public class main {
         map.linkNodes(mars, rouen, "A", 40);
         map.linkNodes(paris, rouen, "D", 20);
 
-        System.out.println(map);
+        //System.out.println(map);
 
         Node node1 = paris;
         Node node2 = mars;
@@ -43,6 +43,6 @@ public class main {
         }
         System.out.println("Distance de : " + map.getShortestDistance(node1,node2));
 
-        System.out.println(map.nDistance(mars, heis, 2));
+        System.out.println(map.nDistance(rouen, resto, 3));
     }
 }

@@ -248,18 +248,24 @@ public class Map {
         if(distance == 0){
             return false;
         }
-        /*  A OPTI AVEC CA
         for (Node node1 : fromNode.getNeighbourNodes()) {
             node1.setFound(true);
         }
 
-         */
         for (Node node : fromNode.getNeighbourNodes()) {
-            if (node != toNode) {
-                result = nDistance(node, toNode, distance-1);
-            }
-            if(node == toNode){
-                return true;
+            System.out.println(node + " : ");
+            for (Node node2 : node.getNeighbourNodes()){
+                System.out.println("\t" + node2);
+                if(!node2.isFound()){
+                    result = nDistance(node, toNode, distance - 1);
+                    if(result){
+                        return true;
+                    }
+                }
+                if (node == toNode) {
+                    System.out.println("\t" + node );
+                    return true;
+                }
             }
         }
         return result;
