@@ -242,31 +242,65 @@ public class Map {
         return toNode.getDistance();
     }
 
-    public boolean nDistance(Node fromNode, Node toNode, int distance, int tmpDistance){
+    public void nDistance(Node fromNode, int distance, int tmpDistance){
         boolean result = false;
         if (tmpDistance == 0){
-            return false;
+            return;
         }
         for (Node node : fromNode.getNeighbourNodes()){
             if (node.getDistance() > (distance - tmpDistance)){
                 node.setDistance(distance - tmpDistance);
-                System.out.println(node + " Distance de : " + node.getDistance());
-                result = nDistance(node,toNode,distance,tmpDistance-1);
+                nDistance(node,distance,tmpDistance-1);
 
             }
         }
+    }
+
+    public boolean Distance(Node fromNode, Node toNode, int distance){
+        boolean result = false;
+        nDistance(fromNode,distance + 1,distance);
         if (toNode.getDistance() <= distance){
-            System.out.println("\t" + toNode + " distance final : " + toNode.getDistance() + " distance qu'on veut : " + (distance - 1));
             result = true;
         }
         return result;
     }
 
-    public boolean Distance(Node fromNode, Node toNode, int distance){
-        boolean result = false;
-        result = nDistance(fromNode,toNode,distance + 1,distance);
-        return result;
+    public Node openNode(Node node1, Node node2){
+        int count1 = 0;
+        int count2 = 0;
+        Node nodeOpen = null;
+        node1.setDistance(0);
+        nDistance(node1, 3, 2);
+        System.out.println("De : " + node1);
+        for (Node node : this.nodes){
+            System.out.println(node + " distance : " + node.getDistance());
+            if ((node.getDistance() == 2) && (node.getType() == "V")){
+                count1++;
+                System.out.println("\t" + node);
+            }
+        }
+        for (Node node : this.nodes){
+            node.setDistance(INFINITE);
+        }
+        node2.setDistance(0);
+        nDistance(node2, 3, 2);
+        System.out.println("De : " + node2);
+        for (Node node : this.nodes){
+            System.out.println(node + " distance : " + node.getDistance());
+            if ((node.getDistance() == 2) && (node.getType() == "V")){
+                count2++;
+                System.out.println("\t" + node);
+            }
+        }
+
+        if (count1 > count2){
+            nodeOpen = node1;
+        }else {
+            nodeOpen = node2;
+        }
+        return nodeOpen;
     }
+
 
 }
 

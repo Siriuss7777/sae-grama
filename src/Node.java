@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 
 public class Node {
-    private String type; /*"ville", "restaurant", "centre de loisir"*/
+    private String type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs*/
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
     private boolean found;
