@@ -25,7 +25,7 @@ public class main {
         map.linkNodes(lyon, paris, "A", 100);
         map.linkNodes(lyon, vaulx, "D", 20);
         map.linkNodes(vaulx, resto, "D", 5);
-        map.linkNodes(lyon, resto, "N", 20);
+        //map.linkNodes(lyon, resto, "N", 20);
         map.linkNodes(rouen, heis, "N", 5);
         map.linkNodes(heis, lyon, "A", 20);
         map.linkNodes(paris, mars, "A", 70);
@@ -36,13 +36,13 @@ public class main {
 
         //System.out.println(map);
 
-        Node node1 = paris;
-        Node node2 = mars;
+        Node node1 = rouen;
+        Node node2 = resto;
         for(Node node: map.getShortestPath(node1, node2)){
             System.out.println(node.getName());
         }
         System.out.println("Distance de : " + map.getShortestDistance(node1,node2));
 
-        System.out.println(map.nDistance(rouen, resto, 3));
+        System.out.println(map.Distance(node1, node2, 3));
     }
 }

@@ -3,7 +3,7 @@ import java.util.LinkedList;
 public class Node {
     private String type; /*"ville", "restaurant", "centre de loisir"*/
     private String name;
-    private int distance;
+    private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
     private boolean found;
     private LinkedList<Link> neighbours;
     private LinkedList<Node> shortestPath = new LinkedList<>();
