@@ -244,7 +244,7 @@ public class Map {
 
     public boolean nDistance(Node fromNode, Node toNode, int distance, int tmpDistance){
         boolean result = false;
-        if (distance == 0){
+        if (tmpDistance == 0){
             return false;
         }
         for (Node node : fromNode.getNeighbourNodes()){
@@ -255,8 +255,8 @@ public class Map {
 
             }
         }
-        if (toNode.getDistance() == distance){
-            System.out.println("\t" + toNode + " distance final : " + toNode.getDistance() + " distance qu'on veut : " + distance);
+        if (toNode.getDistance() <= distance){
+            System.out.println("\t" + toNode + " distance final : " + toNode.getDistance() + " distance qu'on veut : " + (distance - 1));
             result = true;
         }
         return result;
@@ -264,7 +264,7 @@ public class Map {
 
     public boolean Distance(Node fromNode, Node toNode, int distance){
         boolean result = false;
-        result = nDistance(fromNode,toNode,distance,distance - 1);
+        result = nDistance(fromNode,toNode,distance + 1,distance);
         return result;
     }
 

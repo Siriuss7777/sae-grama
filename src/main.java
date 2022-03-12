@@ -37,12 +37,12 @@ public class main {
         //System.out.println(map);
 
         Node node1 = rouen;
-        Node node2 = resto;
+        Node node2 = mars;
         for(Node node: map.getShortestPath(node1, node2)){
             System.out.println(node.getName());
         }
         System.out.println("Distance de : " + map.getShortestDistance(node1,node2));
 
-        System.out.println(map.Distance(node1, node2, 3));
+        System.out.println(map.Distance(node1, node2, 1));
     }
 }
