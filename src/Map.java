@@ -265,18 +265,25 @@ public class Map {
         return result;
     }
 
-    public Node openNode(Node node1, Node node2){
+    public Node isBetterThan(Node node1, Node node2, String type){
         int count1 = 0;
         int count2 = 0;
+        String tmpType = null;
+        if (type.equals("OUVERTE")){
+            tmpType = "V";
+        }
+        if (type.equals("GASTRONOMIQUE")){
+            tmpType = "R";
+        }
+        if (type.equals("CULTURELLE")){
+            tmpType = "L";
+        }
         Node nodeOpen = null;
         node1.setDistance(0);
         nDistance(node1, 3, 2);
-        System.out.println("De : " + node1);
         for (Node node : this.nodes){
-            System.out.println(node + " distance : " + node.getDistance());
-            if ((node.getDistance() == 2) && (node.getType() == "V")){
+            if ((node.getDistance() == 2) && (node.getType().equals(tmpType))){
                 count1++;
-                System.out.println("\t" + node);
             }
         }
         for (Node node : this.nodes){
@@ -284,12 +291,9 @@ public class Map {
         }
         node2.setDistance(0);
         nDistance(node2, 3, 2);
-        System.out.println("De : " + node2);
         for (Node node : this.nodes){
-            System.out.println(node + " distance : " + node.getDistance());
-            if ((node.getDistance() == 2) && (node.getType() == "V")){
+            if ((node.getDistance() == 2) && (node.getType().equals(tmpType))){
                 count2++;
-                System.out.println("\t" + node);
             }
         }
 
