@@ -23,8 +23,11 @@ public class Map {
     }
 
     public Node createNode(String type, String name) {
-        Node tempNode = new Node(type, name);
-        this.nodes.add(tempNode);
+        Node tempNode;
+        if((tempNode = this.getNodeFromString(type+","+name)) == null){
+            tempNode = new Node(type, name);
+            this.nodes.add(tempNode);
+        }
         return tempNode;
     }
 
@@ -92,10 +95,23 @@ public class Map {
         return count;
     }
 
+    public Node getNodeFromString(String string){
+        Node returnedNode = null;
+        for(Node node: this.nodes){
+            if(node.asString().equals(string)){
+                returnedNode = node;
+            }
+        }
+        return returnedNode;
+    }
+
     /*----------------------------------------------------------------------------------------------------*/
     /*------------------------------------- OPÉRATIONS SUR LES LIENS -------------------------------------*/
     /*----------------------------------------------------------------------------------------------------*/
 
+    public void addLink(Link link){
+        this.links.add(link);
+    }
 
     public void linkNodes(Node node1, Node node2, String type, int size) {
         Link link1 = node1.addLink(node2, type, size);
@@ -188,16 +204,18 @@ public class Map {
         LinkedList<Node> untreatedNodes = new LinkedList<>();
         LinkedList<Node> treatedNodes = new LinkedList<>();
         LinkedList<Node> shortestPath = null;
+        toNode.setShortestPath(null);
         int length;
 
         for (Node node : this.nodes) {
             node.setDistance(INFINITE);
+            node.setShortestPath(new LinkedList<>());
         }
         fromNode.setDistance(0);
         untreatedNodes.add(fromNode);
 
         while(untreatedNodes.size()!=0){
-            Node currentNode = getLowestDistance(untreatedNodes);
+            Node currentNode = getClosestNode(untreatedNodes);
             untreatedNodes.remove(currentNode);
             for(Node neighbourNode : currentNode.getNeighbourNodes()){
                 length = neighbourNode.getClosestNeighbour(currentNode).getDistance();
@@ -212,11 +230,11 @@ public class Map {
         return toNode.getShortestPath();
     }
 
-    public Node getLowestDistance(LinkedList<Node> nodesList) {
+    public Node getClosestNode(LinkedList<Node> neighboursList) {
         int min = INFINITE;
         int nodeDistance;
         Node returnedNode = null;
-        for (Node node : nodesList) {
+        for (Node node : neighboursList) {
             nodeDistance = node.getDistance();
             if(nodeDistance < min){
                 min = nodeDistance;
@@ -282,7 +300,7 @@ public class Map {
         node1.setDistance(0);
         nDistance(node1, 3, 2);
         for (Node node : this.nodes){
-            if ((node.getDistance() == 2) && (node.getType().equals(tmpType))){
+            if ((node.getDistance() <= 2) && (node.getType().equals(tmpType))){
                 count1++;
             }
         }
@@ -292,7 +310,7 @@ public class Map {
         node2.setDistance(0);
         nDistance(node2, 3, 2);
         for (Node node : this.nodes){
-            if ((node.getDistance() == 2) && (node.getType().equals(tmpType))){
+            if ((node.getDistance() <= 2) && (node.getType().equals(tmpType))){
                 count2++;
             }
         }
@@ -303,6 +321,18 @@ public class Map {
             nodeOpen = node2;
         }
         return nodeOpen;
+    }
+
+    public LinkedList<Node> getPathWith(Node fromNode, Node throughNode, Node toNode){
+        LinkedList<Node> firstPath = new LinkedList<>();
+        LinkedList<Node> lastPath = new LinkedList<>();
+
+        firstPath = getShortestPath(fromNode, throughNode);
+        firstPath.removeLast();
+        lastPath = getShortestPath(throughNode, toNode);
+
+        firstPath.addAll(lastPath);
+        return firstPath;
     }
 
 

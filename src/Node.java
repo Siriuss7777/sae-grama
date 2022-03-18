@@ -4,10 +4,10 @@ public class Node {
     private String type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs*/
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
-    private boolean found;
+    private boolean found;                                                      /* À enlever */
     private LinkedList<Link> neighbours;
     private LinkedList<Node> shortestPath = new LinkedList<>();
-    private static int INFINITE = 100000;
+    private static final int INFINITE = 100000;
 
     public Node(String type, String name) {
         this.type = type;
@@ -77,6 +77,7 @@ public class Node {
     public String toString(){
         return this.name;
     }
+    public String asString(){ return this.type + "," + this.name; }
 
 
     public LinkedList<Node> getShortestPath() {
