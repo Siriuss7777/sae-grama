@@ -1,0 +1,55 @@
+/*
+ * Created on Sep 24, 2005
+ *
+ * Copyright (c) 2005, The JUNG Authors
+ *
+ * All rights reserved.
+ *
+ * This software is open-source under the BSD license; see either
+ * "license.txt" or
+ * https://github.com/tomnelson/jungrapht-visualization/blob/master/LICENSE for a description.
+ */
+package org.jungrapht.visualization.util;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.jgrapht.Graph;
+
+/**
+ * A class which creates and maintains indices for parallel edges. Parallel edges are defined here
+ * to be the collection of edges that are returned by <code>graph.edgesConnecting(v, w)</code> for
+ * some <code>v</code> and <code>w</code>.
+ *
+ * <p>At this time, users are responsible for resetting the indices (by calling <code>reset()</code>
+ * ) if changes to the graph make it appropriate.
+ *
+ * @author Joshua O'Madadhain
+ * @author Tom Nelson
+ */
+public class ParallelEdgeIndexFunction<V, E> implements EdgeIndexFunction<V, E> {
+
+  protected Map<E, Integer> edgeIndex = new HashMap<>();
+
+  @Override
+  public Integer apply(Graph<V, E> graph, E edge) {
+    Integer index = edgeIndex.get(edge);
+    if (index == null) {
+      V u = graph.getEdgeSource(edge);
+      V v = graph.getEdgeTarget(edge);
+      int count = 0;
+      for (E connectingEdge : graph.getAllEdges(u, v)) {
+        edgeIndex.put(connectingEdge, count++);
+      }
+      return edgeIndex.getOrDefault(edge, 0);
+    }
+    return index;
+  }
+
+  public void reset(Graph<V, E> graph, E edge) {
+    edgeIndex.remove(edge);
+  }
+
+  public void reset() {
+    edgeIndex.clear();
+  }
+}

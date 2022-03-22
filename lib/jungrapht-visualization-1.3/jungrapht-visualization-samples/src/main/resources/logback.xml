@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <Logger name="org.jungrapht.visualization.renderers" level="info" />
+
+
+  <Logger name="org.jungrapht.visualization.layout.spatial" level="info"/>
+
+  <Logger name="org.jungrapht.visualization.layout.spatial.rtree" level="info"/>
+
+  <Logger name="org.jungrapht.visualization.DefaultVisualizationServer" level="info"/>
+  <Logger name="org.jungrapht.visualization.DefaultVisualizationViewer" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.event.ModelChange$SupportImpl" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.event.ViewChange$SupportImpl" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.model.AbstractLayoutModel" level="info"/>
+  <Logger name="org.jungrapht.visualization.renderers.DefaultModalRenderer" level="info" />
+
+  <Logger name="org.jungrapht.visualization.selection" level="info"/>
+
+  <Logger name="org.jungrapht.visualization.layout.spatial" level="info"/>
+
+  <Logger name="org.jungrapht.visualization.layout.algorithms" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.BalloonLayoutAlgorithm" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.MultiRowTreeLayoutAlgorithm" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.TreeLayoutAlgorithm" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.GEMLayoutAlgorithm" level="debug"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.AbstractLayoutAlgorithm" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.AbstractIterativeLayoutAlgorithm" level="info"/>
+
+  <Logger name="org.jungrapht.visualization.layout.algorithms.sugiyama" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.sugiyama.GraphLayers" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.eiglsperger.VerticalAlignment" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.eiglsperger.EiglspergerSteps" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.eiglsperger.EiglspergerRunnable" level="info"/>
+  <Logger name="org.jungrapht.visualization.layout.algorithms.eiglsperger.EiglspergerUtil" level="info"/>
+
+
+  <Logger name="ch.qos.logback" level="WARN" />
+
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </root>  
+  
+</configuration>
