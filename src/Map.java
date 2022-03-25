@@ -199,11 +199,11 @@ public class Map {
         return returnedString;
     }
 
+    //Dijkstra algorithm to find the shortest path between two nodes
 
     public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) {
         LinkedList<Node> untreatedNodes = new LinkedList<>();
         LinkedList<Node> treatedNodes = new LinkedList<>();
-        LinkedList<Node> shortestPath = null;
         toNode.setShortestPath(null);
         int length;
 
@@ -214,7 +214,7 @@ public class Map {
         fromNode.setDistance(0);
         untreatedNodes.add(fromNode);
 
-        while(untreatedNodes.size()!=0){
+        while(!untreatedNodes.isEmpty()){
             Node currentNode = getClosestNode(untreatedNodes);
             untreatedNodes.remove(currentNode);
             for(Node neighbourNode : currentNode.getNeighbourNodes()){
@@ -333,6 +333,39 @@ public class Map {
 
         firstPath.addAll(lastPath);
         return firstPath;
+    }
+
+    //Find a path between two nodes through two given nodes
+    public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode1, Node throughNode2){
+        LinkedList<Node> finalPath = new LinkedList<>();
+        LinkedList<Node> finalPath2 = new LinkedList<>();
+        LinkedList<Node> tempPath = new LinkedList<>();
+        LinkedList<Node> lastPath = new LinkedList<>();
+        int tmpDistance = 0;
+
+        finalPath = getShortestPath(fromNode, throughNode1);
+        finalPath.removeLast();
+        tempPath = getShortestPath(throughNode1, throughNode2);
+        tempPath.removeLast();
+        lastPath = getShortestPath(throughNode2, toNode);
+        finalPath.addAll(tempPath);
+        finalPath.addAll(lastPath);
+        tmpDistance = throughNode1.getDistance() + throughNode2.getDistance() + toNode.getDistance();
+
+        finalPath2 = getShortestPath(fromNode, throughNode2);
+        finalPath2.removeLast();
+        tempPath = getShortestPath(throughNode2, throughNode1);
+        tempPath.removeLast();
+        lastPath = getShortestPath(throughNode1, toNode);
+        finalPath2.addAll(tempPath);
+        finalPath2.addAll(lastPath);
+
+
+        if(throughNode1.getDistance() + throughNode2.getDistance() + toNode.getDistance() < tmpDistance){
+            finalPath = finalPath2;
+        }
+
+        return finalPath;
     }
 
 
