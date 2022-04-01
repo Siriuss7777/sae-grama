@@ -1,14 +1,14 @@
 V,Paris:A,400::V,Lyon;A,350::V,Macon;A,30::V,Sevran;A,40::V,Bondy;D,20::V,Garges-lès-Gonesse;N,25::V,Noisy-le-Grand;N,30::V,Neuilly-sur-Marne;N,5::R,Quick Paris;N,25::R,Pizza Hut Bondy;D,50::L,Disneyland Paris;D,30::L,Stade de France;D,5::L,Tour Eiffel;;
 V,Garges-lès-Gonesse:D,20::V,Paris;D,10::V,Noisy-le-Grand;D,15::V,Sevran;N,30::V,Neuilly-sur-Marne;N,25::R,Quick Paris;N,40::L,Disneyland Paris;;
 V,Sevran:A,30::V,Paris;N,15::V,Bondy;D,10::V,Noisy-le-Grand;D,15::V,Garges-lès-Gonesse;D,35::R,Pizza Hut Bondy;N,35::R,Quick Paris;N,55::L,Disneyland Paris;;
-V,Noisy-le-Grand:N,25::V,Paris;N,25::V,Bondy;D,10::V,Garges-lès-Gonesse;D,10::V,Sevran;N,30::R,Pizza Hut Bondy;N,10::R,Quick Paris;D,30::L,Stade de France;;
-V,Bondy:A,40::V,Paris;N,15::V,Sevran;N,25::V,Noisy-le-Grand;D,50::V,Neuilly-sur-Marne;N,5::R,Pizza Hut Bondy;D,45::L,Tour Eiffel;;
+V,Noisy-le-Grand:N,25::V,Paris;N,25::V,Bondy;D,10::V,Garges-lès-Gonesse;D,10::V,Sevran;N,30::R,Pizza Hut Bondy;N,10::R,Quick Paris;D,30::L,Stade de France;N,30::L,Tour Eiffel;;
+V,Bondy:A,40::V,Paris;N,15::V,Sevran;N,25::V,Noisy-le-Grand;D,50::V,Neuilly-sur-Marne;N,5::R,Pizza Hut Bondy;N,30::L,Tour Eiffel;;
 V,Neuilly-sur-Marne:N,30::V,Paris;N,25::V,Garges-lès-Gonesse;D,50::V,Bondy;N,15::R,Quick Paris;N,25::L,Disneyland Paris;;
 R,Quick Paris:N,5::V,Paris;N,25::V,Garges-lès-Gonesse;N,35::V,Sevran;N,10::V,Noisy-le-Grand;N,15::V,Neuilly-sur-Marne;;
 R,Pizza Hut Bondy:N,5::V,Bondy;N,25::V,Paris;D,35::V,Sevran;N,30::V,Noisy-le-Grand;D,20::L,Tour Eiffel;;
 L,Disneyland Paris:D,50::V,Paris;N,40::V,Garges-lès-Gonesse;N,55::V,Sevran;N,25::V,Neuilly-sur-Marne;N,55::L,Stade de France;;
 L,Stade de France:D,30::V,Paris;D,30::V,Noisy-le-Grand;N,55::L,Disneyland Paris;N,35::L,Tour Eiffel;;
-L,Tour Eiffel:D,5::V,Paris;N,30::V,Noisy-le-Grand;D,20::R,Pizza Hut Bondy;N,35::L,Stade de France;;
+L,Tour Eiffel:D,5::V,Paris;N,30::V,Noisy-le-Grand;N,30::V,Bondy;D,20::R,Pizza Hut Bondy;N,35::L,Stade de France;;
 V,Lyon:A,400::V,Paris;A,30::V,Limonest;A,40::V,Villefranche-sur-Saône;A,100::V,Villars-les-Dombes;A,60::V,Givors;D,30::V,Neuville-sur-Saône;N,25::V,Anse;A,150::V,Grenoble;A,100::V,Macon;N,50::V,St-Bonnet de Mure;A,50::V,Montagny;D,10::R,Hamamet Tacos;D,5::R,Institut Paul Bocuse;D,5::L,Musée des Confluences;D,10::L,Mur des Canuts;D,5::L,La Baie Des Pirates Lyon Craponne;;
 V,Limonest:A,30::V,Lyon;D,20::V,Anse;D,10::V,Lucenay;N,15::V,Neuville-sur-Saône;D,20::R,Burger King Neuville-sur-Saône;D,10::R,Institut Paul Bocuse;D,15::L,Mur des Canuts;D,35::L,Musée des Confluences;;
 V,Villefranche-sur-Saône:A,40::V,Lyon;A,55::V,Macon;D,10::V,Anse;N,50::V,Villars-les-Dombes;N,30::V,Neuville-sur-Saône;D,25::R,Burger King Neuville-sur-Saône;;

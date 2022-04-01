@@ -4,7 +4,6 @@ public class Node {
     private String type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs*/
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
-    private boolean found;                                                      /* À enlever */
     private LinkedList<Link> neighbours;
     private LinkedList<Node> shortestPath = new LinkedList<>();
     private static final int INFINITE = 100000;
@@ -26,8 +25,13 @@ public class Node {
     public int getDistance(){ return this.distance; }
     public void setDistance(int distance){ this.distance = distance; }
 
-    public boolean isFound(){ return this.found; }
-    public void setFound(boolean found){ this.found = found; }
+    public void addNeighbour(Link link){
+        this.neighbours.add(link);
+    }
+
+    public void addNeighbour(Node node, String type, int distance){
+        this.neighbours.add(new Link(node, type, distance));
+    }
 
     public LinkedList<Link> getNeighbours() { return neighbours; }
 
@@ -39,7 +43,7 @@ public class Node {
         return returnedList;
     }
 
-    public LinkedList<Link> getNeighbour(Node node){
+    public LinkedList<Link> getNeighbour(Node node){ // Dijkstra, retourne le(s) lien(s) entre les deux noeuds
         LinkedList<Link> returnedList = new LinkedList<>();
         for(Link link: this.neighbours){
             if(link.getNode() == node){
@@ -50,7 +54,7 @@ public class Node {
         return returnedList;
     }
 
-    public Link getClosestNeighbour(Node node){
+    public Link getClosestNeighbour(Node node){ // Dijkstra, retourne le lien le plus court entre les deux noeuds
 
         LinkedList<Link> neighboursList = this.getNeighbour(node);
         Link minLink = neighboursList.element();

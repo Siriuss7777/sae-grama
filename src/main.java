@@ -1,10 +1,4 @@
-import com.mxgraph.io.mxCodec;
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxEdgeStyle;
-import com.mxgraph.view.mxPerimeter;
-import com.mxgraph.view.mxStylesheet;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
@@ -43,16 +37,9 @@ public class main {
                 map.addLink(addedLink);
             }
         }
-
-
-
     }
 
-
     static Map map = new Map();
-
-    private static final Dimension DEFAULT_SIZE = new Dimension(900, 900);
-
 
     Scanner input = new Scanner(System.in);
 
@@ -60,10 +47,8 @@ public class main {
 
         ListenableGraph<String, DefaultEdge> g =
                 new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
-        JApplet applet = new JApplet();
 
 
-//        Graphviz.fromGraph(g).width(200).render(Format.PNG).toFile(new File("example/ex1m.png"));
         System.out.println("Saisissez le chemin vers la map (fichier CSV): ");
 //        String filename = input.nextLine();
         String filename = "C:\\Users\\Administrateur\\Desktop\\Cours\\SAEs\\GRAMA\\map.csv";
@@ -78,32 +63,32 @@ public class main {
             for (Link neighbour : node.getNeighbours()) {
                 g.setEdgeWeight(g.addEdge(node.asString(),
                         neighbour.getNode().asString()), neighbour.getDistance());
+
             }
         }
 
-        System.out.println(map.getNodeFromString("V,Paris").getNeighbours());
-        System.out.println(map.getPathWith(map.getNodeFromString("V,Paris"),map.getNodeFromString("V,Sevran"),map.getNodeFromString("V,Lyon"),map.getNodeFromString("V,Pizza Hut Bondy")));
+//        System.out.println(map.getNodeFromString("V,Paris").getNeighbourNodes());
+//        for(Link link: map.getNodeFromString("V,Paris").getNeighbours()){
+//            System.out.println(link.toString());
+//        }
 
-//        //Display the graph
-//        JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
-//        mxGraphComponent graphComponent = new mxGraphComponent(jgxAdapter);
-//        graphComponent.setPreferredSize(DEFAULT_SIZE);
-//        applet.getContentPane().add(graphComponent);
-//        applet.setVisible(true);
-//
-//        //Layout
-//        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
-//        layout.setForceConstant(250);
-//        layout.execute(jgxAdapter.getDefaultParent());
-//
-//        // Add the graph to the jframe
-//        JFrame frame = new JFrame("JGraphT Adapter to JGraph Demo");
-//        frame.getContentPane().add(graphComponent);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-//
-//        // Display jgraph
+//        Display the graph
+        JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
+        mxGraphComponent graphComponent = new mxGraphComponent(jgxAdapter);
+
+        //Layout
+        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
+        layout.setForceConstant(250);
+        layout.execute(jgxAdapter.getDefaultParent());
+
+        //Display
+        Window window = new Window();
+        window.init();
+        window.add(graphComponent);
+
+
+
+        System.out.println(map.getPathWith(map.getNodeFromString("V,Paris"),map.getNodeFromString("V,Sevran"),map.getNodeFromString("V,Lyon"),map.getNodeFromString("R,Pizza Hut Bondy")));
 
 
 

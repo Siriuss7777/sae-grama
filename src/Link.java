@@ -15,4 +15,12 @@ public class Link {
 
     public int getDistance() { return distance; }
 
+    @Override
+    public String toString() {
+        return "Link{" +
+                "node=" + node +
+                ", type='" + type + '\'' +
+                ", distance=" + distance +
+                '}';
+    }
 }

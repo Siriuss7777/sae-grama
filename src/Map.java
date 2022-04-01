@@ -336,7 +336,7 @@ public class Map {
     }
 
     //Find a path between two nodes through two given nodes
-    public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode1, Node throughNode2){
+    public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode1, Node throughNode2){ // Respect the order of the nodes ? (fromNode, throughNode1, throughNode2, toNode)
         LinkedList<Node> finalPath = new LinkedList<>();
         LinkedList<Node> finalPath2 = new LinkedList<>();
         LinkedList<Node> tempPath = new LinkedList<>();
