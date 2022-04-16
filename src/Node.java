@@ -69,6 +69,16 @@ public class Node {
         return minLink;
     }
 
+    public boolean isNeighbour(Node node){
+        boolean state = false;
+        for(Link neighbour: neighbours){
+            if(node.toString().equals(neighbour.getNode().toString())){
+                state = true;
+            }
+        }
+        return state;
+    }
+
     public Link addLink(Node node, String type, int length){
         Link tmpLink = new Link(node, type, length);
         neighbours.add(tmpLink);
@@ -78,10 +88,7 @@ public class Node {
         neighbours.add(link);
     }
 
-    public String toString(){
-        return this.name;
-    }
-    public String asString(){ return this.type + "," + this.name; }
+    public String toString(){ return this.type + "," + this.name; }
 
 
     public LinkedList<Node> getShortestPath() {

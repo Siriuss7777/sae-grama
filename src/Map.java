@@ -3,7 +3,8 @@ import java.util.LinkedList;
 public class Map {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
-    static private int INFINITE = 100000;
+    private int[][] distances;
+    static private final int INFINITE = Integer.MAX_VALUE;
 
     public Map() {
         this.nodes = new LinkedList<Node>();
@@ -98,7 +99,7 @@ public class Map {
     public Node getNodeFromString(String string){
         Node returnedNode = null;
         for(Node node: this.nodes){
-            if(node.asString().equals(string)){
+            if(node.toString().equals(string)){
                 returnedNode = node;
             }
         }
@@ -260,6 +261,7 @@ public class Map {
         return toNode.getDistance();
     }
 
+
     public void nDistance(Node fromNode, int distance, int tmpDistance){
         boolean result = false;
         if (tmpDistance == 0){
@@ -284,8 +286,8 @@ public class Map {
     }
 
     public Node isBetterThan(Node node1, Node node2, String type){
-        int count1 = 0;
-        int count2 = 0;
+        int count1stNode = 0;
+        int count2ndNode = 0;
         String tmpType = null;
         if (type.equals("OUVERTE")){
             tmpType = "V";
@@ -301,7 +303,7 @@ public class Map {
         nDistance(node1, 3, 2);
         for (Node node : this.nodes){
             if ((node.getDistance() <= 2) && (node.getType().equals(tmpType))){
-                count1++;
+                count1stNode++;
             }
         }
         for (Node node : this.nodes){
@@ -311,11 +313,11 @@ public class Map {
         nDistance(node2, 3, 2);
         for (Node node : this.nodes){
             if ((node.getDistance() <= 2) && (node.getType().equals(tmpType))){
-                count2++;
+                count2ndNode++;
             }
         }
 
-        if (count1 > count2){
+        if (count1stNode > count2ndNode){
             nodeOpen = node1;
         }else {
             nodeOpen = node2;
@@ -368,6 +370,59 @@ public class Map {
         return finalPath;
     }
 
+    // Floyd-Warshall
+    public void floydWarshall(){
+        int[][] distance = new int[this.nodes.size()][this.nodes.size()];
+        Node[][] predecessor = new Node[this.nodes.size()][this.nodes.size()];
+        for (int i = 0; i < this.nodes.size(); i++){
+            for (int j = 0; j < this.nodes.size(); j++){
+                if (i == j){
+                    distance[i][j] = 0;
+                }else {
+                    distance[i][j] = INFINITE;
+                }
+            }
+
+        }
+
+        for (int i = 0; i < this.nodes.size(); i++){
+            for (int j = 0; j < this.nodes.size(); j++){
+                if(nodes.get(i).isNeighbour(nodes.get(j))){
+                    if(nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance() < distance[i][j]){
+                        distance[i][j] = nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance();
+                        predecessor[i][j] = nodes.get(i);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < this.nodes.size(); i++){
+            for (int j = 0; j < this.nodes.size(); j++){
+                for (int k = 0; k < this.nodes.size(); k++){
+                    if(distance[i][k] != INFINITE && distance[k][j] != INFINITE){
+                        if (distance[i][j] > distance[i][k] + distance[k][j]){
+                            distance[i][j] = distance[i][k] + distance[k][j];
+                            predecessor[i][j] = predecessor[i][k];
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < this.nodes.size(); i++){
+            for (int j = 0; j < this.nodes.size(); j++){
+                System.out.print(distance[i][j] + " ");
+            }
+            System.out.println("");
+        }
+
+        for (int i = 0; i < this.nodes.size(); i++){
+            for (int j = 0; j < this.nodes.size(); j++){
+                System.out.print(predecessor[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
 
 }
 

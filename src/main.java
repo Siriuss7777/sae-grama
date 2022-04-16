@@ -4,10 +4,9 @@ import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
 import com.mxgraph.layout.*;
 
-import java.awt.*;
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
-import javax.swing.*;
 
 public class main {
 
@@ -21,22 +20,23 @@ public class main {
         while ((line = file.readLine()) != null) {
             type = line.substring(0, line.indexOf(','));
             name = line.substring(line.indexOf(',') + 1, line.indexOf(':'));
-            currentNode = map.createNode(type, name);
+            currentNode = map.createNode(type.toUpperCase(Locale.ROOT), name);
 
             line = line.substring(line.indexOf(':') + 1);
             links = line.split(";");
 
             for (String link : links) {
                 dividedLink = link.split("::");                   // dividedLink[0] -> type/distance du lien, dividedLink[1] -> type/nom du noeud
-                if ((newNode = map.getNodeFromString(dividedLink[1])) == null) {
-                    attributes = dividedLink[1].split(",");       // attributes[0] -> type, attributes[1] -> name  => Node
-                    newNode = map.createNode(attributes[0], attributes[1]);
+                attributes = dividedLink[1].split(",");       // attributes[0] -> type, attributes[1] -> name  => Node
+                if ((newNode = map.getNodeFromString(attributes[0].toUpperCase(Locale.ROOT) + "," + attributes[1])) == null) {
+                    newNode = map.createNode(attributes[0].toUpperCase(Locale.ROOT), attributes[1]);
                 }
                 attributes = dividedLink[0].split(",");           // attributes[0] -> type, attributes[1] -> distance => Link
-                addedLink = currentNode.addLink(newNode, attributes[0], Integer.parseInt(attributes[1]));
+                addedLink = currentNode.addLink(newNode, attributes[0].toUpperCase(Locale.ROOT), Integer.parseInt(attributes[1]));
                 map.addLink(addedLink);
             }
         }
+        map.floydWarshall();
     }
 
     static Map map = new Map();
@@ -45,32 +45,33 @@ public class main {
 
     public static void main(String[] args) throws IOException {
 
-        ListenableGraph<String, DefaultEdge> g =
-                new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
+        ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
 
-        System.out.println("Saisissez le chemin vers la map (fichier CSV): ");
-//        String filename = input.nextLine();
-        String filename = "C:\\Users\\Administrateur\\Desktop\\Cours\\SAEs\\GRAMA\\map.csv";
+//        String filename = null;
+//        JFileChooser chooser = new JFileChooser();
+//        int returnVal = chooser.showOpenDialog(null);
+//        if (returnVal == JFileChooser.APPROVE_OPTION) {
+//            filename = chooser.getSelectedFile().getAbsolutePath();
+//            System.out.println("Vous avez choisi d'ouvrir ce fichier: " +
+//                    chooser.getSelectedFile().getName());
+//        }
+
+        String filename = "C:\\Users\\Administrateur\\Desktop\\Cours\\SAEs\\GRAMA\\test.csv";
         loadFile(filename);
+
 
         System.out.println(map);
 
-        for(Node node: map.getNodes()){
-            g.addVertex(node.asString());
+        for (Node node : map.getNodes()) {
+            g.addVertex(node.toString());
         }
-        for(Node node: map.getNodes()) {
+        for (Node node : map.getNodes()) {
             for (Link neighbour : node.getNeighbours()) {
-                g.setEdgeWeight(g.addEdge(node.asString(),
-                        neighbour.getNode().asString()), neighbour.getDistance());
-
+                g.setEdgeWeight(g.addEdge(node.toString(),
+                        neighbour.getNode().toString()), neighbour.getDistance());
             }
         }
-
-//        System.out.println(map.getNodeFromString("V,Paris").getNeighbourNodes());
-//        for(Link link: map.getNodeFromString("V,Paris").getNeighbours()){
-//            System.out.println(link.toString());
-//        }
 
 //        Display the graph
         JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
@@ -83,15 +84,6 @@ public class main {
 
         //Display
         Window window = new Window();
-        window.init();
         window.add(graphComponent);
-
-
-
-        System.out.println(map.getPathWith(map.getNodeFromString("V,Paris"),map.getNodeFromString("V,Sevran"),map.getNodeFromString("V,Lyon"),map.getNodeFromString("R,Pizza Hut Bondy")));
-
-
-
-
     }
 }
