@@ -370,6 +370,7 @@ public class Map {
         return finalPath;
     }
 
+<<<<<<< Updated upstream
     // Floyd-Warshall
     public void floydWarshall(){
         int[][] distance = new int[this.nodes.size()][this.nodes.size()];
@@ -422,6 +423,55 @@ public class Map {
             }
             System.out.println("");
         }
+=======
+    // Floyd Warshall algorithm
+    public boolean floydWarshall(){
+        int i, j, k;
+        int n = this.nodes.size();
+        int[][] distance = new int[n][n];
+        int[][] predecessor = new int[n][n];
+        for (i = 0; i < n; i++){
+            for (j = 0; j < n; j++){
+                distance[i][j] = this.nodes.get(i).getNeighbours().get(j).getDistance(); // A changer
+                predecessor[i][j] = j;
+            }
+        }
+        for(i = 0; i < n; i++){
+            for(j = 0; j < n; j++){
+                System.out.print(distance[i][j]);
+            }
+            System.out.println("");
+        }
+        for(i = 0; i < n; i++){
+            for(j = 0; j < n; j++){
+                System.out.print(predecessor[i][j]);
+            }
+            System.out.println("");
+        }
+
+        for (k = 0; k < n; k++){
+            for (i = 0; i < n; i++){
+                for (j = 0; j < n; j++){
+                    if (distance[i][k] + distance[k][j] < distance[i][j]){
+                        distance[i][j] = distance[i][k] + distance[k][j];
+                        predecessor[i][j] = predecessor[i][k];
+                    }
+                }
+            }
+        }
+        /*
+        for (i = 0; i < n; i++){
+            for (j = 0; j < n; j++){
+                if (distance[i][j] == INFINITE){
+                    this.nodes.get(i).setDistance(j, INFINITE);
+                }else {
+                    this.nodes.get(i).setDistance(j, distance[i][j]);
+                }
+            }
+        }
+        */
+        return false;
+>>>>>>> Stashed changes
     }
 
 }

@@ -1,6 +1,6 @@
 public class Link {
     private Node node;
-    private String type;
+    private String type; /* D: "Departementale", N: "Nationale", A: "Autoroute" */
     private int distance;
 
     public Link(Node node, String type, int distance) {

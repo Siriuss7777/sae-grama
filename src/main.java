@@ -1,7 +1,7 @@
 import com.mxgraph.swing.mxGraphComponent;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.*;
+//import org.jgrapht.ListenableGraph;
+//import org.jgrapht.ext.JGraphXAdapter;
+//import org.jgrapht.graph.DefaultEdge;
 import com.mxgraph.layout.*;
 
 import javax.swing.*;
@@ -45,6 +45,7 @@ public class main {
 
     public static void main(String[] args) throws IOException {
 
+<<<<<<< Updated upstream
         ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
 
@@ -58,13 +59,27 @@ public class main {
 //        }
 
         String filename = "C:\\Users\\Administrateur\\Desktop\\Cours\\SAEs\\GRAMA\\test.csv";
+=======
+        //ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
+
+
+        System.out.println("Saisissez le chemin vers la map (fichier CSV): ");
+//        String filename = input.nextLine();
+        String filename = "C:\\Users\\Mateo\\Desktop\\sae-grama\\map.csv";
+>>>>>>> Stashed changes
         loadFile(filename);
 
 
         System.out.println(map);
+<<<<<<< Updated upstream
 
         for (Node node : map.getNodes()) {
             g.addVertex(node.toString());
+=======
+/*
+        for(Node node: map.getNodes()){
+            g.addVertex(node.asString());
+>>>>>>> Stashed changes
         }
         for (Node node : map.getNodes()) {
             for (Link neighbour : node.getNeighbours()) {
@@ -85,5 +100,18 @@ public class main {
         //Display
         Window window = new Window();
         window.add(graphComponent);
+<<<<<<< Updated upstream
+=======
+
+ */
+
+
+        System.out.println(map.floydWarshall());
+        //System.out.println(map.getPathWith(map.getNodeFromString("V,Paris"),map.getNodeFromString("V,Sevran"),map.getNodeFromString("V,Lyon"),map.getNodeFromString("R,Pizza Hut Bondy")));
+
+
+
+
+>>>>>>> Stashed changes
     }
 }
