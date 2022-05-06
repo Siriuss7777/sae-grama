@@ -1,3 +1,5 @@
+package app.main;
+
 public class Link {
     private Node node;
     private String type; /* D: "Departementale", N: "Nationale", A: "Autoroute" */
@@ -17,7 +19,7 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" +
+        return "app.app.main.launcher.main.Link{" +
                 "node=" + node +
                 ", type='" + type + '\'' +
                 ", distance=" + distance +

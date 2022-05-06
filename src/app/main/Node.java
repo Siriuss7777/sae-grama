@@ -1,3 +1,5 @@
+package app.main;
+
 import java.util.LinkedList;
 
 public class Node {
