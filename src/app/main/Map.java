@@ -375,25 +375,22 @@ public class Map {
 
     // Floyd-Warshall
     public void floydWarshall() {
-        int[][] distance = new int[this.nodes.size()][this.nodes.size()];
-        Node[][] predecessor = new Node[this.nodes.size()][this.nodes.size()];
+        DistancePred[][] distance = new DistancePred[this.nodes.size()][this.nodes.size()];
         for (int i = 0; i < this.nodes.size(); i++) {
             for (int j = 0; j < this.nodes.size(); j++) {
-                if (i == j) {
-                    distance[i][j] = 0;
-                } else {
-                    distance[i][j] = INFINITE;
+                distance[i][j] = new DistancePred();
+                if (i == j){
+                    distance[i][j].setDistance(0);
                 }
             }
-
         }
 
         for (int i = 0; i < this.nodes.size(); i++) {
             for (int j = 0; j < this.nodes.size(); j++) {
                 if (nodes.get(i).isNeighbour(nodes.get(j))) {
-                    if (nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance() < distance[i][j]) {
-                        distance[i][j] = nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance();
-                        predecessor[i][j] = nodes.get(i);
+                    if (nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance() < distance[i][j].getDistance()) {
+                        distance[i][j].setDistance(nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance());
+                        distance[i][j].setPredecessor(nodes.get(i));
                     }
                 }
             }
@@ -404,10 +401,10 @@ public class Map {
             for (int i = 0; i < this.nodes.size(); i++) {
                 for (int j = 0; j < this.nodes.size(); j++) {
                     for (int k = 0; k < this.nodes.size(); k++) {
-                        if (distance[i][k] != INFINITE && distance[k][j] != INFINITE) {
-                            if (distance[i][j] > distance[i][k] + distance[k][j]) {
-                                distance[i][j] = distance[i][k] + distance[k][j];
-                                predecessor[i][j] = predecessor[k][j]; // Cette ligne est fonctionnelle
+                        if (distance[i][k].getDistance() != INFINITE && distance[k][j].getDistance() != INFINITE) {
+                            if (distance[i][j].getDistance() > distance[i][k].getDistance() + distance[k][j].getDistance()) {
+                                distance[i][j].setDistance(distance[i][k].getDistance() + distance[k][j].getDistance());
+                                distance[i][j].setPredecessor(distance[k][j].getPredecessor()); // Cette ligne est fonctionnelle
                             }
                         }
                     }
@@ -421,17 +418,10 @@ public class Map {
             }
             System.out.println(" ");
         }
-        System.out.println("predecessor");
-        for (int i = 0; i < this.nodes.size(); i++) {
-            for (int j = 0; j < this.nodes.size(); j++) {
-                System.out.print(predecessor[i][j] + " ");
-            }
-            System.out.println(" ");
-        }
 
     }
-
 }
+
 
 
 

@@ -1,5 +1,6 @@
-v,a:n,10::v,b;n,5::v,e;;
-v,b:n,1::v,c;n,2::v,e;;
+v,a:n,10::v,b;;
 v,c:n,4::v,d;;
-v,d:n,7::v,a;n,6::v,c;;
 v,e:n,3::v,b;n,9::v,c;n,2::v,d;;
+v,b:n,1::v,c;n,2::v,e;;
+v,d:n,7::v,a;n,6::v,c;;
+v,a:n,5::v,e;;

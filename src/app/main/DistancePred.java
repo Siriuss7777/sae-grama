@@ -19,11 +19,11 @@ public class DistancePred {
         this.distance = distance;
     }
 
-    public Node getPred() {
+    public Node getPredecessor() {
         return pred;
     }
 
-    public void setPred(Node pred) {
+    public void setPredecessor(Node pred) {
         this.pred = pred;
     }
 
