@@ -15,13 +15,17 @@ public class main {
         Node currentNode;
         Node newNode;
         Link addedLink;
+        // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
         while ((line = file.readLine()) != null) {
-            type = line.substring(0, line.indexOf(','));
-            name = line.substring(line.indexOf(',') + 1, line.indexOf(':'));
+
+            // Séparation du type et du nom du node lu, puis création du node (partie de vérification dans map.createNode)
+            // Exemple pris: V,Lyon:A,50::V,Paris;;
+            type = line.substring(0, line.indexOf(',')); // Séparé: V
+            name = line.substring(line.indexOf(',') + 1, line.indexOf(':')); // Séparé: Lyon; le + 1 au premier paramètre retire la virgule
             currentNode = map.createNode(type.toUpperCase(Locale.ROOT), name);
 
-            line = line.substring(line.indexOf(':') + 1);
-            links = line.split(";");
+            line = line.substring(line.indexOf(':') + 1); // Résultat: A,50::Paris;;
+            links = line.split(";"); // Reste de la ligne: A,50::V,Paris
 
             for (String link : links) {
                 dividedLink = link.split("::");                   // dividedLink[0] -> type/distance du lien, dividedLink[1] -> type/nom du noeud
@@ -43,13 +47,10 @@ public class main {
 
     public static void main(String[] args) throws IOException {
 
-
-
         String filename = null;
 
         filename = "src/resources/test.csv";
         loadFile(filename);
-
 
         System.out.println(map);
 
