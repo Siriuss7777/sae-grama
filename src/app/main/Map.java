@@ -1,16 +1,54 @@
 package app.main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class Map {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
-    private int[][] distances;
+    private DistancePred[][] matrix;
     static private final int INFINITE = Integer.MAX_VALUE;
 
     public Map() {
         this.nodes = new LinkedList<Node>();
         this.links = new LinkedList<Link>();
+    }
+
+    public void init(String filename) throws IOException {
+        BufferedReader file = new BufferedReader(new FileReader(filename));
+        String line, name, type;
+        String[] links, dividedLink, attributes;
+        Node currentNode;
+        Node newNode;
+        Link addedLink;
+        // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
+        while ((line = file.readLine()) != null) {
+
+            // Séparation du type et du nom du node lu, puis création du node (partie de vérification dans map.createNode)
+            // Exemple pris: V,Lyon:A,50::V,Paris;;
+            type = line.substring(0, line.indexOf(',')); // Séparé: V
+            name = line.substring(line.indexOf(',') + 1, line.indexOf(':')); // Séparé: Lyon; le + 1 au premier paramètre retire la virgule
+            currentNode = this.createNode(type.toUpperCase(Locale.ROOT), name);
+
+            line = line.substring(line.indexOf(':') + 1); // Résultat: A,50::Paris;;
+            links = line.split(";"); // Reste de la ligne: A,50::V,Paris
+
+            for (String link : links) {
+                dividedLink = link.split("::");                   // dividedLink[0] -> type/distance du lien, dividedLink[1] -> type/nom du noeud
+                attributes = dividedLink[1].split(",");       // attributes[0] -> type, attributes[1] -> name  => Node
+                if ((newNode = this.getNodeFromString(attributes[0].toUpperCase(Locale.ROOT) + "," + attributes[1])) == null) {
+                    newNode = this.createNode(attributes[0].toUpperCase(Locale.ROOT), attributes[1]);
+                }
+                attributes = dividedLink[0].split(",");           // attributes[0] -> type, attributes[1] -> distance => Link
+                addedLink = currentNode.addLink(newNode, attributes[0].toUpperCase(Locale.ROOT), Integer.parseInt(attributes[1]));
+                this.addLink(addedLink);
+            }
+        }
+        this.matrix = FloydWarshall.floydWarshall(this);
+
     }
 
     /*----------------------------------------------------------------------------------------------------*/
@@ -39,7 +77,7 @@ public class Map {
     }
 
     public LinkedList<Node> getVilles() {
-        LinkedList<Node> tempList = new LinkedList<Node>();
+        LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
             if (node.getType().equals("V")) {
                 tempList.add(node);
@@ -59,7 +97,7 @@ public class Map {
     }
 
     public LinkedList<Node> getRestaurants() {
-        LinkedList<Node> tempList = new LinkedList<Node>();
+        LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
             if (node.getType().equals("R")) {
                 tempList.add(node);
@@ -79,7 +117,7 @@ public class Map {
     }
 
     public LinkedList<Node> getLoisirs() {
-        LinkedList<Node> tempList = new LinkedList<Node>();
+        LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
             if (node.getType().equals("L")) {
                 tempList.add(node);
@@ -373,53 +411,7 @@ public class Map {
     }
 
 
-    // Floyd-Warshall
-    public void floydWarshall() {
-        DistancePred[][] distance = new DistancePred[this.nodes.size()][this.nodes.size()];
-        for (int i = 0; i < this.nodes.size(); i++) {
-            for (int j = 0; j < this.nodes.size(); j++) {
-                distance[i][j] = new DistancePred();
-                if (i == j){
-                    distance[i][j].setDistance(0);
-                }
-            }
-        }
 
-        for (int i = 0; i < this.nodes.size(); i++) {
-            for (int j = 0; j < this.nodes.size(); j++) {
-                if (nodes.get(i).isNeighbour(nodes.get(j))) {
-                    if (nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance() < distance[i][j].getDistance()) {
-                        distance[i][j].setDistance(nodes.get(i).getClosestNeighbour(nodes.get(j)).getDistance());
-                        distance[i][j].setPredecessor(nodes.get(i));
-                    }
-                }
-            }
-        }
-        // Initialisation marche pour sure
-
-        for (int z = 0; z < this.nodes.size(); z++) { // 4 boucles ça fais beaucoup la non ???
-            for (int i = 0; i < this.nodes.size(); i++) {
-                for (int j = 0; j < this.nodes.size(); j++) {
-                    for (int k = 0; k < this.nodes.size(); k++) {
-                        if (distance[i][k].getDistance() != INFINITE && distance[k][j].getDistance() != INFINITE) {
-                            if (distance[i][j].getDistance() > distance[i][k].getDistance() + distance[k][j].getDistance()) {
-                                distance[i][j].setDistance(distance[i][k].getDistance() + distance[k][j].getDistance());
-                                distance[i][j].setPredecessor(distance[k][j].getPredecessor()); // Cette ligne est fonctionnelle
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < this.nodes.size(); i++) {
-            for (int j = 0; j < this.nodes.size(); j++) {
-                System.out.print(distance[i][j] + " ");
-            }
-            System.out.println(" ");
-        }
-
-    }
 }
 
 
