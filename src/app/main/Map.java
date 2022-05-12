@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Locale;
 
+
 public class Map {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
-    private DistancePred[][] matrix;
+    private FloydWarshall matrix;
     static private final int INFINITE = Integer.MAX_VALUE;
 
     public Map() {
@@ -47,8 +48,15 @@ public class Map {
                 this.addLink(addedLink);
             }
         }
-        this.matrix = FloydWarshall.floydWarshall(this);
+        file.close();
 
+        this.matrix = new FloydWarshall(this);
+        this.matrix.floydWarshall();
+
+    }
+
+    public FloydWarshall getMatrix(){
+        return this.matrix;
     }
 
     /*----------------------------------------------------------------------------------------------------*/
@@ -225,6 +233,7 @@ public class Map {
     /*------------------------------------------------------------------------------------------------*/
     /*------------------------------------- OPÉRATIONS GÉNÉRALES -------------------------------------*/
     /*------------------------------------------------------------------------------------------------*/
+
 
     public String toString() {
         String returnedString = "Nodes:";

@@ -1,15 +1,19 @@
 package app.main;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class FloydWarshall{
 
     private final static int INFINITE = Integer.MAX_VALUE;
+    private Map map;
+    private DistancePred[][] matrix;
 
-    public FloydWarshall() {
+    public FloydWarshall(Map map) {
+        this.map = map;
     }
 
-    public static DistancePred[][] floydWarshall(Map map){
+    public DistancePred[][] floydWarshall(){
         DistancePred[][] matrix = new DistancePred[map.getNodesCount()][map.getNodesCount()];
         LinkedList<Node> nodes = map.getNodes();
         for (int i = 0; i < matrix.length; i++) {
@@ -48,8 +52,34 @@ public class FloydWarshall{
             }
         }
 
+        this.matrix = matrix;
         return matrix;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.matrix.length; i++) {
+            for(int j = 0; j < this.matrix.length; j++){
+                sb.append(this.matrix[i][j]).append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public String getLine(int index){
+        StringBuilder sb = new StringBuilder();
+        for(int i =0; i<this.matrix.length; i++){
+            sb.append(this.matrix[index][i]).append(" ");
+        }
+        return sb.toString();
+    }
+
+//    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode){
+//        int nodeId = fromNode.getId();
+//
+//    }
 
 
 }

@@ -3,6 +3,8 @@ package app.main;
 import java.util.LinkedList;
 
 public class Node {
+    private int id;
+    private static int id_increment;
     private String type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs */
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
@@ -14,6 +16,7 @@ public class Node {
         this.type = type;
         this.name = name;
         this.neighbours = new LinkedList<Link>();
+        this.id = id_increment++;
     }
 
     public String getType() { return type; }
@@ -99,5 +102,9 @@ public class Node {
 
     public void setShortestPath(LinkedList<Node> shortestPath) {
         this.shortestPath = shortestPath;
+    }
+
+    public int getId(){
+        return this.id;
     }
 }
