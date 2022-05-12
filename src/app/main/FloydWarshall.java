@@ -35,19 +35,17 @@ public class FloydWarshall{
                 }
             }
         }
-        // Initialisation marche pour sure
 
-        for (int z = 0; z < matrix.length; z++) { // 4 boucles ça fais beaucoup la non ???
+
+        for (int k = 0; k < matrix.length; k++) {
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix.length; j++) {
-                    for (int k = 0; k < matrix.length; k++) {
-                        if (matrix[i][k].getDistance() != INFINITE && matrix[k][j].getDistance() != INFINITE) {
-                            if (matrix[i][j].getDistance() > matrix[i][k].getDistance() + matrix[k][j].getDistance()) {
-                                matrix[i][j].setDistance(matrix[i][k].getDistance() + matrix[k][j].getDistance());
-                                matrix[i][j].setPredecessor(matrix[k][j].getPredecessor()); // Cette ligne est fonctionnelle
-                            }
-                        }
+                    if (matrix[i][j].getDistance() > matrix[i][k].getDistance() + matrix[k][j].getDistance()) {
+                        System.out.println("" + matrix[i][j].getDistance() + " " + matrix[i][k].getDistance() + " " + matrix[k][j].getDistance());
+                        matrix[i][j].setDistance(matrix[i][k].getDistance() + matrix[k][j].getDistance());
+                        matrix[i][j].setPredecessor(matrix[k][j].getPredecessor());
                     }
+
                 }
             }
         }

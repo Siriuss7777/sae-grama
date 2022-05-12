@@ -5,9 +5,10 @@ import app.main.Node;
 public class DistancePred {
     private int distance;
     private Node pred;
+    private int MAX = 100000;
 
     public DistancePred() {
-        this.distance = Integer.MAX_VALUE;
+        this.distance = MAX;
         this.pred = null;
     }
 
