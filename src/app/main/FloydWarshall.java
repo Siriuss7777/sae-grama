@@ -92,5 +92,11 @@ public class FloydWarshall{
         return path;
     }
 
+    public int lowestDistance(Node fromNode, Node toNode){
+        int nodeId = fromNode.getId();
+        int targetId = toNode.getId();
+        return this.matrix[nodeId][targetId].getDistance();
+    }
+
 
 }

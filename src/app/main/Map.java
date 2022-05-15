@@ -3,6 +3,7 @@ package app.main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -249,9 +250,8 @@ public class Map {
         return returnedString;
     }
 
-    //Dijkstra algorithm to find the shortest path between two nodes
 
-    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) { //Retournes le chemin le plus court entre deux noeuds
+    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) { //Retournes le chemin le plus court entre deux noeuds. Djikstra
         LinkedList<Node> untreatedNodes = new LinkedList<>();
         LinkedList<Node> treatedNodes = new LinkedList<>();
         toNode.setShortestPath(null);
@@ -280,7 +280,7 @@ public class Map {
         return toNode.getShortestPath();
     }
 
-    public Node getClosestNode(LinkedList<Node> neighboursList) { // Retourne le noeud le plus proche de la liste
+    public Node getClosestNode(LinkedList<Node> neighboursList) { // Retourne le noeud le plus proche de la liste. Utilisé par Djikstra
         int min = INFINITE;
         int nodeDistance;
         Node returnedNode = null;
@@ -294,7 +294,7 @@ public class Map {
         return returnedNode;
     }
 
-    private void updateDistances(Node node1, int distance, Node node2) { // Met à jour la distance du noeud node1 par rapport à node2
+    private void updateDistances(Node node1, int distance, Node node2) { // Met à jour la distance du noeud node1 par rapport à node2. Utilisé par Djikstra
         int currentNodeDistance = node2.getDistance();
         if (currentNodeDistance + distance < node1.getDistance()) {
             node1.setDistance(currentNodeDistance + distance);
@@ -375,6 +375,16 @@ public class Map {
     }
 
     public LinkedList<Node> getPathWith(Node fromNode, Node throughNode, Node toNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
+
+        ArrayList<Node> path = new ArrayList<>();
+
+        path = matrix.getShortestPathF(fromNode, throughNode);
+        path.remove(path.size() - 1);
+        path.addAll(matrix.getShortestPathF(throughNode, toNode));
+
+        return new LinkedList<>(path);
+
+        /*
         LinkedList<Node> firstPath = new LinkedList<>();
         LinkedList<Node> lastPath = new LinkedList<>();
 
@@ -383,16 +393,42 @@ public class Map {
         lastPath = getShortestPath(throughNode, toNode);
 
         firstPath.addAll(lastPath);
-        return firstPath;
+
+         */
+
     }
 
     //Find a path between two nodes through two given nodes
     public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode1, Node throughNode2) { // Respect the order of the nodes ? (fromNode, throughNode1, throughNode2, toNode)
+        ArrayList<Node> path = new ArrayList<>();
+        int path1;
+        int path2;
+        path1 = matrix.lowestDistance(fromNode, throughNode1) + matrix.lowestDistance(throughNode2, toNode);
+        path2 = matrix.lowestDistance(fromNode, throughNode2) + matrix.lowestDistance(throughNode1, toNode);
+
+        if (path1 < path2) {
+            path = matrix.getShortestPathF(fromNode, throughNode1);
+            path.remove(path.size() - 1);
+            path.addAll(matrix.getShortestPathF(throughNode1, throughNode2));
+            path.remove(path.size() - 1);
+            path.addAll(matrix.getShortestPathF(throughNode2, toNode));
+        } else {
+            path = matrix.getShortestPathF(fromNode, throughNode2);
+            path.remove(path.size() - 1);
+            path.addAll(matrix.getShortestPathF(throughNode2, throughNode1));
+            path.remove(path.size() - 1);
+            path.addAll(matrix.getShortestPathF(throughNode1, toNode));
+        }
+        return new LinkedList<>(path);
+
+
+        /*
         LinkedList<Node> finalPath = new LinkedList<>();
         LinkedList<Node> finalPath2 = new LinkedList<>();
         LinkedList<Node> tempPath = new LinkedList<>();
         LinkedList<Node> lastPath = new LinkedList<>();
         int tmpDistance = 0;
+
 
         finalPath = getShortestPath(fromNode, throughNode1);
         finalPath.removeLast();
@@ -417,6 +453,8 @@ public class Map {
         }
 
         return finalPath;
+
+         */
     }
 
 
