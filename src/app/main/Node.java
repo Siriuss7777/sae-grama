@@ -74,7 +74,7 @@ public class Node {
         return minLink;
     }
 
-    public boolean isNeighbour(Node node){
+    public boolean isNeighbour(Node node){ // Dijkstra, retourne true si le noeud est voisin
         boolean state = false;
         for(Link neighbour: neighbours){
             if(node.toString().equals(neighbour.getNode().toString())){
@@ -84,7 +84,7 @@ public class Node {
         return state;
     }
 
-    public Link addLink(Node node, String type, int length){
+    public Link addLink(Node node, String type, int length){ // Ajoute un lien entre deux noeuds
         Link tmpLink = new Link(node, type, length);
         neighbours.add(tmpLink);
         return tmpLink;

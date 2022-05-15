@@ -1,6 +1,8 @@
 package app.main;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class FloydWarshall{
@@ -41,7 +43,6 @@ public class FloydWarshall{
             for (int i = 0; i < matrix.length; i++) {
                 for (int j = 0; j < matrix.length; j++) {
                     if (matrix[i][j].getDistance() > matrix[i][k].getDistance() + matrix[k][j].getDistance()) {
-                        System.out.println("" + matrix[i][j].getDistance() + " " + matrix[i][k].getDistance() + " " + matrix[k][j].getDistance());
                         matrix[i][j].setDistance(matrix[i][k].getDistance() + matrix[k][j].getDistance());
                         matrix[i][j].setPredecessor(matrix[k][j].getPredecessor());
                     }
@@ -74,10 +75,22 @@ public class FloydWarshall{
         return sb.toString();
     }
 
-//    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode){
-//        int nodeId = fromNode.getId();
-//
-//    }
+    public ArrayList<Node> getShortestPathF(Node fromNode, Node toNode){ // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
+        int nodeId = fromNode.getId();
+        int targetId = toNode.getId();
+        ArrayList<Node> path = new ArrayList<>();
+        int distance = this.matrix[nodeId][targetId].getDistance(); // Jsp s'il faut le mettre la ou pas ?
+        path.add(toNode);
+
+        while(nodeId != targetId){ // Tant que l'on n'est pas arrivé au noeud de destination on ajoute.
+            path.add(this.matrix[nodeId][targetId].getPredecessor());
+            targetId = this.matrix[nodeId][targetId].getPredecessor().getId();
+        }
+
+        Collections.reverse(path); // Mettre dans le bonne ordre
+
+        return path;
+    }
 
 
 }

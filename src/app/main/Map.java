@@ -251,7 +251,7 @@ public class Map {
 
     //Dijkstra algorithm to find the shortest path between two nodes
 
-    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) {
+    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) { //Retournes le chemin le plus court entre deux noeuds
         LinkedList<Node> untreatedNodes = new LinkedList<>();
         LinkedList<Node> treatedNodes = new LinkedList<>();
         toNode.setShortestPath(null);
@@ -280,7 +280,7 @@ public class Map {
         return toNode.getShortestPath();
     }
 
-    public Node getClosestNode(LinkedList<Node> neighboursList) {
+    public Node getClosestNode(LinkedList<Node> neighboursList) { // Retourne le noeud le plus proche de la liste
         int min = INFINITE;
         int nodeDistance;
         Node returnedNode = null;
@@ -294,7 +294,7 @@ public class Map {
         return returnedNode;
     }
 
-    private void updateDistances(Node node1, int distance, Node node2) {
+    private void updateDistances(Node node1, int distance, Node node2) { // Met à jour la distance du noeud node1 par rapport à node2
         int currentNodeDistance = node2.getDistance();
         if (currentNodeDistance + distance < node1.getDistance()) {
             node1.setDistance(currentNodeDistance + distance);
@@ -305,13 +305,13 @@ public class Map {
 
     }
 
-    public int getShortestDistance(Node fromNode, Node toNode) {
+    public int getShortestDistance(Node fromNode, Node toNode) { // Retourne la distance le plus courte entre deux noeuds
         LinkedList<Node> shortestPath = this.getShortestPath(fromNode, toNode);
         return toNode.getDistance();
     }
 
 
-    public void nDistance(Node fromNode, int distance, int tmpDistance) {
+    public void nDistance(Node fromNode, int distance, int tmpDistance) { //
         boolean result = false;
         if (tmpDistance == 0) {
             return;
@@ -325,7 +325,7 @@ public class Map {
         }
     }
 
-    public boolean Distance(Node fromNode, Node toNode, int distance) {
+    public boolean Distance(Node fromNode, Node toNode, int distance) { // Retourne vrai si la distance entre deux noeuds est inférieur à la distance demandée
         boolean result = false;
         nDistance(fromNode, distance + 1, distance);
         if (toNode.getDistance() <= distance) {
@@ -334,7 +334,7 @@ public class Map {
         return result;
     }
 
-    public Node isBetterThan(Node node1, Node node2, String type) {
+    public Node isBetterThan(Node node1, Node node2, String type) { // Retourne le noeud le plus OUVERT / GASTRONOMIQUE / CULTUREL
         int count1stNode = 0;
         int count2ndNode = 0;
         String tmpType = null;
@@ -374,7 +374,7 @@ public class Map {
         return nodeOpen;
     }
 
-    public LinkedList<Node> getPathWith(Node fromNode, Node throughNode, Node toNode) {
+    public LinkedList<Node> getPathWith(Node fromNode, Node throughNode, Node toNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
         LinkedList<Node> firstPath = new LinkedList<>();
         LinkedList<Node> lastPath = new LinkedList<>();
 
