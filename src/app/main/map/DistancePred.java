@@ -1,6 +1,6 @@
-package app.main;
+package app.main.map;
 
-import app.main.Node;
+import app.main.nodes.Node;
 
 public class DistancePred {
     private int distance;

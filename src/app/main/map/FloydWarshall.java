@@ -1,11 +1,12 @@
-package app.main;
+package app.main.map;
+
+import app.main.nodes.Node;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class FloydWarshall{
+public class FloydWarshall {
 
     private final static int INFINITE = Integer.MAX_VALUE;
     private Map map;
@@ -15,13 +16,12 @@ public class FloydWarshall{
         this.map = map;
     }
 
-    public DistancePred[][] floydWarshall(){
-        DistancePred[][] matrix = new DistancePred[map.getNodesCount()][map.getNodesCount()];
+    private void initializeMatrix(DistancePred[][] matrix) {
         LinkedList<Node> nodes = map.getNodes();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = new DistancePred();
-                if (i == j){
+                if (i == j) {
                     matrix[i][j].setDistance(0);
                 }
             }
@@ -38,6 +38,12 @@ public class FloydWarshall{
             }
         }
 
+    }
+
+    public void floydWarshall(){
+        DistancePred[][] matrix = new DistancePred[map.getNodesCount()][map.getNodesCount()];
+
+        this.initializeMatrix(matrix);
 
         for (int k = 0; k < matrix.length; k++) {
             for (int i = 0; i < matrix.length; i++) {
@@ -52,7 +58,6 @@ public class FloydWarshall{
         }
 
         this.matrix = matrix;
-        return matrix;
     }
 
     @Override
@@ -79,7 +84,6 @@ public class FloydWarshall{
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();
         ArrayList<Node> path = new ArrayList<>();
-        int distance = this.matrix[nodeId][targetId].getDistance(); // Jsp s'il faut le mettre la ou pas ?
         path.add(toNode);
 
         while(nodeId != targetId){ // Tant que l'on n'est pas arrivé au noeud de destination on ajoute.

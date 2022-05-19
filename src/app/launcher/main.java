@@ -1,7 +1,8 @@
 package app.launcher;
 
-import app.main.*;
-import app.main.Map;
+import app.main.gui.Window;
+import app.main.map.Map;
+import app.main.nodes.LinkType;
 
 import java.io.*;
 import java.util.*;
@@ -21,9 +22,6 @@ public class main {
         System.out.println(map);
 
         System.out.println(map.getMatrix());
-
-        System.out.println(map.getNodeFromString("V,Lyon").getId());
-        System.out.println(map.getMatrix().getLine(map.getNodeFromString("V,Lyon").getId()));
 
     }
 }

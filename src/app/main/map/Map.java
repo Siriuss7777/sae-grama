@@ -1,11 +1,15 @@
-package app.main;
+package app.main.map;
+
+import app.main.nodes.Link;
+import app.main.nodes.LinkType;
+import app.main.nodes.Node;
+import app.main.nodes.NodeType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Locale;
 
 
 public class Map {
@@ -21,33 +25,56 @@ public class Map {
 
     public void init(String filename) throws IOException {
         BufferedReader file = new BufferedReader(new FileReader(filename));
-        String line, name, type;
-        String[] links, dividedLink, attributes;
-        Node currentNode;
-        Node newNode;
-        Link addedLink;
-        // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
-        while ((line = file.readLine()) != null) {
 
-            // Séparation du type et du nom du node lu, puis création du node (partie de vérification dans map.createNode)
-            // Exemple pris: V,Lyon:A,50::V,Paris;;
-            type = line.substring(0, line.indexOf(',')); // Séparé: V
-            name = line.substring(line.indexOf(',') + 1, line.indexOf(':')); // Séparé: Lyon; le + 1 au premier paramètre retire la virgule
-            currentNode = this.createNode(type.toUpperCase(Locale.ROOT), name);
+        String line, strType, name;
+        String[] links, dividedLink, attributes;
+
+        NodeType nodeType;
+        Node currentNode, newNode;
+
+        LinkType linkType;
+        Link addedLink;
+
+        int distance;
+
+        // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
+
+        while((line = file.readLine()) != null){
+            strType = line.substring(0, line.indexOf(','));
+            name = line.substring(line.indexOf(',') + 1, line.indexOf(':'));
+
+            nodeType = NodeType.getTypeWithVal(strType);
+
+            assert nodeType != null;
+            currentNode = this.createNode(nodeType, name);
 
             line = line.substring(line.indexOf(':') + 1); // Résultat: A,50::Paris;;
             links = line.split(";"); // Reste de la ligne: A,50::V,Paris
 
-            for (String link : links) {
-                dividedLink = link.split("::");                   // dividedLink[0] -> type/distance du lien, dividedLink[1] -> type/nom du noeud
-                attributes = dividedLink[1].split(",");       // attributes[0] -> type, attributes[1] -> name  => Node
-                if ((newNode = this.getNodeFromString(attributes[0].toUpperCase(Locale.ROOT) + "," + attributes[1])) == null) {
-                    newNode = this.createNode(attributes[0].toUpperCase(Locale.ROOT), attributes[1]);
+            for(String link: links){
+                dividedLink = link.split("::");
+                attributes = dividedLink[1].split(",");
+
+                strType = attributes[0];
+                nodeType = NodeType.getTypeWithVal(strType);
+                name = attributes[1];
+
+                newNode = this.getNodeFromString(strType + "," + name);
+
+                if(newNode == null && nodeType != null){
+                    newNode = this.createNode(nodeType, name);
                 }
-                attributes = dividedLink[0].split(",");           // attributes[0] -> type, attributes[1] -> distance => Link
-                addedLink = currentNode.addLink(newNode, attributes[0].toUpperCase(Locale.ROOT), Integer.parseInt(attributes[1]));
+
+                attributes = dividedLink[0].split(",");
+
+                strType = attributes[0];
+                linkType = LinkType.getTypeWithVal(strType);
+                distance = Integer.parseInt(attributes[1]);
+
+                addedLink = currentNode.addLink(newNode, linkType, distance);
                 this.addLink(addedLink);
             }
+
         }
         file.close();
 
@@ -72,9 +99,10 @@ public class Map {
         return this.nodes.size();
     }
 
-    public Node createNode(String type, String name) {
-        Node tempNode;
-        if ((tempNode = this.getNodeFromString(type + "," + name)) == null) {
+    public Node createNode(NodeType type, String name) {
+        Node tempNode = this.getNodeFromString(type + "," + name);
+
+        if (tempNode == null) {
             tempNode = new Node(type, name);
             this.nodes.add(tempNode);
         }
@@ -88,7 +116,7 @@ public class Map {
     public LinkedList<Node> getVilles() {
         LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
-            if (node.getType().equals("V")) {
+            if (node.getType() == NodeType.VILLE) {
                 tempList.add(node);
             }
         }
@@ -96,19 +124,13 @@ public class Map {
     }
 
     public int getVillesCount() {
-        int count = 0;
-        for (Node node : this.nodes) {
-            if (node.getType().equals("V")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getVilles().size();
     }
 
     public LinkedList<Node> getRestaurants() {
         LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
-            if (node.getType().equals("R")) {
+            if (node.getType() == NodeType.RESTAURANT) {
                 tempList.add(node);
             }
         }
@@ -116,19 +138,13 @@ public class Map {
     }
 
     public int getRestaurantsCount() {
-        int count = 0;
-        for (Node node : this.nodes) {
-            if (node.getType().equals("R")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getRestaurants().size();
     }
 
     public LinkedList<Node> getLoisirs() {
         LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
-            if (node.getType().equals("L")) {
+            if (node.getType() == NodeType.LOISIRS) {
                 tempList.add(node);
             }
         }
@@ -136,13 +152,7 @@ public class Map {
     }
 
     public int getLoisirsCount() {
-        int count = 0;
-        for (Node node : this.nodes) {
-            if (node.getType().equals("L")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getLoisirs().size();
     }
 
     public Node getNodeFromString(String string) {
@@ -163,7 +173,7 @@ public class Map {
         this.links.add(link);
     }
 
-    public void linkNodes(Node node1, Node node2, String type, int size) {
+    public void linkNodes(Node node1, Node node2, LinkType type, int size) {
         Link link1 = node1.addLink(node2, type, size);
         Link link2 = node2.addLink(node1, type, size);
 
@@ -174,7 +184,7 @@ public class Map {
     public LinkedList<Link> getAutoroutes() {
         LinkedList<Link> tempList = new LinkedList<Link>();
         for (Link link : this.links) {
-            if (link.getType().equals("A")) {
+            if (link.getType() == LinkType.AUTOROUTE) {
                 tempList.add(link);
             }
         }
@@ -182,19 +192,14 @@ public class Map {
     }
 
     public int getAutoroutesCount() {
-        int count = 0;
-        for (Link link : this.links) {
-            if (link.getType().equals("A")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getAutoroutes().size();
     }
+
 
     public LinkedList<Link> getNationales() {
         LinkedList<Link> tempList = new LinkedList<Link>();
         for (Link link : this.links) {
-            if (link.getType().equals("N")) {
+            if (link.getType() == LinkType.NATIONALE) {
                 tempList.add(link);
             }
         }
@@ -202,19 +207,13 @@ public class Map {
     }
 
     public int getNationalesCount() {
-        int count = 0;
-        for (Link link : this.links) {
-            if (link.getType().equals("N")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getNationales().size();
     }
 
     public LinkedList<Link> getDepartementales() {
         LinkedList<Link> tempList = new LinkedList<Link>();
         for (Link link : this.links) {
-            if (link.getType().equals("D")) {
+            if (link.getType()  == LinkType.DEPARTEMENTALE) {
                 tempList.add(link);
             }
         }
@@ -222,13 +221,7 @@ public class Map {
     }
 
     public int getDepartementalesCount() {
-        int count = 0;
-        for (Link link : this.links) {
-            if (link.getType().equals("D")) {
-                count++;
-            }
-        }
-        return count;
+        return this.getDepartementales().size();
     }
 
     /*------------------------------------------------------------------------------------------------*/
@@ -237,86 +230,32 @@ public class Map {
 
 
     public String toString() {
-        String returnedString = "Nodes:";
+        StringBuilder returnedString = new StringBuilder("Nodes:");
         for (Node node : this.nodes) {
-            returnedString += "\n\t" + node.getName();
+            returnedString.append("\n\t").append(node.getName());
         }
-        returnedString += "\nLinks:";
+        returnedString.append("\nLinks:");
         for (Node node : this.nodes) {
-            for (Link neighbour : node.getNeighbours()) {
-                returnedString += "\n\t" + node.getName() + " -" + neighbour.getType() + "," + neighbour.getDistance() + "- " + neighbour.getNode().getName();
+            for (Link neighbour : node.getAllNeighbours()) {
+                returnedString.append("\n\t")
+                        .append(node.getName())
+                        .append(" -")
+                        .append(neighbour.getType())
+                        .append(",")
+                        .append(neighbour.getDistance())
+                        .append("- ")
+                        .append(neighbour.getNode().getName());
             }
         }
-        return returnedString;
+        return returnedString.toString();
     }
-
-
-    public LinkedList<Node> getShortestPath(Node fromNode, Node toNode) { //Retournes le chemin le plus court entre deux noeuds. Djikstra
-        LinkedList<Node> untreatedNodes = new LinkedList<>();
-        LinkedList<Node> treatedNodes = new LinkedList<>();
-        toNode.setShortestPath(null);
-        int length;
-
-        for (Node node : this.nodes) {
-            node.setDistance(INFINITE);
-            node.setShortestPath(new LinkedList<>());
-        }
-        fromNode.setDistance(0);
-        untreatedNodes.add(fromNode);
-
-        while (!untreatedNodes.isEmpty()) {
-            Node currentNode = getClosestNode(untreatedNodes);
-            untreatedNodes.remove(currentNode);
-            for (Node neighbourNode : currentNode.getNeighbourNodes()) {
-                length = neighbourNode.getClosestNeighbour(currentNode).getDistance();
-                if (!treatedNodes.contains(neighbourNode)) {
-                    updateDistances(neighbourNode, length, currentNode);
-                    untreatedNodes.add(neighbourNode);
-                }
-            }
-            treatedNodes.add(currentNode);
-        }
-        toNode.getShortestPath().add(toNode);
-        return toNode.getShortestPath();
-    }
-
-    public Node getClosestNode(LinkedList<Node> neighboursList) { // Retourne le noeud le plus proche de la liste. Utilisé par Djikstra
-        int min = INFINITE;
-        int nodeDistance;
-        Node returnedNode = null;
-        for (Node node : neighboursList) {
-            nodeDistance = node.getDistance();
-            if (nodeDistance < min) {
-                min = nodeDistance;
-                returnedNode = node;
-            }
-        }
-        return returnedNode;
-    }
-
-    private void updateDistances(Node node1, int distance, Node node2) { // Met à jour la distance du noeud node1 par rapport à node2. Utilisé par Djikstra
-        int currentNodeDistance = node2.getDistance();
-        if (currentNodeDistance + distance < node1.getDistance()) {
-            node1.setDistance(currentNodeDistance + distance);
-            LinkedList<Node> shortestPath = new LinkedList<>(node2.getShortestPath());
-            shortestPath.add(node2);
-            node1.setShortestPath(shortestPath);
-        }
-
-    }
-
-    public int getShortestDistance(Node fromNode, Node toNode) { // Retourne la distance le plus courte entre deux noeuds
-        LinkedList<Node> shortestPath = this.getShortestPath(fromNode, toNode);
-        return toNode.getDistance();
-    }
-
 
     public void nDistance(Node fromNode, int distance, int tmpDistance) { //
         boolean result = false;
         if (tmpDistance == 0) {
             return;
         }
-        for (Node node : fromNode.getNeighbourNodes()) {
+        for (Node node : fromNode.getNeighboursAsNodes()) {
             if (node.getDistance() > (distance - tmpDistance)) {
                 node.setDistance(distance - tmpDistance);
                 nDistance(node, distance, tmpDistance - 1);

@@ -1,4 +1,4 @@
-package app.main;
+package app.main.gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,8 @@ public class Window extends JFrame {
 
     public void init() {
         setTitle("SAE GRAMA - Guenot/Le Gall");
-        setSize(400, 400);
+        setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+        setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);

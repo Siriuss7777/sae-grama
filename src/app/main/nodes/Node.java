@@ -1,27 +1,28 @@
-package app.main;
+package app.main.nodes;
 
 import java.util.LinkedList;
 
 public class Node {
     private int id;
     private static int id_increment;
-    private String type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs */
+    private NodeType type; /*"V" Ville,"R" Restaurant,"L" Centre de loisirs */
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
     private LinkedList<Link> neighbours;
     private LinkedList<Node> shortestPath = new LinkedList<>();
     private static final int INFINITE = 100000;
 
-    public Node(String type, String name) {
+
+    public Node(NodeType type, String name) {
         this.type = type;
         this.name = name;
         this.neighbours = new LinkedList<Link>();
         this.id = id_increment++;
     }
 
-    public String getType() { return type; }
+    public NodeType getType() { return type; }
 
-    public void setType(String type) { this.type = type; }
+    public void setType(NodeType type) { this.type = type; }
 
     public String getName() { return name; }
 
@@ -34,21 +35,21 @@ public class Node {
         this.neighbours.add(link);
     }
 
-    public void addNeighbour(Node node, String type, int distance){
+    public void addNeighbour(Node node, LinkType type, int distance){
         this.neighbours.add(new Link(node, type, distance));
     }
 
-    public LinkedList<Link> getNeighbours() { return neighbours; }
+    public LinkedList<Link> getAllNeighbours() { return neighbours; }
 
-    public LinkedList<Node> getNeighbourNodes(){
+    public LinkedList<Node> getNeighboursAsNodes(){
         LinkedList<Node> returnedList = new LinkedList<>();
-        for (Link link: this.getNeighbours()){
+        for (Link link: this.getAllNeighbours()){
             returnedList.add(link.getNode());
         }
         return returnedList;
     }
 
-    public LinkedList<Link> getNeighbour(Node node){ // Dijkstra, retourne le(s) lien(s) entre les deux noeuds
+    public LinkedList<Link> getNeighbourLinksWithNode(Node node){ // Dijkstra, retourne le(s) lien(s) entre les deux noeuds
         LinkedList<Link> returnedList = new LinkedList<>();
         for(Link link: this.neighbours){
             if(link.getNode() == node){
@@ -61,7 +62,7 @@ public class Node {
 
     public Link getClosestNeighbour(Node node){ // Dijkstra, retourne le lien le plus court entre les deux noeuds
 
-        LinkedList<Link> neighboursList = this.getNeighbour(node);
+        LinkedList<Link> neighboursList = this.getNeighbourLinksWithNode(node);
         Link minLink = neighboursList.element();
 
         if(neighboursList.size()!=1){
@@ -84,7 +85,7 @@ public class Node {
         return state;
     }
 
-    public Link addLink(Node node, String type, int length){ // Ajoute un lien entre deux noeuds
+    public Link addLink(Node node, LinkType type, int length){ // Ajoute un lien entre deux noeuds
         Link tmpLink = new Link(node, type, length);
         neighbours.add(tmpLink);
         return tmpLink;
