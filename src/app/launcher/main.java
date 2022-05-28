@@ -23,5 +23,7 @@ public class main {
 
         System.out.println(map.getMatrix());
 
+        Window window = new Window(map);
+
     }
 }

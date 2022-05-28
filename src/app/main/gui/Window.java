@@ -3,6 +3,15 @@ package app.main.gui;
 import javax.swing.*;
 import java.awt.*;
 
+import app.main.map.*;
+import app.main.nodes.*;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.layout.*;
+import org.jgrapht.ListenableGraph;
+import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.*;
+
+
 public class Window extends JFrame {
     private String title;
     private JPanel contentPane = new JPanel();
@@ -11,20 +20,23 @@ public class Window extends JFrame {
     private JPanel panAffGen = new JPanel();
     private JPanel panActionNoeud = new JPanel();
     private JPanel panListeNoeud = new JPanel();
-    private JPanel panAffNoeuds = new JPanel();
+    private mxGraphComponent panAffNoeuds;
 
     private JButton _2Distance = new JButton("2-Distance");
     private JButton _nDistance = new JButton("n-Distance");
 
-    private JLabel nbrVille = new JLabel("Nombre de ville : ");
-    private JLabel nbrRest = new JLabel("Nombre de restaurant : ");
-    private JLabel nbrLoisir = new JLabel("Nombre de centre de loisir : ");
-    private JLabel nbrNat = new JLabel("Nombre de nationale : ");
-    private JLabel nbrAuto = new JLabel("Nombre d'autoroute : ");
-    private JLabel nbrDep = new JLabel("Nombre de departementale : ");
+    private JLabel nbrVille = new JLabel("Nombre de villes : ");
+    private JLabel nbrRest = new JLabel("Nombre de restaurants : ");
+    private JLabel nbrLoisir = new JLabel("Nombre de centres de loisir : ");
+    private JLabel nbrNat = new JLabel("Nombre de nationales : ");
+    private JLabel nbrAuto = new JLabel("Nombre d'autoroutes : ");
+    private JLabel nbrDep = new JLabel("Nombre de départementales : ");
 
-    public Window(){
+    private Map map;
+
+    public Window(Map map){
         super();
+        this.map = map;
         init();
     }
 
@@ -75,8 +87,10 @@ public class Window extends JFrame {
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
 
+        initializeAffNoeuds();
         panAffNoeuds.setBackground(Color.YELLOW);
         panAffNoeuds.setBorder(BorderFactory.createEtchedBorder());
+
 
 
         panAffGen.add(nbrVille);
@@ -134,6 +148,30 @@ public class Window extends JFrame {
         menubar.add(distance_n);
         menubar.add(help);
         return menubar;
+    }
+
+    private void initializeAffNoeuds(){
+        ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
+
+        for (Node node : map.getNodes()) {
+            g.addVertex(node.toString());
+        }
+
+        for (Node node : map.getNodes()) {
+            for (Link neighbour : node.getAllNeighbours()) {
+                g.setEdgeWeight(g.addEdge(node.toString(),
+                        neighbour.getNode().toString()), neighbour.getDistance());
+            }
+        }
+
+        JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
+        mxGraphComponent graphComponent = new mxGraphComponent(jgxAdapter);
+
+        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
+        layout.setForceConstant(250);
+        layout.execute(jgxAdapter.getDefaultParent());
+
+        this.panAffNoeuds = graphComponent;
     }
 
 
