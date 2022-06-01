@@ -80,7 +80,7 @@ public class FloydWarshall {
         return sb.toString();
     }
 
-    public ArrayList<Node> getShortestPathF(Node fromNode, Node toNode){ // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
+    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode){ // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();
         ArrayList<Node> path = new ArrayList<>();

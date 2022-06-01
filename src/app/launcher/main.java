@@ -1,8 +1,8 @@
 package app.launcher;
 
+import app.main.gui.EditComboBox;
 import app.main.gui.Window;
 import app.main.map.Map;
-import app.main.nodes.LinkType;
 
 import java.io.*;
 import java.util.*;
@@ -16,7 +16,7 @@ public class main {
     public static void main(String[] args) throws IOException {
 
         String filename = null;
-        filename = "src/resources/map.csv";
+        filename = "src/resources/test.csv";
         map.init(filename);
 
         System.out.println(map);

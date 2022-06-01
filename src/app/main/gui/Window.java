@@ -2,9 +2,7 @@ package app.main.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 
 import app.main.map.*;
@@ -189,9 +187,20 @@ public class Window extends JFrame {
 
 
         this.panAffNoeuds = graphComponent;
-        for(Object cell: graphComponent.getGraph().getChildCells(graphComponent.getGraph().getDefaultParent())){
-            System.out.println(((mxCell) cell).getValue() + " X: " + ((mxCell) cell).getGeometry().getX() + " Y: " + ((mxCell) cell).getGeometry().getY());
-        }
+
+        // Make the graph zoomable and scrollable with the mouse wheel
+        graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.getWheelRotation() < 0) {
+                    graphComponent.zoomIn();
+                } else {
+                    graphComponent.zoomOut();
+                }
+            }
+        });
+
+
 
         graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
             @Override
@@ -202,6 +211,7 @@ public class Window extends JFrame {
                     //Check if the cell is a vertex
                     if (graphComponent.getGraph().getModel().isVertex(cell)) {
                         // TODO: Send the node to the right panel
+                        System.out.println(cell.getValue());
                     }
                 }
             }
