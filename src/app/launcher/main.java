@@ -1,14 +1,15 @@
 package app.launcher;
 
 import app.main.gui.Window;
-import app.main.map.Graph;
+import app.main.map.Map;
+import app.main.nodes.LinkType;
 
 import java.io.*;
 import java.util.*;
 
 public class main {
 
-    static Graph graph = new Graph();
+    static Map map = new Map();
 
     Scanner input = new Scanner(System.in);
 
@@ -16,13 +17,9 @@ public class main {
 
         String filename = null;
         filename = "src/resources/map.csv";
-        graph.init(filename);
+        map.init(filename);
 
-        System.out.println(graph);
 
-        System.out.println(graph.getMatrix());
-
-        Window window = new Window(graph);
-
+        Window f1 = new Window();
     }
 }
