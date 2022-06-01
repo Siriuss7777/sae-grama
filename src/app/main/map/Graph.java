@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 
-public class Map {
+public class Graph {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
     private FloydWarshall matrix;
     static private final int INFINITE = Integer.MAX_VALUE;
 
-    public Map() {
+    public Graph() {
         this.nodes = new LinkedList<Node>();
         this.links = new LinkedList<Link>();
     }
@@ -123,6 +123,16 @@ public class Map {
         return tempList;
     }
 
+    public String[] getVillesNames() {
+        LinkedList<Node> tempList = this.getVilles();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).getName();
+        }
+        return tempNames;
+    }
+
     public int getVillesCount() {
         return this.getVilles().size();
     }
@@ -137,6 +147,16 @@ public class Map {
         return tempList;
     }
 
+    public String[] getRestaurantsNames() {
+        LinkedList<Node> tempList = this.getRestaurants();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).getName();
+        }
+        return tempNames;
+    }
+
     public int getRestaurantsCount() {
         return this.getRestaurants().size();
     }
@@ -149,6 +169,16 @@ public class Map {
             }
         }
         return tempList;
+    }
+
+    public String[] getLoisirsNames() {
+        LinkedList<Node> tempList = this.getLoisirs();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).getName();
+        }
+        return tempNames;
     }
 
     public int getLoisirsCount() {
