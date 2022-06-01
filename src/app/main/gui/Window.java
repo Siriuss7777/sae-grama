@@ -2,6 +2,9 @@ package app.main.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 
 import app.main.map.*;
@@ -9,7 +12,15 @@ import app.main.nodes.*;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.layout.*;
 
+import com.mxgraph.swing.util.mxMouseAdapter;
+import com.mxgraph.model.mxCell;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.util.mxEvent;
+import com.mxgraph.util.mxEventObject;
+import com.mxgraph.util.mxEventSource;
 import org.jgrapht.ListenableGraph;
+import org.jgrapht.event.GraphEdgeChangeEvent;
+import org.jgrapht.event.GraphListener;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
 
@@ -167,12 +178,34 @@ public class Window extends JFrame {
 
         JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
         mxGraphComponent graphComponent = new mxGraphComponent(jgxAdapter);
+        graphComponent.setConnectable(false);
+        graphComponent.setEnabled(false);
+
+
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.setForceConstant(250);
         layout.execute(jgxAdapter.getDefaultParent());
 
+
         this.panAffNoeuds = graphComponent;
+        for(Object cell: graphComponent.getGraph().getChildCells(graphComponent.getGraph().getDefaultParent())){
+            System.out.println(((mxCell) cell).getValue() + " X: " + ((mxCell) cell).getGeometry().getX() + " Y: " + ((mxCell) cell).getGeometry().getY());
+        }
+
+        graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //Check if the mouse is over a cell
+                mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
+                if (cell != null) {
+                    //Check if the cell is a vertex
+                    if (graphComponent.getGraph().getModel().isVertex(cell)) {
+                        // TODO: Send the node to the right panel
+                    }
+                }
+            }
+        });
     }
 
 

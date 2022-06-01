@@ -276,15 +276,15 @@ public class Map {
     public Node isBetterThan(Node node1, Node node2, String type) { // Retourne le noeud le plus OUVERT / GASTRONOMIQUE / CULTUREL
         int count1stNode = 0;
         int count2ndNode = 0;
-        String tmpType = null;
+        NodeType tmpType = null;
         if (type.equals("OUVERTE")) {
-            tmpType = "V";
+            tmpType = NodeType.VILLE;
         }
         if (type.equals("GASTRONOMIQUE")) {
-            tmpType = "R";
+            tmpType = NodeType.RESTAURANT;
         }
         if (type.equals("CULTURELLE")) {
-            tmpType = "L";
+            tmpType = NodeType.LOISIRS;
         }
         Node nodeOpen = null;
         node1.setDistance(0);
@@ -317,27 +317,14 @@ public class Map {
 
         ArrayList<Node> path = new ArrayList<>();
 
-        path = matrix.getShortestPathF(fromNode, throughNode);
+        path = matrix.getShortestPath(fromNode, throughNode);
         path.remove(path.size() - 1);
-        path.addAll(matrix.getShortestPathF(throughNode, toNode));
+        path.addAll(matrix.getShortestPath(throughNode, toNode));
 
         return new LinkedList<>(path);
 
-        /*
-        LinkedList<Node> firstPath = new LinkedList<>();
-        LinkedList<Node> lastPath = new LinkedList<>();
-
-        firstPath = getShortestPath(fromNode, throughNode);
-        firstPath.removeLast();
-        lastPath = getShortestPath(throughNode, toNode);
-
-        firstPath.addAll(lastPath);
-
-         */
-
     }
 
-    //Find a path between two nodes through two given nodes
     public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode1, Node throughNode2) { // Respect the order of the nodes ? (fromNode, throughNode1, throughNode2, toNode)
         ArrayList<Node> path = new ArrayList<>();
         int path1;
@@ -346,54 +333,20 @@ public class Map {
         path2 = matrix.lowestDistance(fromNode, throughNode2) + matrix.lowestDistance(throughNode1, toNode);
 
         if (path1 < path2) {
-            path = matrix.getShortestPathF(fromNode, throughNode1);
+            path = matrix.getShortestPath(fromNode, throughNode1);
             path.remove(path.size() - 1);
-            path.addAll(matrix.getShortestPathF(throughNode1, throughNode2));
+            path.addAll(matrix.getShortestPath(throughNode1, throughNode2));
             path.remove(path.size() - 1);
-            path.addAll(matrix.getShortestPathF(throughNode2, toNode));
+            path.addAll(matrix.getShortestPath(throughNode2, toNode));
         } else {
-            path = matrix.getShortestPathF(fromNode, throughNode2);
+            path = matrix.getShortestPath(fromNode, throughNode2);
             path.remove(path.size() - 1);
-            path.addAll(matrix.getShortestPathF(throughNode2, throughNode1));
+            path.addAll(matrix.getShortestPath(throughNode2, throughNode1));
             path.remove(path.size() - 1);
-            path.addAll(matrix.getShortestPathF(throughNode1, toNode));
+            path.addAll(matrix.getShortestPath(throughNode1, toNode));
         }
         return new LinkedList<>(path);
 
-
-        /*
-        LinkedList<Node> finalPath = new LinkedList<>();
-        LinkedList<Node> finalPath2 = new LinkedList<>();
-        LinkedList<Node> tempPath = new LinkedList<>();
-        LinkedList<Node> lastPath = new LinkedList<>();
-        int tmpDistance = 0;
-
-
-        finalPath = getShortestPath(fromNode, throughNode1);
-        finalPath.removeLast();
-        tempPath = getShortestPath(throughNode1, throughNode2);
-        tempPath.removeLast();
-        lastPath = getShortestPath(throughNode2, toNode);
-        finalPath.addAll(tempPath);
-        finalPath.addAll(lastPath);
-        tmpDistance = throughNode1.getDistance() + throughNode2.getDistance() + toNode.getDistance();
-
-        finalPath2 = getShortestPath(fromNode, throughNode2);
-        finalPath2.removeLast();
-        tempPath = getShortestPath(throughNode2, throughNode1);
-        tempPath.removeLast();
-        lastPath = getShortestPath(throughNode1, toNode);
-        finalPath2.addAll(tempPath);
-        finalPath2.addAll(lastPath);
-
-
-        if (throughNode1.getDistance() + throughNode2.getDistance() + toNode.getDistance() < tmpDistance) {
-            finalPath = finalPath2;
-        }
-
-        return finalPath;
-
-         */
     }
 
 

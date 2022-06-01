@@ -9,7 +9,6 @@ public class Node {
     private String name;
     private int distance = INFINITE; /* CHANGE FOR MAP -> Distance() */
     private LinkedList<Link> neighbours;
-    private LinkedList<Node> shortestPath = new LinkedList<>();
     private static final int INFINITE = 100000;
 
 
@@ -49,6 +48,8 @@ public class Node {
         return returnedList;
     }
 
+
+
     public LinkedList<Link> getNeighbourLinksWithNode(Node node){ // Dijkstra, retourne le(s) lien(s) entre les deux noeuds
         LinkedList<Link> returnedList = new LinkedList<>();
         for(Link link: this.neighbours){
@@ -75,6 +76,21 @@ public class Node {
         return minLink;
     }
 
+    public Link getFarthestNeighbour(Node node){ // Dijkstra, retourne le lien le plus court entre les deux noeuds
+
+        LinkedList<Link> neighboursList = this.getNeighbourLinksWithNode(node);
+        Link maxLink = neighboursList.element();
+
+        if(neighboursList.size()!=1){
+            for(Link link: neighboursList){
+                if (link.getDistance() > maxLink.getDistance()){
+                    maxLink = link;
+                }
+            }
+        }
+        return maxLink;
+    }
+
     public boolean isNeighbour(Node node){ // Dijkstra, retourne true si le noeud est voisin
         boolean state = false;
         for(Link neighbour: neighbours){
@@ -96,14 +112,6 @@ public class Node {
 
     public String toString(){ return this.type + "," + this.name; }
 
-
-    public LinkedList<Node> getShortestPath() {
-        return shortestPath;
-    }
-
-    public void setShortestPath(LinkedList<Node> shortestPath) {
-        this.shortestPath = shortestPath;
-    }
 
     public int getId(){
         return this.id;
