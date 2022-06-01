@@ -120,7 +120,7 @@ public class GraphDisplay extends JPanel {
                 }
             }
         });
-
+        /*
         mxCell[] lastSelectedCell = graphComponent.getGraph().getCell; // CHOSE FIRST ELEMENT TO MAKE IT WORK
         Map<String, Object>[] lastSelectedCellStyle = new Map[]{new HashMap<>()};
 
@@ -155,6 +155,8 @@ public class GraphDisplay extends JPanel {
                 }
             }
         });
+
+         */
 
         this.graphComponent = graphComponent;
         return graphComponent;
