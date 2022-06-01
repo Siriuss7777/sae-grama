@@ -3,13 +3,17 @@ package app.main.gui;
 import javax.swing.*;
 import java.awt.*;
 
+
 import app.main.map.*;
 import app.main.nodes.*;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.layout.*;
+
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
+
+
 
 
 public class Window extends JFrame {
@@ -62,49 +66,46 @@ public class Window extends JFrame {
         contentPane.add(containerRight, BorderLayout.CENTER);
 
 
-        containerLeft.setSize(width/5,height);
-        containerLeft.setPreferredSize(new Dimension(300,height));
+        containerLeft.setSize(400,0);
+        containerLeft.setPreferredSize(new Dimension(400,0));
 
-        containerRight.setSize(0,height);
-        containerRight.setPreferredSize(new Dimension(0,height));
 
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
         panAffGen.setLayout(new GridLayout(6,2));
-        panAffGen.setBackground(Color.RED);
+        //panAffGen.setBackground(Color.RED);
         panAffGen.setBorder(BorderFactory.createEtchedBorder());
         panAffGen.setSize(0,200);
         panAffGen.setPreferredSize(new Dimension(0,200));
 
-        panActionNoeud.setBackground(Color.BLACK);
+        //panActionNoeud.setBackground(Color.BLACK);
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
         panActionNoeud.setSize(0,200);
         panActionNoeud.setPreferredSize(new Dimension(0,200));
 
 
-        panListeNoeud.setBackground(Color.BLUE);
+        //panListeNoeud.setBackground(Color.BLUE);
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
 
         initializeAffNoeuds();
-        panAffNoeuds.setBackground(Color.YELLOW);
+        //panAffNoeuds.setBackground(Color.YELLOW);
         panAffNoeuds.setBorder(BorderFactory.createEtchedBorder());
 
 
-
         panAffGen.add(nbrVille);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getVillesCount()))); // Recupere le nbr de ville et le met en String
         panAffGen.add(nbrRest);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getRestaurantsCount())));
         panAffGen.add(nbrLoisir);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getLoisirsCount())));
         panAffGen.add(nbrDep);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getDepartementalesCount())));
         panAffGen.add(nbrNat);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getNationalesCount())));
         panAffGen.add(nbrAuto);
-        panAffGen.add(new JLabel("12"));
+        panAffGen.add(new JLabel(String.valueOf(map.getAutoroutesCount())));
 
 
         panActionNoeud.add(_2Distance);
@@ -173,6 +174,7 @@ public class Window extends JFrame {
 
         this.panAffNoeuds = graphComponent;
     }
+
 
 
 }
