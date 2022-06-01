@@ -9,10 +9,10 @@ import java.util.LinkedList;
 public class FloydWarshall {
 
     private final static int INFINITE = Integer.MAX_VALUE;
-    private Map map;
+    private Graph map;
     private DistancePred[][] matrix;
 
-    public FloydWarshall(Map map) {
+    public FloydWarshall(Graph map) {
         this.map = map;
     }
 

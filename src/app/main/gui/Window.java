@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+import app.main.gui.screens.*;
 import app.main.map.*;
 import app.main.nodes.*;
 import com.mxgraph.swing.mxGraphComponent;
@@ -12,13 +13,7 @@ import com.mxgraph.layout.*;
 
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.util.mxEvent;
-import com.mxgraph.util.mxEventObject;
-import com.mxgraph.util.mxEventSource;
 import org.jgrapht.ListenableGraph;
-import org.jgrapht.event.GraphEdgeChangeEvent;
-import org.jgrapht.event.GraphListener;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.*;
 
@@ -27,7 +22,8 @@ import org.jgrapht.graph.*;
 
 public class Window extends JFrame {
     private String title;
-    private JPanel contentPane = new JPanel();
+    private JFrame f;
+    private JPanel containerPan = new JPanel();
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
     private JPanel panAffGen = new JPanel();
@@ -45,11 +41,12 @@ public class Window extends JFrame {
     private JLabel nbrAuto = new JLabel("Nombre d'autoroutes : ");
     private JLabel nbrDep = new JLabel("Nombre de départementales : ");
 
-    private Map map;
+    private Graph graph;
 
-    public Window(Map map){
+    public Window(Graph graph){
         super();
-        this.map = map;
+        this.f = this;
+        this.graph = graph;
         init();
     }
 
@@ -69,10 +66,10 @@ public class Window extends JFrame {
         Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int height = (int)dimension.getHeight();
         int width  = (int)dimension.getWidth();
-        contentPane.setLayout(new BorderLayout());
+        containerPan.setLayout(new BorderLayout());
 
-        contentPane.add(containerLeft, BorderLayout.WEST);
-        contentPane.add(containerRight, BorderLayout.CENTER);
+        containerPan.add(containerLeft, BorderLayout.WEST);
+        containerPan.add(containerRight, BorderLayout.CENTER);
 
 
         containerLeft.setSize(400,0);
@@ -104,17 +101,18 @@ public class Window extends JFrame {
 
 
         panAffGen.add(nbrVille);
-        panAffGen.add(new JLabel(String.valueOf(map.getVillesCount()))); // Recupere le nbr de ville et le met en String
+        panAffGen.add(new JLabel(String.valueOf(graph.getVillesCount()))); // Recupere le nbr de ville et le met en String
         panAffGen.add(nbrRest);
-        panAffGen.add(new JLabel(String.valueOf(map.getRestaurantsCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getRestaurantsCount())));
         panAffGen.add(nbrLoisir);
-        panAffGen.add(new JLabel(String.valueOf(map.getLoisirsCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getLoisirsCount())));
         panAffGen.add(nbrDep);
-        panAffGen.add(new JLabel(String.valueOf(map.getDepartementalesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getDepartementalesCount())));
         panAffGen.add(nbrNat);
-        panAffGen.add(new JLabel(String.valueOf(map.getNationalesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getNationalesCount())));
         panAffGen.add(nbrAuto);
-        panAffGen.add(new JLabel(String.valueOf(map.getAutoroutesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getAutoroutesCount())));
+
 
 
         panActionNoeud.add(_2Distance);
@@ -127,7 +125,7 @@ public class Window extends JFrame {
         containerRight.add(panAffNoeuds, BorderLayout.CENTER);
 
 
-        return contentPane;
+        return containerPan;
     }
 
     private JMenuBar constMenu(){
@@ -136,14 +134,85 @@ public class Window extends JFrame {
         JMenu file = new JMenu("File");
         JMenuItem open = new JMenuItem("Open");
 
-        JMenu distance_1 = new JMenu("1-Distance");
-        JMenuItem allNeighbours = new JMenuItem("All neighbours");
-        JMenuItem closestNeighbour = new JMenuItem("Closest neighbour");
-        JMenuItem farthestNeighbour = new JMenuItem("Farthest neighbour");
+        // Ecran Principale
+        JMenu mainScreen = new JMenu("Ecran principale");
+        JMenuItem main = new JMenuItem("Ecran principale");
+        mainScreen.add(main);
+        main.addActionListener(e -> {
+            f.getContentPane().removeAll();
+            f.getContentPane().add(new MainScreen(f));
+            f.revalidate();
+        });
 
-        JMenu distance_2 = new JMenu("2-Distance");
 
-        JMenu distance_n = new JMenu("2+-Distance");
+        // Ecran 0
+        JMenu screen_0 = new JMenu("Ecran 0");
+        JMenuItem item_0 = new JMenuItem("Ecran 0");
+        screen_0.add(item_0);
+        item_0.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.getContentPane().removeAll();
+                f.getContentPane().add(new ScreenZero(f, graph));
+                f.revalidate();
+            }
+        });
+
+
+        // Ecran 1
+        JMenu screen_1 = new JMenu("Ecran 1");
+        JMenuItem item_1 = new JMenuItem("Ecran 1");
+        screen_1.add(item_1);
+        item_1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.getContentPane().removeAll();
+                f.getContentPane().add(new ScreenOne(f));
+                f.revalidate();
+            }
+        });
+
+
+        // Ecran 2
+        JMenu screen_2 = new JMenu("Ecran 2");
+        JMenuItem item_2 = new JMenuItem("Ecran 2");
+        screen_2.add(item_2);
+        item_2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.getContentPane().removeAll();
+                f.getContentPane().add(new ScreenTwo(f));
+                f.revalidate();
+            }
+        });
+
+
+        // Ecran 3
+        JMenu screen_3 = new JMenu("Ecran 3");
+        JMenuItem item_3 = new JMenuItem("Ecran 3");
+        screen_3.add(item_3);
+        item_3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.getContentPane().removeAll();
+                f.getContentPane().add(new ScreenThree(f));
+                f.revalidate();
+            }
+        });
+
+
+        // Ecran 4
+        JMenu screen_4 = new JMenu("Ecran 4");
+        JMenuItem item_4 = new JMenuItem("Ecran 4");
+        screen_4.add(item_4);
+        item_4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.getContentPane().removeAll();
+                f.getContentPane().add(new ScreenFour(f));
+                f.revalidate();
+            }
+        });
 
         JMenu help = new JMenu("Help");
 
@@ -153,21 +222,26 @@ public class Window extends JFrame {
 
 
         menubar.add(file);
-        menubar.add(distance_1);
-        menubar.add(distance_2);
-        menubar.add(distance_n);
+        menubar.add(mainScreen);
+        menubar.add(screen_0);
+        menubar.add(screen_1);
+        menubar.add(screen_2);
+        menubar.add(screen_3);
+        menubar.add(screen_4);
         menubar.add(help);
+
+
         return menubar;
     }
 
     private void initializeAffNoeuds(){
         ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
-        for (Node node : map.getNodes()) {
+        for (Node node : graph.getNodes()) {
             g.addVertex(node.toString());
         }
 
-        for (Node node : map.getNodes()) {
+        for (Node node : graph.getNodes()) {
             for (Link neighbour : node.getAllNeighbours()) {
                 g.setEdgeWeight(g.addEdge(node.toString(),
                         neighbour.getNode().toString()), neighbour.getDistance());
@@ -217,6 +291,9 @@ public class Window extends JFrame {
             }
         });
     }
+
+
+
 
 
 
