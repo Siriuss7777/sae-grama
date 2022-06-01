@@ -10,5 +10,8 @@
     <orderEntry type="library" name="github.vlsi.mxgraph.jgraphx" level="project" />
     <orderEntry type="library" name="jgrapht.ext" level="project" />
     <orderEntry type="library" name="jgrapht.core" level="project" />
+    <orderEntry type="library" name="jgrapht-ext-1.5.1" level="project" />
+    <orderEntry type="library" name="jgraphx-4.2.2" level="project" />
+    <orderEntry type="library" name="jgrapht-core-1.5.1" level="project" />
   </component>
 </module>
