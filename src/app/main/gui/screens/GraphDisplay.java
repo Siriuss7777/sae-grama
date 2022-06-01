@@ -8,8 +8,6 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxGraph;
-import com.mxgraph.view.mxStylesheet;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultEdge;
@@ -21,8 +19,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GraphDisplay extends JPanel {
 
@@ -35,45 +31,52 @@ public class GraphDisplay extends JPanel {
     }
 
     public mxGraphComponent initializeAffNoeuds() {
-        ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
-        for (Node node : graph.getNodes()) {
-            g.addVertex(node.toString());
-        }
+        ListenableGraph<Node, DefaultEdge> listenableGraph = this.initGraph();
 
-        for (Node node : graph.getNodes()) {
-            for (Link neighbour : node.getAllNeighbours()) {
-                g.setEdgeWeight(g.addEdge(node.toString(),
-                        neighbour.getNode().toString()), neighbour.getDistance());
-            }
-        }
-
-        JGraphXAdapter<String, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(g);
-        mxGraphComponent graphComponent = new mxGraphComponent(jgxAdapter);
+        JGraphXAdapter<Node, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(listenableGraph);
+        graphComponent = new mxGraphComponent(jgxAdapter);
         graphComponent.setConnectable(false);
         graphComponent.setEnabled(false);
+        jgxAdapter.setCellsSelectable(true);
 
-
-        mxStylesheet stylesheet = new mxStylesheet();
-
-        Map<String, Object> defStyle = new HashMap<>();
-        defStyle.put(mxConstants.STYLE_FONTSIZE, "12");
-        defStyle.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
-        defStyle.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_RECTANGLE);
-
-        Map<String, Object> highlighted = defStyle;
-        highlighted.put(mxConstants.STYLE_LABEL_BORDERCOLOR, "#FFFF00");
-
-        // TODO : ajouter les styles pour les noeuds
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
         layout.setForceConstant(200);
         layout.execute(jgxAdapter.getDefaultParent());
 
         // Colouring vertices differently following their types
+        this.colourNodes();
+
+        // Make the graph zoomable and scrollable with ctrl-mousewheel
+        this.makeScrollable();
+
+        // Handle node (vertex) selection
+//        this.makeNodesSelectable();
+        this.makeNodesSelectableJGX(jgxAdapter);
+
+        return graphComponent;
+    }
+
+    private ListenableGraph<Node, DefaultEdge> initGraph(){
+        ListenableGraph<Node, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
+
+        for (Node node : graph.getNodes()) {
+            g.addVertex(node);
+        }
+
+        for (Node node : graph.getNodes()) {
+            for (Link neighbour : node.getAllNeighbours()) {
+                g.setEdgeWeight(g.addEdge(node,
+                        neighbour.getNode()), neighbour.getDistance());
+            }
+        }
+        return g;
+    }
+
+    private void colourNodes() {
         for (Object vertex : graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())) {
-            String type = (String) graphComponent.getGraph().getModel().getValue(vertex);
-            System.out.println(type);
+            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(vertex));
             if (type.charAt(0) == 'R') {
                 graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF0000", new Object[]{vertex});
             }
@@ -84,8 +87,9 @@ public class GraphDisplay extends JPanel {
                 graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#0000FF", new Object[]{vertex});
             }
         }
+    }
 
-        // Make the graph zoomable and scrollable with ctrl-mousewheel
+    private void makeScrollable(){
         graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
@@ -120,9 +124,13 @@ public class GraphDisplay extends JPanel {
                 }
             }
         });
+    }
 
-        mxCell[] lastSelectedCell = graphComponent.getGraph().getCell; // CHOSE FIRST ELEMENT TO MAKE IT WORK
-        Map<String, Object>[] lastSelectedCellStyle = new Map[]{new HashMap<>()};
+    private void makeNodesSelectable(){
+        /*
+            Outdated, use makeNodesSelectableJGX instead
+         */
+        final mxCell[] lastSelectedCell = {(mxCell) graphComponent.getGraph().getModel().getChildAt(graphComponent.getGraph().getDefaultParent(), 0)};   // CHOSE FIRST ELEMENT TO MAKE IT WORK
 
         graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
             @Override
@@ -132,32 +140,39 @@ public class GraphDisplay extends JPanel {
                 if (cell != null) {
                     //Check if the cell is a vertex
                     if (graphComponent.getGraph().getModel().isVertex(cell)) {
-                        String type = (String) graphComponent.getGraph().getModel().getValue(lastSelectedCell[0]);
+                        String type = String.valueOf(graphComponent.getGraph().getModel().getValue(lastSelectedCell[0]));
                         System.out.println(type);
                         if (type.charAt(0) == 'R') {
                             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF0000", new Object[]{lastSelectedCell[0]});
-                            System.out.println("Red");
                         }
                         else if (type.charAt(0) == 'L') {
                             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00FF00", new Object[]{lastSelectedCell[0]});
-                            System.out.println("Green");
                         }
                         else if(type.charAt(0) == 'V'){
                             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#0000FF", new Object[]{lastSelectedCell[0]});
-                            System.out.println("Blue");
                         }
                         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FFFF00", new Object[]{cell});
-                        System.out.println("Yellow");
-                        // TODO: Send the node to the right panel
-                        System.out.println(cell.getValue());
                         lastSelectedCell[0] = cell;
                     }
                 }
             }
         });
-
-        this.graphComponent = graphComponent;
-        return graphComponent;
     }
 
+    private void makeNodesSelectableJGX(JGraphXAdapter<Node, DefaultEdge> jgxAdapter){
+        graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
+                if (cell != null) {
+                    //Check if the cell is a vertex
+                    if (graphComponent.getGraph().getModel().isVertex(cell)) {
+                        jgxAdapter.setSelectionCell(cell);
+                        // TODO: Send the node to the right panel
+                    }
+
+                }
+            }
+        });
+    }
 }

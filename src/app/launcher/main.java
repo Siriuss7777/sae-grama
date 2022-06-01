@@ -1,7 +1,7 @@
 package app.launcher;
 
 import app.main.gui.Window;
-import app.main.map.Map;
+import app.main.map.Graph;
 import app.main.nodes.LinkType;
 
 import java.io.*;
@@ -9,7 +9,7 @@ import java.util.*;
 
 public class main {
 
-    static Map map = new Map();
+    static Graph graph = new Graph();
 
     Scanner input = new Scanner(System.in);
 
@@ -17,9 +17,9 @@ public class main {
 
         String filename = null;
         filename = "src/resources/map.csv";
-        map.init(filename);
+        graph.init(filename);
 
 
-        Window f1 = new Window();
+        Window f1 = new Window(graph);
     }
 }
