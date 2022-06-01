@@ -225,6 +225,15 @@ public class Graph {
         return this.getAutoroutes().size();
     }
 
+    public String[] getAutoroutesNames() {
+        LinkedList<Link> tempList = this.getAutoroutes();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).toString();
+        }
+        return tempNames;
+    }
 
     public LinkedList<Link> getNationales() {
         LinkedList<Link> tempList = new LinkedList<Link>();
@@ -240,6 +249,16 @@ public class Graph {
         return this.getNationales().size();
     }
 
+    public String[] getNationalesNames() {
+        LinkedList<Link> tempList = this.getNationales();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).toString();
+        }
+        return tempNames;
+    }
+
     public LinkedList<Link> getDepartementales() {
         LinkedList<Link> tempList = new LinkedList<Link>();
         for (Link link : this.links) {
@@ -252,6 +271,16 @@ public class Graph {
 
     public int getDepartementalesCount() {
         return this.getDepartementales().size();
+    }
+
+    public String[] getDepartementalesNames() {
+        LinkedList<Link> tempList = this.getDepartementales();
+        String[] tempNames = new String[tempList.size()];
+
+        for (int i = 0; i < tempList.size(); i++) {
+            tempNames[i] = tempList.get(i).toString();
+        }
+        return tempNames;
     }
 
     /*------------------------------------------------------------------------------------------------*/

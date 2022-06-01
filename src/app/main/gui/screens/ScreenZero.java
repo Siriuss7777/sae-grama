@@ -1,6 +1,7 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import com.mxgraph.swing.mxGraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,13 +9,14 @@ import java.awt.*;
 public class ScreenZero extends JPanel {
     JFrame f;
 
-    Graph map;
+    Graph graph;
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
     private JPanel panAffGen = new JPanel();
-    private JPanel panActionNoeud = new JPanel();
+    private JPanel panAffParType = new JPanel();
     private JPanel panListeNoeud = new JPanel();
+    private mxGraphComponent panAffNoeuds;
 
     private JLabel nbrVille = new JLabel("Nombre de villes : ");
     private JLabel nbrRest = new JLabel("Nombre de restaurants : ");
@@ -23,10 +25,17 @@ public class ScreenZero extends JPanel {
     private JLabel nbrAuto = new JLabel("Nombre d'autoroutes : ");
     private JLabel nbrDep = new JLabel("Nombre de départementales : ");
 
-    public ScreenZero(JFrame f, Graph map) {
+    private JLabel listeVille = new JLabel("Liste des villes : ");
+    private JLabel listeRest = new JLabel("Liste des restaurants : ");
+    private JLabel listeLoisir = new JLabel("Liste des centres de loisir : ");
+    private JLabel listeNat = new JLabel("Liste des nationales : ");
+    private JLabel listeAuto = new JLabel("Liste des autoroutes : ");
+    private JLabel listeDep = new JLabel("Liste des départementales : ");
+
+    public ScreenZero(JFrame f, Graph graph) {
         super();
         this.f = f;
-        this.map = map;
+        this.graph = graph;
         constpan();
     }
     private void constpan() {
@@ -45,40 +54,57 @@ public class ScreenZero extends JPanel {
         containerLeft.setLayout(new BorderLayout());
 
         panAffGen.setLayout(new GridLayout(6, 2));
-        //panAffGen.setBackground(Color.RED);
+
         panAffGen.setBorder(BorderFactory.createEtchedBorder());
         panAffGen.setSize(0, 200);
         panAffGen.setPreferredSize(new Dimension(0, 200));
 
-        //panActionNoeud.setBackground(Color.BLACK);
-        panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
-        panActionNoeud.setSize(0, 200);
-        panActionNoeud.setPreferredSize(new Dimension(0, 200));
+        panAffParType.setLayout(new GridLayout(2, 6));
+        panAffParType.setBorder(BorderFactory.createEtchedBorder());
+        panAffParType.setSize(0, 200);
+        panAffParType.setPreferredSize(new Dimension(0, 200));
 
 
-        //panListeNoeud.setBackground(Color.BLUE);
+
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
+        GraphDisplay gd = new GraphDisplay(graph);
+        panAffNoeuds = gd.initializeAffNoeuds();
 
-        System.out.println(map.getVillesCount());
+
         panAffGen.add(nbrVille);
-        panAffGen.add(new JLabel(String.valueOf(map.getVillesCount()))); // Recupere le nbr de ville et le met en String
+        panAffGen.add(new JLabel(String.valueOf(graph.getVillesCount()))); // Recupere le nbr de ville et le met en String
         panAffGen.add(nbrRest);
-        panAffGen.add(new JLabel(String.valueOf(map.getRestaurantsCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getRestaurantsCount())));
         panAffGen.add(nbrLoisir);
-        panAffGen.add(new JLabel(String.valueOf(map.getLoisirsCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getLoisirsCount())));
         panAffGen.add(nbrDep);
-        panAffGen.add(new JLabel(String.valueOf(map.getDepartementalesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getDepartementalesCount())));
         panAffGen.add(nbrNat);
-        panAffGen.add(new JLabel(String.valueOf(map.getNationalesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getNationalesCount())));
         panAffGen.add(nbrAuto);
-        panAffGen.add(new JLabel(String.valueOf(map.getAutoroutesCount())));
+        panAffGen.add(new JLabel(String.valueOf(graph.getAutoroutesCount())));
+
+        panAffParType.add(listeVille);
+        panAffParType.add(listeRest);
+        panAffParType.add(listeLoisir);
+        panAffParType.add(listeDep);
+        panAffParType.add(listeNat);
+        panAffParType.add(listeAuto);
+        panAffParType.add(new JComboBox<>(graph.getVillesNames()));
+        panAffParType.add(new JComboBox<>(graph.getRestaurantsNames()));
+        panAffParType.add(new JComboBox<>(graph.getLoisirsNames()));
+        panAffParType.add(new JComboBox<>(graph.getDepartementalesNames()));
+        panAffParType.add(new JComboBox<>(graph.getNationalesNames()));
+        panAffParType.add(new JComboBox<>(graph.getAutoroutesNames()));
+
 
 
         containerLeft.add(panAffGen, BorderLayout.NORTH);
         containerLeft.add(panListeNoeud, BorderLayout.CENTER);
 
-        containerRight.add(panActionNoeud, BorderLayout.NORTH);
+        containerRight.add(panAffParType, BorderLayout.NORTH);
+        containerRight.add(panAffNoeuds, BorderLayout.CENTER);
 
     }
 }

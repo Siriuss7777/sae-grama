@@ -148,7 +148,7 @@ public class Window extends JFrame {
         mainScreen.add(main);
         main.addActionListener(e -> {
             f.getContentPane().removeAll();
-            f.getContentPane().add(new MainScreen(f));
+            f.getContentPane().add(new MainScreen(f, graph));
             f.revalidate();
         });
 
@@ -175,7 +175,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenOne(f));
+                f.getContentPane().add(new ScreenOne(f, graph));
                 f.revalidate();
             }
         });
@@ -189,7 +189,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenTwo(f));
+                f.getContentPane().add(new ScreenTwo(f, graph));
                 f.revalidate();
             }
         });
@@ -203,7 +203,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenThree(f));
+                f.getContentPane().add(new ScreenThree(f, graph));
                 f.revalidate();
             }
         });
@@ -217,7 +217,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenFour(f));
+                f.getContentPane().add(new ScreenFour(f, graph));
                 f.revalidate();
             }
         });
