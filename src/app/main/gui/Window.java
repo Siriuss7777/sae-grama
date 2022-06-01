@@ -3,6 +3,9 @@ package app.main.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import app.main.gui.screens.*;
@@ -13,11 +16,14 @@ import com.mxgraph.layout.*;
 
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.model.mxCell;
+import com.mxgraph.layout.*;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.view.mxStylesheet;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.*;
-
-
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultListenableGraph;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 
 public class Window extends JFrame {
@@ -45,6 +51,7 @@ public class Window extends JFrame {
 
     public Window(Graph graph){
         super();
+        this.graph = graph;
         this.f = this;
         this.graph = graph;
         init();
@@ -234,7 +241,7 @@ public class Window extends JFrame {
         return menubar;
     }
 
-    private void initializeAffNoeuds(){
+    private void initializeAffNoeuds() {
         ListenableGraph<String, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
         for (Node node : graph.getNodes()) {
@@ -254,26 +261,57 @@ public class Window extends JFrame {
         graphComponent.setEnabled(false);
 
 
+        mxStylesheet stylesheet = new mxStylesheet();
+
+        Map<String, Object> defStyle = new HashMap<>();
+        defStyle.put(mxConstants.STYLE_FONTSIZE, "12");
+        defStyle.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
+        defStyle.put(mxConstants.STYLE_PERIMETER, mxConstants.PERIMETER_RECTANGLE);
+
+        Map<String, Object> highlighted = defStyle;
+        highlighted.put(mxConstants.STYLE_LABEL_BORDERCOLOR, "#FFFF00");
+
+        // TODO : ajouter les styles pour les noeuds
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
-        layout.setForceConstant(250);
+        layout.setForceConstant(200);
         layout.execute(jgxAdapter.getDefaultParent());
 
-
-        this.panAffNoeuds = graphComponent;
-
-        // Make the graph zoomable and scrollable with the mouse wheel
+        // Make the graph zoomable and scrollable with ctrl-mousewheel
         graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getWheelRotation() < 0) {
-                    graphComponent.zoomIn();
+                if (e.isControlDown()) {
+                    if (e.getWheelRotation() < 0) {
+                        graphComponent.zoomIn();
+                    } else {
+                        graphComponent.zoomOut();
+                    }
+      }
+                // Normal scroll if control is not pressed
+                else if (e.isShiftDown()) {
+                    if (!e.isControlDown()) {
+                        graphComponent.getViewport().setViewPosition(new Point(
+                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 15,
+                                graphComponent.getViewport().getViewPosition().y));
+                    } else {
+                        graphComponent.getViewport().setViewPosition(new Point(
+                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 15,
+                                graphComponent.getViewport().getViewPosition().y));
+                    }
                 } else {
-                    graphComponent.zoomOut();
+                    if (!e.isControlDown()) {
+                        graphComponent.getViewport().setViewPosition(new Point(
+                                graphComponent.getViewport().getViewPosition().x,
+                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 15));
+                    } else {
+                        graphComponent.getViewport().setViewPosition(new Point(
+                                graphComponent.getViewport().getViewPosition().x,
+                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 15));
+                    }
                 }
             }
         });
-
 
 
         graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
@@ -290,11 +328,7 @@ public class Window extends JFrame {
                 }
             }
         });
+
+        this.panAffNoeuds = graphComponent;
     }
-
-
-
-
-
-
 }

@@ -8,7 +8,7 @@ import java.util.*;
 
 public class main {
 
-    static Graph map = new Graph();
+    static Graph graph = new Graph();
 
     Scanner input = new Scanner(System.in);
 
@@ -16,10 +16,13 @@ public class main {
 
         String filename = null;
         filename = "src/resources/map.csv";
-        map.init(filename);
+        graph.init(filename);
 
+        System.out.println(graph);
 
-        Window window = new Window(map);
+        System.out.println(graph.getMatrix());
+
+        Window window = new Window(graph);
 
     }
 }
