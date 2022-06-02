@@ -87,7 +87,7 @@ public class ScreenOne extends JPanel {
             if (nodeSelected.getText().equals("No node selected")) {
                 JOptionPane.showMessageDialog(null, "No node selected");
             } else {
-                JOptionPane.showMessageDialog(null, "Neigbours of " + nodeSelected.getText() + ": " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
+                JOptionPane.showMessageDialog(null, "Voisins de : " + nodeSelected.getText() + " : " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
             }
         });
         /* FAIRE LA FONCTION

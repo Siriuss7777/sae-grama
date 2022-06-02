@@ -103,25 +103,35 @@ public class ScreenThree extends JPanel {
             }
         });
 
+        gastronomique.addActionListener(e -> {
+            if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "GASTRONOMIQUE");
+                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus gastronomique !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+        });
 
         ouverte.addActionListener(e -> {
             if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
-                JOptionPane.showMessageDialog(ScreenThree.this, "Please select two nodes", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "OUVERTE");
-                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus ouverte !", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus ouverte !", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
             }
         });
 
         culturel.addActionListener(e -> {
             if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
-                JOptionPane.showMessageDialog(ScreenThree.this, "Please select two nodes", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "CULTURELLE");
-                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus culturelle !", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus culturelle !", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
             }
         });

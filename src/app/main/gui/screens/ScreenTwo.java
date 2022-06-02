@@ -34,7 +34,7 @@ public class ScreenTwo extends JPanel {
 
     private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Node one", "Node two"});
 
-    private JButton _2distance = new JButton("Are they at 2 distance?");
+    private JButton _2distance = new JButton("Sont-ils à 2 distance ?");
 
     public ScreenTwo(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
@@ -102,14 +102,14 @@ public class ScreenTwo extends JPanel {
 
         _2distance.addActionListener(e -> {
             if (ScreenTwo.this.nodeOneSelected.getText().equals("No node selected") || ScreenTwo.this.nodeTwoSelected.getText().equals("No node selected")) {
-                JOptionPane.showMessageDialog(ScreenTwo.this, "Please select two nodes", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenTwo.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 if (ScreenTwo.this.graph.Distance(nodeOne, nodeTwo, 2)) {
-                    JOptionPane.showMessageDialog(ScreenTwo.this, "Yes, they are at 2 distance", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
-                    JOptionPane.showMessageDialog(ScreenTwo.this, "No, they are not at 2 distance", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
