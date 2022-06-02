@@ -19,6 +19,9 @@ public class ScreenTwo extends JPanel {
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
+    private JLabel nodeSelectedTxt = new JLabel("Node selected: ");
+    public JLabel nodeSelected = new JLabel("No node selected");
+
     public ScreenTwo(JFrame f, Graph graph) {
         super();
         this.f = f;

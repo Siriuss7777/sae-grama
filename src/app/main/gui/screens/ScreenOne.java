@@ -1,10 +1,13 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.swing.util.mxMouseAdapter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class ScreenOne extends JPanel {
     JFrame f;
@@ -14,10 +17,21 @@ public class ScreenOne extends JPanel {
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
-    private JPanel panAffGen = new JPanel();
+    private JPanel panAffNodeSel = new JPanel();
     private JPanel panActionNoeud = new JPanel();
     private JPanel panListeNoeud = new JPanel();
+
     private mxGraphComponent panAffNoeuds;
+
+    private JLabel nodeSelectedTxt = new JLabel("Node selected: ");
+    public JLabel nodeSelected = new JLabel("No node selected");
+
+    private JButton neigbours = new JButton("Neigbours");
+    private JButton nodeByLink = new JButton("Node by link");
+
+    public JLabel getNodeSelected() {
+        return nodeSelected;
+    }
 
     public ScreenOne(JFrame f, Graph graph) {
         super();
@@ -41,29 +55,62 @@ public class ScreenOne extends JPanel {
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
-        panAffGen.setLayout(new GridLayout(6, 2));
-        //panAffGen.setBackground(Color.RED);
-        panAffGen.setBorder(BorderFactory.createEtchedBorder());
-        panAffGen.setSize(0, 200);
-        panAffGen.setPreferredSize(new Dimension(0, 200));
 
-        //panActionNoeud.setBackground(Color.BLACK);
+        panAffNodeSel.setBorder(BorderFactory.createEtchedBorder());
+        panAffNodeSel.setSize(0, 200);
+        panAffNodeSel.setPreferredSize(new Dimension(0, 200));
+
+        panActionNoeud.setLayout(new FlowLayout());
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
         panActionNoeud.setSize(0, 200);
         panActionNoeud.setPreferredSize(new Dimension(0, 200));
 
-
-        //panListeNoeud.setBackground(Color.BLUE);
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
         GraphDisplay gd = new GraphDisplay(graph);
         panAffNoeuds = gd.initializeAffNoeuds();
+        this.panAffNoeuds.getGraphControl().addMouseListener(new mxMouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                mxCell cell = (mxCell) ScreenOne.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
+                if (cell != null) {
+                    ScreenOne.this.nodeSelected.setText(cell.getValue().toString());
+                }
+            }
+        });
+
+        neigbours.addActionListener(e -> {
+            if (nodeSelected.getText().equals("No node selected")) {
+                JOptionPane.showMessageDialog(null, "No node selected");
+            } else {
+                JOptionPane.showMessageDialog(null, "Neigbours of " + nodeSelected.getText() + ": " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
+            }
+        });
+        /* FAIRE LA FONCTION
+        nodeByLink.addActionListener(e -> {
+            if (nodeSelected.getText().equals("No node selected")) {
+                JOptionPane.showMessageDialog(null, "No node selected");
+            } else {
+                JOptionPane.showMessageDialog(null, "Node by link " + nodeSelected.getText() + ": " + graph.getNodeFromString(nodeSelected.getText()).getNodeByLink());
+            }
+        });
+
+         */
 
 
-        containerLeft.add(panAffGen, BorderLayout.NORTH);
+
+        panAffNodeSel.add(nodeSelectedTxt);
+        panAffNodeSel.add(nodeSelected);
+
+        panActionNoeud.add(neigbours);
+        panActionNoeud.add(nodeByLink);
+
+        containerLeft.add(panAffNodeSel, BorderLayout.NORTH);
         containerLeft.add(panListeNoeud, BorderLayout.CENTER);
 
         containerRight.add(panActionNoeud, BorderLayout.NORTH);
         containerRight.add(panAffNoeuds, BorderLayout.CENTER);
     }
+
 }

@@ -16,9 +16,7 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 
 public class GraphDisplay extends JPanel {
 
