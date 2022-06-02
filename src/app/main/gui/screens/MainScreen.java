@@ -13,11 +13,13 @@ public class MainScreen extends JPanel {
     private JPanel panInfo = new JPanel();
 
     Graph graph;
+    GraphDisplay graphDisplay;
 
-    public MainScreen(JFrame f, Graph graph) {
+    public MainScreen(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
         this.f = f;
         this.graph = graph;
+        this.graphDisplay = graphDisplay;
         constpan();
     }
     private void constpan() {
@@ -30,8 +32,7 @@ public class MainScreen extends JPanel {
         containerTop.setBorder(BorderFactory.createEtchedBorder());
 
 
-        GraphDisplay gd = new GraphDisplay(graph);
-        containerBot = gd.initializeAffNoeuds();
+        containerBot = this.graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         // Tell if display have been initialized successfully

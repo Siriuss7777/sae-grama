@@ -13,6 +13,7 @@ public class ScreenOne extends JPanel {
     JFrame f;
 
     Graph graph;
+    GraphDisplay graphDisplay;
 
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
@@ -33,10 +34,11 @@ public class ScreenOne extends JPanel {
         return nodeSelected;
     }
 
-    public ScreenOne(JFrame f, Graph graph) {
+    public ScreenOne(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
         this.f = f;
         this.graph = graph;
+        this.graphDisplay = graphDisplay;
         constpan();
     }
 
@@ -67,15 +69,16 @@ public class ScreenOne extends JPanel {
 
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds();
-        this.panAffNoeuds.getGraphControl().addMouseListener(new mxMouseAdapter() {
+
+        panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                mxCell cell = (mxCell) ScreenOne.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                mxCell cell = (mxCell) panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null) {
-                    ScreenOne.this.nodeSelected.setText(cell.getValue().toString());
+                    nodeSelected.setText(cell.getValue().toString());
+                    // Select the cell
+                    panAffNoeuds.getGraph().setSelectionCell(cell);
                 }
             }
         });

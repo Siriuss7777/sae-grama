@@ -10,6 +10,7 @@ public class ScreenTwo extends JPanel {
     JFrame f;
 
     Graph graph;
+    GraphDisplay graphDisplay;
 
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
@@ -22,10 +23,11 @@ public class ScreenTwo extends JPanel {
     private JLabel nodeSelectedTxt = new JLabel("Node selected: ");
     public JLabel nodeSelected = new JLabel("No node selected");
 
-    public ScreenTwo(JFrame f, Graph graph) {
+    public ScreenTwo(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
         this.f = f;
         this.graph = graph;
+        this.graphDisplay = graphDisplay;
         constpan();
     }
 
@@ -59,8 +61,7 @@ public class ScreenTwo extends JPanel {
         //panListeNoeud.setBackground(Color.BLUE);
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds();
+        panAffNoeuds = graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         containerLeft.add(panAffGen, BorderLayout.NORTH);

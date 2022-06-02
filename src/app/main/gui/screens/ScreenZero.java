@@ -10,6 +10,7 @@ public class ScreenZero extends JPanel {
     JFrame f;
 
     Graph graph;
+    GraphDisplay graphDisplay;
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
@@ -32,10 +33,11 @@ public class ScreenZero extends JPanel {
     private JLabel listeAuto = new JLabel("Liste des autoroutes : ");
     private JLabel listeDep = new JLabel("Liste des départementales : ");
 
-    public ScreenZero(JFrame f, Graph graph) {
+    public ScreenZero(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
         this.f = f;
         this.graph = graph;
+        this.graphDisplay = graphDisplay;
         constpan();
     }
     private void constpan() {
@@ -68,8 +70,7 @@ public class ScreenZero extends JPanel {
 
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds();
+        panAffNoeuds = graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         panAffGen.add(nbrVille);

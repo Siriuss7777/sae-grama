@@ -10,6 +10,7 @@ public class ScreenFour extends JPanel {
     JFrame f;
 
     Graph graph;
+    GraphDisplay graphDisplay;
 
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
@@ -19,10 +20,11 @@ public class ScreenFour extends JPanel {
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
-    public ScreenFour(JFrame f, Graph graph) {
+    public ScreenFour(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
         this.f = f;
         this.graph = graph;
+        this.graphDisplay = graphDisplay;
         constpan();
     }
 
@@ -56,8 +58,7 @@ public class ScreenFour extends JPanel {
         //panListeNoeud.setBackground(Color.BLUE);
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds();
+        panAffNoeuds = graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         containerLeft.add(panAffGen, BorderLayout.NORTH);

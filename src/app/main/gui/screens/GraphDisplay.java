@@ -20,28 +20,29 @@ import java.awt.event.*;
 
 public class GraphDisplay extends JPanel {
 
-    Graph graph;
-    mxGraphComponent graphComponent;
+    private static Graph graph;
+    private static mxGraphComponent graphComponent;
+    private static ListenableGraph<Node, DefaultEdge> listenableGraph;
+    private static JGraphXAdapter<Node, DefaultEdge> jgxAdapter;
 
-    public GraphDisplay(Graph graph) {
+
+    public static final mxMouseAdapter DEFAULT_MOUSELISTENER = new mxMouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
+            if (cell != null) {
+                graphComponent.getGraph().setSelectionCell(cell);
+            }
+        }
+    };
+
+    public GraphDisplay(Graph g) {
         super();
-        this.graph = graph;
+        graph = g;
+        this.initGraph();
     }
 
-    public mxGraphComponent initializeAffNoeuds() {
-
-        ListenableGraph<Node, DefaultEdge> listenableGraph = this.initGraph();
-
-        JGraphXAdapter<Node, DefaultEdge> jgxAdapter = new JGraphXAdapter<>(listenableGraph);
-        graphComponent = new mxGraphComponent(jgxAdapter);
-        graphComponent.setConnectable(false);
-        graphComponent.setEnabled(false);
-        jgxAdapter.setCellsSelectable(true);
-
-
-        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxAdapter);
-        layout.setForceConstant(200);
-        layout.execute(jgxAdapter.getDefaultParent());
+    public mxGraphComponent initializeAffNoeuds(mxMouseAdapter mouseListener) {
 
         // Colouring vertices differently following their types
         this.colourNodes();
@@ -51,12 +52,12 @@ public class GraphDisplay extends JPanel {
 
         // Handle node (vertex) selection
 //        this.makeNodesSelectable();
-        this.makeNodesSelectableJGX(jgxAdapter);
+        this.makeNodesSelectableJGX(mouseListener);
 
         return graphComponent;
     }
 
-    private ListenableGraph<Node, DefaultEdge> initGraph(){
+    private void initGraph(){
         ListenableGraph<Node, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
 
         for (Node node : graph.getNodes()) {
@@ -69,7 +70,21 @@ public class GraphDisplay extends JPanel {
                         neighbour.getNode()), neighbour.getDistance());
             }
         }
-        return g;
+
+        JGraphXAdapter<Node, DefaultEdge> jgxa = new JGraphXAdapter<>(g);
+        graphComponent = new mxGraphComponent(jgxa);
+        graphComponent.setConnectable(false);
+        graphComponent.setEnabled(false);
+        jgxa.setCellsSelectable(true);
+
+
+        mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxa);
+        layout.setForceConstant(200);
+        layout.execute(jgxa.getDefaultParent());
+
+
+        listenableGraph = g;
+        jgxAdapter = jgxa;
     }
 
     private void colourNodes() {
@@ -157,20 +172,7 @@ public class GraphDisplay extends JPanel {
         });
     }
 
-    private void makeNodesSelectableJGX(JGraphXAdapter<Node, DefaultEdge> jgxAdapter){
-        graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
-                if (cell != null) {
-                    //Check if the cell is a vertex
-                    if (graphComponent.getGraph().getModel().isVertex(cell)) {
-                        jgxAdapter.setSelectionCell(cell);
-                        // TODO: Send the node to the right panel
-                    }
-
-                }
-            }
-        });
+    private void makeNodesSelectableJGX(mxMouseAdapter mouseListener){
+        graphComponent.getGraphControl().addMouseListener(mouseListener);
     }
 }

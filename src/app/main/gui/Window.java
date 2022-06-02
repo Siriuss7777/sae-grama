@@ -53,7 +53,6 @@ public class Window extends JFrame {
         super();
         this.graph = graph;
         this.f = this;
-        this.graph = graph;
         init();
     }
 
@@ -103,8 +102,9 @@ public class Window extends JFrame {
 
 
         //panAffNoeuds.setBackground(Color.YELLOW);
+        System.out.println(this.graph);
         GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds();
+        panAffNoeuds = gd.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
         panAffNoeuds.setBorder(BorderFactory.createEtchedBorder());
 
 
@@ -142,13 +142,15 @@ public class Window extends JFrame {
         JMenu file = new JMenu("File");
         JMenuItem open = new JMenuItem("Open");
 
+        GraphDisplay gd = new GraphDisplay(graph);
+
         // Ecran Principale
         JMenu mainScreen = new JMenu("Ecran principale");
         JMenuItem main = new JMenuItem("Ecran principale");
         mainScreen.add(main);
         main.addActionListener(e -> {
             f.getContentPane().removeAll();
-            f.getContentPane().add(new MainScreen(f, graph));
+            f.getContentPane().add(new MainScreen(f, graph, gd));
             f.revalidate();
         });
 
@@ -161,7 +163,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenZero(f, graph));
+                f.getContentPane().add(new ScreenZero(f, graph, gd));
                 f.revalidate();
             }
         });
@@ -175,7 +177,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenOne(f, graph));
+                f.getContentPane().add(new ScreenOne(f, graph, gd));
                 f.revalidate();
             }
         });
@@ -189,7 +191,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenTwo(f, graph));
+                f.getContentPane().add(new ScreenTwo(f, graph, gd));
                 f.revalidate();
             }
         });
@@ -203,7 +205,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenThree(f, graph));
+                f.getContentPane().add(new ScreenThree(f, graph, gd));
                 f.revalidate();
             }
         });
@@ -217,7 +219,7 @@ public class Window extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenFour(f, graph));
+                f.getContentPane().add(new ScreenFour(f, graph, gd));
                 f.revalidate();
             }
         });
