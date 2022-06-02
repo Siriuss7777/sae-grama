@@ -102,7 +102,6 @@ public class Window extends JFrame {
 
 
         //panAffNoeuds.setBackground(Color.YELLOW);
-        System.out.println(this.graph);
         GraphDisplay gd = new GraphDisplay(graph);
         panAffNoeuds = gd.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
         panAffNoeuds.setBorder(BorderFactory.createEtchedBorder());

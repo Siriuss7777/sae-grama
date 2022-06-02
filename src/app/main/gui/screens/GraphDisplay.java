@@ -154,7 +154,6 @@ public class GraphDisplay extends JPanel {
                     //Check if the cell is a vertex
                     if (graphComponent.getGraph().getModel().isVertex(cell)) {
                         String type = String.valueOf(graphComponent.getGraph().getModel().getValue(lastSelectedCell[0]));
-                        System.out.println(type);
                         if (type.charAt(0) == 'R') {
                             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF0000", new Object[]{lastSelectedCell[0]});
                         }
