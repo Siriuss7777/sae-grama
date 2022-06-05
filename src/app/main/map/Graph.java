@@ -325,6 +325,9 @@ public class Graph {
 
     public boolean Distance(Node fromNode, Node toNode, int distance) { // Retourne vrai si la distance entre deux noeuds est inférieur à la distance demandée
         boolean result = false;
+        for (Node node : nodes){
+            node.setDistance(10000);
+        }
         nDistance(fromNode, distance + 1, distance);
         if (toNode.getDistance() <= distance) {
             result = true;

@@ -121,7 +121,6 @@ public class ScreenFour extends JPanel {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                System.out.println(nodeTwo.getDistance());
                 JOptionPane.showMessageDialog(ScreenFour.this, "Distance entre les deux noeuds: " + graph.Distance(nodeOne,nodeTwo,Integer.parseInt(distance.getText())), "Success", JOptionPane.INFORMATION_MESSAGE);
 
             }
