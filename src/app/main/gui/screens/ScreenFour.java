@@ -24,21 +24,28 @@ public class ScreenFour extends JPanel {
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
-    private JLabel nodeOneSelectedTxt = new JLabel("Node one selected: ");
-    private JLabel nodeTwoSelectedTxt = new JLabel("Node two selected: ");
-    private JLabel nodeOneSelected = new JLabel("No node selected");
-    private JLabel nodeTwoSelected = new JLabel("No node selected");
+    private JLabel nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
+    private JLabel nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
+    private JLabel nodeThreeSelectedTxt = new JLabel("Noeud un à traverser : ");
+    private JLabel nodeFourSelectedTxt = new JLabel("Noeud deux à traverser : ");
+    private JLabel nodeOneSelected = new JLabel("Pas de noeud sélectionné");
+    private JLabel nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
+    private JLabel nodeThreeSelected = new JLabel("Pas de noeud sélectionné");
+    private JLabel nodeFourSelected = new JLabel("Pas de noeud sélectionné");
 
     private Node nodeOne;
     private Node nodeTwo;
+    private Node nodeThree;
+    private Node nodeFour;
 
     private JButton floydWarshall = new JButton("Distance la plus courte entre les deux noeuds");
     private JButton nDistance = new JButton("Distance entre les deux noeuds");
     private JLabel labelDistance = new JLabel("Distance entre les deux noeuds à tester : ");
-    private JTextField distance = new JTextField("0");
-    private int n = 0;
+    private JComboBox<Integer> distance = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5, 6});
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Node one", "Node two"});
+    private JButton pathWith = new JButton("Chemin traversant les deux noeuds");
+
+    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux", "Noeud à traverser un", "Noeud à traverser deux"});
 
     public ScreenFour(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
@@ -63,7 +70,7 @@ public class ScreenFour extends JPanel {
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
-        panAffNodeSelected.setLayout(new GridLayout(3, 2));
+        panAffNodeSelected.setLayout(new GridLayout(5, 2));
         panAffNodeSelected.setBorder(BorderFactory.createEtchedBorder());
         panAffNodeSelected.setSize(0, 200);
         panAffNodeSelected.setPreferredSize(new Dimension(0, 200));
@@ -72,15 +79,25 @@ public class ScreenFour extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
+        panAffNodeSelected.add(nodeThreeSelectedTxt);
+        panAffNodeSelected.add(nodeThreeSelected);
+        panAffNodeSelected.add(nodeFourSelectedTxt);
+        panAffNodeSelected.add(nodeFourSelected);
+        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
         panAffNodeSelected.add(nodeSelectedComboBox);
+
 
 
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
         panActionNoeud.setSize(0, 200);
         panActionNoeud.setPreferredSize(new Dimension(0, 200));
+
         panActionNoeud.add(floydWarshall);
+
         panActionNoeud.add(nDistance);
         panActionNoeud.add(distance);
+
+        panActionNoeud.add(pathWith);
 
 
 
@@ -92,20 +109,28 @@ public class ScreenFour extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenFour.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Node one")) {
+                    if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
                         nodeOne = (Node) cell.getValue();
                         ScreenFour.this.nodeOneSelected.setText(nodeOne.getName());
                     }
-                    else {
+                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud deux")) {
                         nodeTwo = (Node) cell.getValue();
                         ScreenFour.this.nodeTwoSelected.setText(nodeTwo.getName());
+                    }
+                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud à traverser un")) {
+                        nodeThree = (Node) cell.getValue();
+                        ScreenFour.this.nodeThreeSelected.setText(nodeThree.getName());
+                    }
+                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud à traverser deux")) {
+                        nodeFour = (Node) cell.getValue();
+                        ScreenFour.this.nodeFourSelected.setText(nodeFour.getName());
                     }
                 }
             }
         });
 
         floydWarshall.addActionListener(e -> {
-            if (ScreenFour.this.nodeOneSelected.getText().equals("No node selected") || ScreenFour.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
@@ -115,17 +140,30 @@ public class ScreenFour extends JPanel {
 
         });
 
-        // La fonction Distance ne fonctionne pas
         nDistance.addActionListener(e -> {
-            if (ScreenFour.this.nodeOneSelected.getText().equals("No node selected") || ScreenFour.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                JOptionPane.showMessageDialog(ScreenFour.this, "Distance entre les deux noeuds: " + graph.Distance(nodeOne,nodeTwo,Integer.parseInt(distance.getText())), "Success", JOptionPane.INFORMATION_MESSAGE);
-
+                JOptionPane.showMessageDialog(ScreenFour.this, "Distance entre les deux noeuds: " + graph.Distance(nodeOne,nodeTwo,distance.getSelectedIndex()+1), "Success", JOptionPane.INFORMATION_MESSAGE);
             }
 
         });
+
+        pathWith.addActionListener(e -> {
+            if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeThreeSelected.getText().equals("Pas de noeud sélectionné")) {
+                JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner au moins 3 noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (nodeFourSelected.getText().equals("Pas de noeud sélectionné")){
+                JOptionPane.showMessageDialog(ScreenFour.this, "Le chemin traversant le noeuds est : " + graph.getPathWith(nodeOne,nodeTwo,nodeThree), "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(ScreenFour.this, "Le chemin traversant les deux noeuds est : " + graph.getPathWith(nodeOne,nodeTwo,nodeThree,nodeFour), "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+
 
 
         containerLeft.add(panAffNodeSelected, BorderLayout.NORTH);

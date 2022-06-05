@@ -24,16 +24,16 @@ public class ScreenThree extends JPanel {
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
-    private JLabel nodeOneSelectedTxt = new JLabel("Node one selected: ");
-    private JLabel nodeTwoSelectedTxt = new JLabel("Node two selected: ");
-    private JLabel nodeOneSelected = new JLabel("No node selected");
-    private JLabel nodeTwoSelected = new JLabel("No node selected");
+    private JLabel nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
+    private JLabel nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
+    private JLabel nodeOneSelected = new JLabel("Pas de noeud sélectionné");
+    private JLabel nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
 
     private Node nodeOne;
     private Node nodeTwo;
     private Node returnNode;
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Node one", "Node two"});
+    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux"});
 
     private JButton gastronomique = new JButton("Gastronomique");
     private JButton ouverte = new JButton("Ouverte");
@@ -91,7 +91,7 @@ public class ScreenThree extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenThree.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenThree.this.nodeSelectedComboBox.getSelectedItem().equals("Node one")) {
+                    if (ScreenThree.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
                         nodeOne = (Node) cell.getValue();
                         ScreenThree.this.nodeOneSelected.setText(nodeOne.getName());
                     }
@@ -104,7 +104,7 @@ public class ScreenThree extends JPanel {
         });
 
         gastronomique.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
@@ -115,7 +115,7 @@ public class ScreenThree extends JPanel {
         });
 
         ouverte.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
@@ -126,7 +126,7 @@ public class ScreenThree extends JPanel {
         });
 
         culturel.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("No node selected") || ScreenThree.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {

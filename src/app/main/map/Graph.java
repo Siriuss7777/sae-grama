@@ -375,7 +375,7 @@ public class Graph {
         return nodeOpen;
     }
 
-    public LinkedList<Node> getPathWith(Node fromNode, Node throughNode, Node toNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
+    public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
 
         ArrayList<Node> path = new ArrayList<>();
 

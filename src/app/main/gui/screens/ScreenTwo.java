@@ -24,15 +24,15 @@ public class ScreenTwo extends JPanel {
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
-    private JLabel nodeOneSelectedTxt = new JLabel("Node one selected: ");
-    private JLabel nodeTwoSelectedTxt = new JLabel("Node two selected: ");
-    private JLabel nodeOneSelected = new JLabel("No node selected");
-    private JLabel nodeTwoSelected = new JLabel("No node selected");
+    private JLabel nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
+    private JLabel nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
+    private JLabel nodeOneSelected = new JLabel("Pas de noeud sélectionné");
+    private JLabel nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
 
     private Node nodeOne;
     private Node nodeTwo;
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Node one", "Node two"});
+    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux"});
 
     private JButton _2distance = new JButton("Sont-ils à 2 distance ?");
 
@@ -86,7 +86,7 @@ public class ScreenTwo extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenTwo.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenTwo.this.nodeSelectedComboBox.getSelectedItem().equals("Node one")) {
+                    if (ScreenTwo.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
                         panAffNoeuds.getGraph().setSelectionCell(cell);
                         nodeOne = (Node) cell.getValue();
                         ScreenTwo.this.nodeOneSelected.setText(nodeOne.getName());
@@ -101,7 +101,7 @@ public class ScreenTwo extends JPanel {
         });
 
         _2distance.addActionListener(e -> {
-            if (ScreenTwo.this.nodeOneSelected.getText().equals("No node selected") || ScreenTwo.this.nodeTwoSelected.getText().equals("No node selected")) {
+            if (ScreenTwo.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenTwo.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenTwo.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {

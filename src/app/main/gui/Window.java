@@ -27,25 +27,10 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 
 public class Window extends JFrame {
-    private String title;
     private JFrame f;
     private JPanel containerPan = new JPanel();
-    private JPanel containerLeft = new JPanel();
-    private JPanel containerRight = new JPanel();
-    private JPanel panAffGen = new JPanel();
-    private JPanel panActionNoeud = new JPanel();
-    private JPanel panListeNoeud = new JPanel();
-    private mxGraphComponent panAffNoeuds;
 
-    private JButton _2Distance = new JButton("2-Distance");
-    private JButton _nDistance = new JButton("n-Distance");
 
-    private JLabel nbrVille = new JLabel("Nombre de villes : ");
-    private JLabel nbrRest = new JLabel("Nombre de restaurants : ");
-    private JLabel nbrLoisir = new JLabel("Nombre de centres de loisir : ");
-    private JLabel nbrNat = new JLabel("Nombre de nationales : ");
-    private JLabel nbrAuto = new JLabel("Nombre d'autoroutes : ");
-    private JLabel nbrDep = new JLabel("Nombre de départementales : ");
 
     private Graph graph;
 
@@ -69,67 +54,11 @@ public class Window extends JFrame {
     }
 
     private JPanel constrPan(){
-        Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int)dimension.getHeight();
-        int width  = (int)dimension.getWidth();
         containerPan.setLayout(new BorderLayout());
-
-        containerPan.add(containerLeft, BorderLayout.WEST);
-        containerPan.add(containerRight, BorderLayout.CENTER);
-
-
-        containerLeft.setSize(400,0);
-        containerLeft.setPreferredSize(new Dimension(400,0));
-
-
-        containerRight.setLayout(new BorderLayout());
-        containerLeft.setLayout(new BorderLayout());
-
-        panAffGen.setLayout(new GridLayout(6,2));
-        //panAffGen.setBackground(Color.RED);
-        panAffGen.setBorder(BorderFactory.createEtchedBorder());
-        panAffGen.setSize(0,200);
-        panAffGen.setPreferredSize(new Dimension(0,200));
-
-        //panActionNoeud.setBackground(Color.BLACK);
-        panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
-        panActionNoeud.setSize(0,200);
-        panActionNoeud.setPreferredSize(new Dimension(0,200));
-
-
-        //panListeNoeud.setBackground(Color.BLUE);
-        panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
-
-
-        //panAffNoeuds.setBackground(Color.YELLOW);
         GraphDisplay gd = new GraphDisplay(graph);
-        panAffNoeuds = gd.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
-        panAffNoeuds.setBorder(BorderFactory.createEtchedBorder());
 
+        containerPan.add(new MainScreen(f, graph, gd), BorderLayout.CENTER);
 
-        panAffGen.add(nbrVille);
-        panAffGen.add(new JLabel(String.valueOf(graph.getVillesCount()))); // Recupere le nbr de ville et le met en String
-        panAffGen.add(nbrRest);
-        panAffGen.add(new JLabel(String.valueOf(graph.getRestaurantsCount())));
-        panAffGen.add(nbrLoisir);
-        panAffGen.add(new JLabel(String.valueOf(graph.getLoisirsCount())));
-        panAffGen.add(nbrDep);
-        panAffGen.add(new JLabel(String.valueOf(graph.getDepartementalesCount())));
-        panAffGen.add(nbrNat);
-        panAffGen.add(new JLabel(String.valueOf(graph.getNationalesCount())));
-        panAffGen.add(nbrAuto);
-        panAffGen.add(new JLabel(String.valueOf(graph.getAutoroutesCount())));
-
-
-
-        panActionNoeud.add(_2Distance);
-        panActionNoeud.add(_nDistance);
-
-        containerLeft.add(panAffGen, BorderLayout.NORTH);
-        containerLeft.add(panListeNoeud, BorderLayout.CENTER);
-
-        containerRight.add(panActionNoeud, BorderLayout.NORTH);
-        containerRight.add(panAffNoeuds, BorderLayout.CENTER);
 
 
         return containerPan;

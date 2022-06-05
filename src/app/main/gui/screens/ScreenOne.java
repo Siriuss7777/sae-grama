@@ -24,11 +24,11 @@ public class ScreenOne extends JPanel {
 
     private mxGraphComponent panAffNoeuds;
 
-    private JLabel nodeSelectedTxt = new JLabel("Node selected: ");
-    public JLabel nodeSelected = new JLabel("No node selected");
+    private JLabel nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
+    public JLabel nodeSelected = new JLabel("Pas de noeud sélectionné");
 
-    private JButton neigbours = new JButton("Neigbours");
-    private JButton nodeByLink = new JButton("Node by link");
+    private JButton neigbours = new JButton("Voisins");
+    private JButton nodeByLink = new JButton("Noeuds relié par le lien");
 
     public JLabel getNodeSelected() {
         return nodeSelected;
@@ -84,16 +84,16 @@ public class ScreenOne extends JPanel {
         });
 
         neigbours.addActionListener(e -> {
-            if (nodeSelected.getText().equals("No node selected")) {
-                JOptionPane.showMessageDialog(null, "No node selected");
+            if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
+                JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
                 JOptionPane.showMessageDialog(null, "Voisins de : " + nodeSelected.getText() + " : " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
             }
         });
         /* FAIRE LA FONCTION
         nodeByLink.addActionListener(e -> {
-            if (nodeSelected.getText().equals("No node selected")) {
-                JOptionPane.showMessageDialog(null, "No node selected");
+            if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
+                JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
                 JOptionPane.showMessageDialog(null, "Node by link " + nodeSelected.getText() + ": " + graph.getNodeFromString(nodeSelected.getText()).getNodeByLink());
             }
