@@ -45,6 +45,8 @@ public class ScreenFour extends JPanel {
 
     private JButton pathWith = new JButton("Chemin traversant les deux noeuds");
 
+    private JButton nDistanceMin = new JButton("Distance minimum entre les deux noeuds");
+
     private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux", "Noeud à traverser un", "Noeud à traverser deux"});
 
     public ScreenFour(JFrame f, Graph graph, GraphDisplay graphDisplay) {
@@ -99,6 +101,8 @@ public class ScreenFour extends JPanel {
 
         panActionNoeud.add(pathWith);
 
+        panActionNoeud.add(nDistanceMin);
+
 
 
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -147,8 +151,11 @@ public class ScreenFour extends JPanel {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
+            else if (graph.Distance(nodeOne,nodeTwo,distance.getSelectedIndex()+1)){
+                JOptionPane.showMessageDialog(ScreenFour.this, "La distance entre les deux noeuds est de : " + (distance.getSelectedIndex()+1), "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
             else {
-                JOptionPane.showMessageDialog(ScreenFour.this, "Distance entre les deux noeuds: " + graph.Distance(nodeOne,nodeTwo,distance.getSelectedIndex()+1), "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenFour.this, "La distance entre les deux noeuds n'est pas de : " + (distance.getSelectedIndex()+1), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
 
         });
@@ -162,6 +169,16 @@ public class ScreenFour extends JPanel {
             }
             else {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Le chemin traversant les deux noeuds est : " + graph.getPathWith(nodeOne,nodeTwo,nodeThree,nodeFour), "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        });
+
+        nDistanceMin.addActionListener(e -> {
+            if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
+                JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(ScreenFour.this, "La distance minimum entre les deux noeuds est de : " + graph.DistanceMin(nodeOne,nodeTwo), "Success", JOptionPane.INFORMATION_MESSAGE);
             }
 
         });

@@ -1,6 +1,7 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
@@ -26,6 +27,8 @@ public class ScreenOne extends JPanel {
 
     private JLabel nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
     public JLabel nodeSelected = new JLabel("Pas de noeud sélectionné");
+
+    private Node node;
 
     private JButton neigbours = new JButton("Voisins");
     private JButton nodeByLink = new JButton("Noeuds relié par le lien");
@@ -76,7 +79,8 @@ public class ScreenOne extends JPanel {
                 super.mouseReleased(e);
                 mxCell cell = (mxCell) panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null) {
-                    nodeSelected.setText(cell.getValue().toString());
+                    node = (Node) cell.getValue();
+                    nodeSelected.setText(node.getName());
                     // Select the cell
                     panAffNoeuds.getGraph().setSelectionCell(cell);
                 }
@@ -90,7 +94,7 @@ public class ScreenOne extends JPanel {
             if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
-                JOptionPane.showMessageDialog(null, "Voisins de : " + nodeSelected.getText() + " : " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
+                JOptionPane.showMessageDialog(null, "Voisins de " + node.getName() + " : " + node.getAllNeighbours());
             }
         });
 

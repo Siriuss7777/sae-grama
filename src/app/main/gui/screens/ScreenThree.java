@@ -71,6 +71,7 @@ public class ScreenThree extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
+        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
         panAffNodeSelected.add(nodeSelectedComboBox);
 
         panActionNoeud.setLayout(new FlowLayout());

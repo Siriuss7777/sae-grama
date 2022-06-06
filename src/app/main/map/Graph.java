@@ -309,8 +309,7 @@ public class Graph {
         return returnedString.toString();
     }
 
-    public void nDistance(Node fromNode, int distance, int tmpDistance) { //
-        boolean result = false;
+    public void nDistance(Node fromNode, int distance, int tmpDistance) {
         if (tmpDistance == 0) {
             return;
         }
@@ -323,13 +322,31 @@ public class Graph {
         }
     }
 
+    public int DistanceMin(Node fromNode, Node toNode){ // Peut être enlevé
+        if (fromNode == toNode) {
+            return 0;
+        }
+        int distance = getNodesCount() - 1; // Recupere le nbr de Noeuds pour la distance max dans le pire des cas
+        int tmpDistance = distance - 1; // On commence avec une distance de 1
+
+        for(Node node : nodes){
+            node.setDistance(10000);
+        }
+        nDistance(fromNode, distance, tmpDistance);
+        return toNode.getDistance();
+
+    }
+
     public boolean Distance(Node fromNode, Node toNode, int distance) { // Retourne vrai si la distance entre deux noeuds est inférieur à la distance demandée
         boolean result = false;
+        if (fromNode == toNode) {
+            return true;
+        }
         for (Node node : nodes){
             node.setDistance(10000);
         }
         nDistance(fromNode, distance + 1, distance);
-        if (toNode.getDistance() <= distance) {
+        if (toNode.getDistance() == distance) {
             result = true;
         }
         return result;

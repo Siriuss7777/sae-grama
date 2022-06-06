@@ -68,6 +68,7 @@ public class ScreenTwo extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
+        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
         panAffNodeSelected.add(nodeSelectedComboBox);
 
 
@@ -112,7 +113,7 @@ public class ScreenTwo extends JPanel {
                     JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
-                    JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ScreenTwo.this, "Non, ils ne sont pas à 2 distance", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
