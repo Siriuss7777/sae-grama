@@ -109,7 +109,7 @@ public class ScreenTwo extends JPanel {
                 JOptionPane.showMessageDialog(ScreenTwo.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                if (ScreenTwo.this.graph.Distance(nodeOne, nodeTwo, 2)) {
+                if (graph.Distance(nodeOne, nodeTwo, 2) == 2) {
                     JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Succès", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {

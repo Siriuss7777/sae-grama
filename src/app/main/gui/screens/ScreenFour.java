@@ -151,7 +151,7 @@ public class ScreenFour extends JPanel {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            else if (graph.Distance(nodeOne,nodeTwo,distance.getSelectedIndex()+1)){
+            else if (graph.Distance(nodeOne,nodeTwo,distance.getSelectedIndex()+1) == distance.getSelectedIndex()+1) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "La distance entre les deux noeuds est de : " + (distance.getSelectedIndex()+1), "Success", JOptionPane.INFORMATION_MESSAGE);
             }
             else {
@@ -178,7 +178,7 @@ public class ScreenFour extends JPanel {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                JOptionPane.showMessageDialog(ScreenFour.this, "La distance minimum entre les deux noeuds est de : " + graph.DistanceMin(nodeOne,nodeTwo), "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(ScreenFour.this, "La distance minimum entre les deux noeuds est de : " + graph.Distance(nodeOne,nodeTwo,graph.getNodesCount()-1), "Success", JOptionPane.INFORMATION_MESSAGE);
             }
 
         });
