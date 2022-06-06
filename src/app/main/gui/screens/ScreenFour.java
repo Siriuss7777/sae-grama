@@ -126,6 +126,9 @@ public class ScreenFour extends JPanel {
                         ScreenFour.this.nodeFourSelected.setText(nodeFour.getName());
                     }
                 }
+                else{
+                    panAffNoeuds.getGraph().clearSelection();
+                }
             }
         });
 

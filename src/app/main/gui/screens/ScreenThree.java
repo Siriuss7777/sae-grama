@@ -100,6 +100,9 @@ public class ScreenThree extends JPanel {
                         ScreenThree.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
                 }
+                else{
+                    panAffNoeuds.getGraph().clearSelection();
+                }
             }
         });
 

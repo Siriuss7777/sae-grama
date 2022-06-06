@@ -80,6 +80,9 @@ public class ScreenOne extends JPanel {
                     // Select the cell
                     panAffNoeuds.getGraph().setSelectionCell(cell);
                 }
+                else{
+                    panAffNoeuds.getGraph().clearSelection();
+                }
             }
         });
 
@@ -90,16 +93,14 @@ public class ScreenOne extends JPanel {
                 JOptionPane.showMessageDialog(null, "Voisins de : " + nodeSelected.getText() + " : " + graph.getNodeFromString(nodeSelected.getText()).getAllNeighbours());
             }
         });
-        /* FAIRE LA FONCTION
+
         nodeByLink.addActionListener(e -> {
             if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
-                JOptionPane.showMessageDialog(null, "Node by link " + nodeSelected.getText() + ": " + graph.getNodeFromString(nodeSelected.getText()).getNodeByLink());
+                JOptionPane.showMessageDialog(null, "Node by link " + nodeSelected.getText() + ": " + "e");
             }
         });
-
-         */
 
 
 

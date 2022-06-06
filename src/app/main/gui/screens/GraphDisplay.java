@@ -2,6 +2,7 @@ package app.main.gui.screens;
 
 import app.main.map.Graph;
 import app.main.nodes.Link;
+import app.main.nodes.LinkType;
 import app.main.nodes.Node;
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.model.mxCell;
@@ -10,9 +11,8 @@ import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.util.mxConstants;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultUndirectedGraph;
 import org.jgrapht.graph.DefaultListenableGraph;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,8 +22,7 @@ public class GraphDisplay extends JPanel {
 
     private static Graph graph;
     private static mxGraphComponent graphComponent;
-    private static ListenableGraph<Node, DefaultEdge> listenableGraph;
-    private static JGraphXAdapter<Node, DefaultEdge> jgxAdapter;
+
 
 
     public static final mxMouseAdapter DEFAULT_MOUSELISTENER = new mxMouseAdapter() {
@@ -32,6 +31,9 @@ public class GraphDisplay extends JPanel {
             mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
             if (cell != null) {
                 graphComponent.getGraph().setSelectionCell(cell);
+            }
+            else{
+                graphComponent.getGraph().clearSelection();
             }
         }
     };
@@ -45,60 +47,98 @@ public class GraphDisplay extends JPanel {
     public mxGraphComponent initializeAffNoeuds(mxMouseAdapter mouseListener) {
 
         // Colouring vertices differently following their types
-        this.colourNodes();
+        this.colourNodesAndLinks();
 
         // Make the graph zoomable and scrollable with ctrl-mousewheel
         this.makeScrollable();
 
         // Handle node (vertex) selection
-//        this.makeNodesSelectable();
         this.makeNodesSelectableJGX(mouseListener);
 
         return graphComponent;
     }
 
+
+
+
     private void initGraph(){
-        ListenableGraph<Node, DefaultEdge> g = new DefaultListenableGraph<>(new DirectedWeightedPseudograph<>(DefaultEdge.class));
+        int autId = 0;
+        int natId = 0;
+        int depId = 0;
+        String linkName = null;
+
+        ListenableGraph<Node, String> g = new DefaultListenableGraph<>(new DefaultUndirectedGraph<>(String.class));
 
         for (Node node : graph.getNodes()) {
             g.addVertex(node);
         }
 
+
         for (Node node : graph.getNodes()) {
             for (Link neighbour : node.getAllNeighbours()) {
-                g.setEdgeWeight(g.addEdge(node,
-                        neighbour.getNode()), neighbour.getDistance());
+                if(neighbour.getType() == LinkType.AUTOROUTE){
+                    autId++;
+                    linkName = "A" + autId;
+                }
+                if(neighbour.getType() == LinkType.NATIONALE){
+                    natId++;
+                    linkName = "N" + natId;
+                }
+                if(neighbour.getType() == LinkType.DEPARTEMENTALE){
+                    depId++;
+                    linkName = "D" + depId;
+                }
+
+                g.addEdge(node, neighbour.getNode(), linkName + " (" + neighbour.getDistance()+"km)");
             }
         }
 
-        JGraphXAdapter<Node, DefaultEdge> jgxa = new JGraphXAdapter<>(g);
+
+        JGraphXAdapter<Node, String> jgxa = new JGraphXAdapter<>(g);
         graphComponent = new mxGraphComponent(jgxa);
         graphComponent.setConnectable(false);
         graphComponent.setEnabled(false);
+        graphComponent.setAlignmentX(Component.CENTER_ALIGNMENT);
+        graphComponent.setAlignmentY(Component.CENTER_ALIGNMENT);
+        graphComponent.setPanning(true);
+        graphComponent.setToolTips(true);
         jgxa.setCellsSelectable(true);
 
 
+
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxa);
-        layout.setForceConstant(200);
+        layout.setForceConstant(250);
         layout.execute(jgxa.getDefaultParent());
 
-
-        listenableGraph = g;
-        jgxAdapter = jgxa;
     }
 
-    private void colourNodes() {
+    private void colourNodesAndLinks() {
         for (Object vertex : graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())) {
             String type = String.valueOf(graphComponent.getGraph().getModel().getValue(vertex));
             if (type.charAt(0) == 'R') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF0000", new Object[]{vertex});
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#3C64B9", new Object[]{vertex});
             }
             else if (type.charAt(0) == 'L') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00FF00", new Object[]{vertex});
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FCA311", new Object[]{vertex});
             }
             else{
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#0000FF", new Object[]{vertex});
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF3333", new Object[]{vertex});
             }
+
+        }
+        for(Object edge: graphComponent.getGraph().getChildEdges(graphComponent.getGraph().getDefaultParent())){
+            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(edge));
+            if (type.charAt(0) == 'D') {
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#3C64B9", new Object[]{edge});
+            }
+            else if (type.charAt(0) == 'N') {
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FCA311", new Object[]{edge});
+            }
+            else{
+                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", new Object[]{edge});
+            }
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", new Object[]{edge});
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", new Object[]{edge});
         }
     }
 
@@ -141,7 +181,11 @@ public class GraphDisplay extends JPanel {
 
     private void makeNodesSelectable(){
         /*
-            Outdated, use makeNodesSelectableJGX instead
+
+
+            Deprecated, use makeNodesSelectableJGX instead
+
+
          */
         final mxCell[] lastSelectedCell = {(mxCell) graphComponent.getGraph().getModel().getChildAt(graphComponent.getGraph().getDefaultParent(), 0)};   // CHOSE FIRST ELEMENT TO MAKE IT WORK
 

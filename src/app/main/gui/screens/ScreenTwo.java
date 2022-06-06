@@ -97,6 +97,9 @@ public class ScreenTwo extends JPanel {
                         ScreenTwo.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
                 }
+                else{
+                    panAffNoeuds.getGraph().clearSelection();
+                }
             }
         });
 
