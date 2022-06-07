@@ -46,15 +46,25 @@ public class ScreenOne extends JPanel {
     }
 
     private void constpan(){
-
         this.setLayout(new BorderLayout());
 
         this.add(containerLeft, BorderLayout.WEST);
         this.add(containerRight, BorderLayout.CENTER);
 
+        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int hauteur = (int)tailleEcran.getHeight();
+        int largeur = (int)tailleEcran.getWidth();
 
-        containerLeft.setSize(400, 0);
-        containerLeft.setPreferredSize(new Dimension(400, 0));
+
+
+
+        containerLeft.setSize(400, hauteur);
+        containerLeft.setPreferredSize(new Dimension(400, hauteur));
+
+        int width = largeur - 400;
+
+        containerRight.setSize(width, hauteur);
+        containerRight.setPreferredSize(new Dimension(width, hauteur));
 
 
         containerRight.setLayout(new BorderLayout());

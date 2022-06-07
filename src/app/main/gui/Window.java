@@ -39,11 +39,11 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setContentPane(constrPan());
+        //setContentPane(constrPan());
         add(constMenu());
         setVisible(true);
     }
-
+/*
     private JPanel constrPan(){
         GraphDisplay gd = new GraphDisplay(graph);
 
@@ -54,11 +54,13 @@ public class Window extends JFrame {
         return containerPan;
     }
 
+ */
+
     private JTabbedPane constMenu(){
         JTabbedPane menu = new JTabbedPane();
         GraphDisplay gd = new GraphDisplay(graph);
 
-        JComponent mainTab = new MainScreen(f, graph, gd);
+        JPanel mainTab = new MainScreen(f, graph, gd);
         menu.addTab("Écran principal", mainTab);
         menu.addChangeListener(new ChangeListener() {
             @Override
@@ -71,7 +73,7 @@ public class Window extends JFrame {
             }
         });
 
-        JComponent tab0 = new JPanel();
+        JPanel tab0 = new JPanel();
         menu.addTab("Écran 0", tab0);
         menu.addChangeListener(new ChangeListener() {
             @Override
@@ -84,7 +86,7 @@ public class Window extends JFrame {
             }
         });
 
-        JComponent tab1 = new JPanel();
+        JPanel tab1 = new JPanel();
         menu.addTab("Écran 1", tab1);
         menu.addChangeListener(new ChangeListener() {
             @Override
@@ -97,7 +99,7 @@ public class Window extends JFrame {
             }
         });
 
-        JComponent tab2 = new JPanel();
+        JPanel tab2 = new JPanel();
         menu.addTab("Écran 2", tab2);
         menu.addChangeListener(new ChangeListener() {
             @Override
@@ -110,7 +112,7 @@ public class Window extends JFrame {
             }
         });
 
-        JComponent tab3 = new JPanel();
+        JPanel tab3 = new JPanel();
         menu.addTab("Écran 3", tab3);
         menu.addChangeListener(new ChangeListener() {
             @Override
@@ -123,7 +125,7 @@ public class Window extends JFrame {
             }
         });
 
-        JComponent tab4 = new JPanel();
+        JPanel tab4 = new JPanel();
         menu.addTab("Écran 4", tab4);
         menu.addChangeListener(new ChangeListener() {
             @Override
