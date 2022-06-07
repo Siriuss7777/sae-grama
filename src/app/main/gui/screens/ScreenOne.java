@@ -23,7 +23,7 @@ public class ScreenOne extends JPanel {
     private JPanel containerRight = new JPanel();
     private JPanel panAffNodeSel = new JPanel();
     private JPanel panActionNoeud = new JPanel();
-    private JPanel panListeNoeud = new JPanel();
+    private JPanel panKey = new JPanel();
 
     private mxGraphComponent panAffNoeuds;
 
@@ -82,7 +82,8 @@ public class ScreenOne extends JPanel {
         panActionNoeud.setSize(0, 200);
         panActionNoeud.setPreferredSize(new Dimension(0, 200));
 
-        panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
+        panKey.setBorder(BorderFactory.createEtchedBorder());
+        panKey.add(new JLabel("Vous êtes sur la page 1"));
 
 
         panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
@@ -128,7 +129,7 @@ public class ScreenOne extends JPanel {
         panActionNoeud.add(nodeByLink);
 
         containerLeft.add(panAffNodeSel, BorderLayout.NORTH);
-        containerLeft.add(panListeNoeud, BorderLayout.CENTER);
+        containerLeft.add(panKey, BorderLayout.CENTER);
 
         containerRight.add(panActionNoeud, BorderLayout.NORTH);
         containerRight.add(panAffNoeuds, BorderLayout.CENTER);

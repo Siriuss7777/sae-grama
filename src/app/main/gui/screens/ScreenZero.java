@@ -1,11 +1,15 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import app.main.nodes.Node;
 import com.mxgraph.swing.mxGraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class ScreenZero extends JPanel {
     JFrame f;
@@ -33,6 +37,12 @@ public class ScreenZero extends JPanel {
     private JLabel listeNat = new JLabel("Liste des nationales : ");
     private JLabel listeAuto = new JLabel("Liste des autoroutes : ");
     private JLabel listeDep = new JLabel("Liste des départementales : ");
+
+    private JComboBox<String> listeVilleCombo;
+    private JComboBox<String> listeRestCombo;
+    private JComboBox<String> listeLoisirCombo;
+
+    private LinkedList<Node> listeNoeudsSelect = new LinkedList<>();
 
     public ScreenZero(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
@@ -101,9 +111,41 @@ public class ScreenZero extends JPanel {
         panAffParType.add(listeDep);
         panAffParType.add(listeNat);
         panAffParType.add(listeAuto);
-        panAffParType.add(new JComboBox<>(graph.getVillesNames()));
-        panAffParType.add(new JComboBox<>(graph.getRestaurantsNames()));
-        panAffParType.add(new JComboBox<>(graph.getLoisirsNames()));
+
+        listeVilleCombo = new JComboBox<>(graph.getVillesNames());
+        listeRestCombo = new JComboBox<>(graph.getRestaurantsNames());
+        listeLoisirCombo = new JComboBox<>(graph.getLoisirsNames());
+
+        panAffParType.add(listeVilleCombo);
+        panAffParType.add(listeRestCombo);
+        panAffParType.add(listeLoisirCombo);
+
+        listeVilleCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeNoeudsSelect.clear();
+                listeNoeudsSelect.add(graph.getNodeFromString("V," + listeVilleCombo.getSelectedItem().toString()));
+                graphDisplay.selectCells(listeNoeudsSelect);
+            }
+        });
+
+        listeRestCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeNoeudsSelect.clear();
+                listeNoeudsSelect.add(graph.getNodeFromString("R," + listeRestCombo.getSelectedItem().toString()));
+                graphDisplay.selectCells(listeNoeudsSelect);
+            }
+        });
+
+        listeLoisirCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeNoeudsSelect.clear();
+                listeNoeudsSelect.add(graph.getNodeFromString("L," + listeLoisirCombo.getSelectedItem().toString()));
+                graphDisplay.selectCells(listeNoeudsSelect);
+            }
+        });
 
         String[] sortedDepartementales = graph.getDepartementalesNames();
         Arrays.sort(sortedDepartementales);

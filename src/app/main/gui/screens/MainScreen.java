@@ -35,7 +35,7 @@ public class MainScreen extends JPanel {
         containerBot = this.graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
-        // Tell if display have been initialized successfully
+        // Dis si le graphe a bien été initialisé
         if (containerBot != null) {
             JLabel success = new JLabel("Chargé avec succès");
             containerTop.add(success);
