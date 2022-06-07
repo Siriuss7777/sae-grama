@@ -32,7 +32,6 @@ public class ScreenTwo extends JPanel {
     private Node nodeOne;
     private Node nodeTwo;
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux"});
 
     private JButton _2distance = new JButton("Sont-ils à 2 distance ?");
 
@@ -81,8 +80,6 @@ public class ScreenTwo extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
-        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
-        panAffNodeSelected.add(nodeSelectedComboBox);
 
 
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -100,12 +97,12 @@ public class ScreenTwo extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenTwo.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenTwo.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
+                    if (!e.isControlDown()) {
                         panAffNoeuds.getGraph().setSelectionCell(cell);
                         nodeOne = (Node) cell.getValue();
                         ScreenTwo.this.nodeOneSelected.setText(nodeOne.getName());
                     }
-                    else {
+                    else if (e.isControlDown()) {
                         panAffNoeuds.getGraph().setSelectionCell(cell);
                         nodeTwo = (Node) cell.getValue();
                         ScreenTwo.this.nodeTwoSelected.setText(nodeTwo.getName());

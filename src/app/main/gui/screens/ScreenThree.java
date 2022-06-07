@@ -33,7 +33,6 @@ public class ScreenThree extends JPanel {
     private Node nodeTwo;
     private Node returnNode;
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux"});
 
     private JButton gastronomique = new JButton("Gastronomique");
     private JButton ouverte = new JButton("Ouverte");
@@ -85,8 +84,6 @@ public class ScreenThree extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
-        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
-        panAffNodeSelected.add(nodeSelectedComboBox);
 
         panActionNoeud.setLayout(new FlowLayout());
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -106,11 +103,11 @@ public class ScreenThree extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenThree.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenThree.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
+                    if (!e.isControlDown()) {
                         nodeOne = (Node) cell.getValue();
                         ScreenThree.this.nodeOneSelected.setText(nodeOne.getName());
                     }
-                    else {
+                    else if (e.isControlDown()) {
                         nodeTwo = (Node) cell.getValue();
                         ScreenThree.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }

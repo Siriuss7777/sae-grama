@@ -35,10 +35,10 @@ public class ScreenFour extends JPanel {
     private JLabel nodeThreeSelected = new JLabel("Pas de noeud sélectionné");
     private JLabel nodeFourSelected = new JLabel("Pas de noeud sélectionné");
 
-    private Node nodeOne;
-    private Node nodeTwo;
-    private Node nodeThree;
-    private Node nodeFour;
+    private Node nodeOne = null;
+    private Node nodeTwo = null;
+    private Node nodeThree = null;
+    private Node nodeFour = null;
 
     private JButton floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
     private JButton nDistanceButton = new JButton("Distance entre les deux noeuds");
@@ -49,7 +49,6 @@ public class ScreenFour extends JPanel {
 
     private JButton nDistanceMinButton = new JButton("Distance minimum entre les deux noeuds");
 
-    private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux", "Noeud à traverser un", "Noeud à traverser deux"});
 
     public ScreenFour(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
@@ -101,8 +100,6 @@ public class ScreenFour extends JPanel {
         panAffNodeSelected.add(nodeThreeSelected);
         panAffNodeSelected.add(nodeFourSelectedTxt);
         panAffNodeSelected.add(nodeFourSelected);
-        panAffNodeSelected.add(new JLabel("Vous choisissez le noeud : "));
-        panAffNodeSelected.add(nodeSelectedComboBox);
 
 
 
@@ -129,19 +126,19 @@ public class ScreenFour extends JPanel {
                 super.mousePressed(e);
                 mxCell cell = (mxCell) ScreenFour.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
-                    if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud un")) {
+                    if (!e.isControlDown() && !e.isShiftDown()) {
                         nodeOne = (Node) cell.getValue();
                         ScreenFour.this.nodeOneSelected.setText(nodeOne.getName());
                     }
-                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud deux")) {
+                    else if (e.isControlDown() && !e.isShiftDown()) {
                         nodeTwo = (Node) cell.getValue();
                         ScreenFour.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
-                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud à traverser un")) {
+                    else if (e.isShiftDown() && !e.isControlDown() && nodeThree == null) {
                         nodeThree = (Node) cell.getValue();
                         ScreenFour.this.nodeThreeSelected.setText(nodeThree.getName());
                     }
-                    else if (ScreenFour.this.nodeSelectedComboBox.getSelectedItem().equals("Noeud à traverser deux")) {
+                    else if (e.isShiftDown() && !e.isControlDown()) {
                         nodeFour = (Node) cell.getValue();
                         ScreenFour.this.nodeFourSelected.setText(nodeFour.getName());
                     }
