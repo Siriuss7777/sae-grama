@@ -16,6 +16,8 @@ public class Graph {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
     private FloydWarshall matrix;
+
+    static int autorouteNumber = 1, nationaleNumber = 1, departementaleNumber = 1;
     static private final int INFINITE = Integer.MAX_VALUE;
 
     public Graph() {
@@ -33,7 +35,7 @@ public class Graph {
         Node currentNode, newNode;
 
         LinkType linkType;
-        Link addedLink;
+        Link addedLink, invertedLink;
 
         int distance;
 
@@ -72,6 +74,24 @@ public class Graph {
                 distance = Integer.parseInt(attributes[1]);
 
                 addedLink = currentNode.addLink(newNode, linkType, distance);
+                invertedLink = newNode.getClosestNeighbour(currentNode);
+                if(invertedLink != null){
+                    addedLink.setRoadNumber(invertedLink.getRoadNumber());
+                } else {
+                    if(addedLink.getType() == LinkType.AUTOROUTE){
+                        addedLink.setRoadNumber(autorouteNumber);
+                        autorouteNumber++;
+                    }
+                    if(addedLink.getType() == LinkType.DEPARTEMENTALE){
+                        addedLink.setRoadNumber(departementaleNumber);
+                        departementaleNumber++;
+                    }
+                    if(addedLink.getType() == LinkType.NATIONALE){
+                        addedLink.setRoadNumber(nationaleNumber);
+                        nationaleNumber++;
+                    }
+
+                }
                 this.addLink(addedLink);
             }
 

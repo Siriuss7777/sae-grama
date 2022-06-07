@@ -1,35 +1,21 @@
 package app.main.gui;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Member;
 
 
 import app.main.gui.screens.*;
 import app.main.map.*;
-import app.main.nodes.*;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.layout.*;
-
-import com.mxgraph.swing.util.mxMouseAdapter;
-import com.mxgraph.model.mxCell;
-import com.mxgraph.layout.*;
-import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxStylesheet;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultListenableGraph;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
+import com.formdev.flatlaf.*;
 
 
 public class Window extends JFrame {
     private JFrame f;
     private JPanel containerPan = new JPanel();
-
 
 
     private Graph graph;
@@ -43,133 +29,114 @@ public class Window extends JFrame {
 
 
     public void init() {
+        try{
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        }catch(Exception e){
+            System.out.println("Erreur lors de l'utilisation du LaF");
+        }
         setTitle("SAE GRAMA - Guenot/Le Gall");
         setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setContentPane(constrPan());
-        setJMenuBar(constMenu());
+        add(constMenu());
         setVisible(true);
     }
 
     private JPanel constrPan(){
-        containerPan.setLayout(new BorderLayout());
         GraphDisplay gd = new GraphDisplay(graph);
 
+        containerPan.setLayout(new BorderLayout());
+
         containerPan.add(new MainScreen(f, graph, gd), BorderLayout.CENTER);
-
-
 
         return containerPan;
     }
 
-    private JMenuBar constMenu(){
-        JMenuBar menubar = new JMenuBar();
-
-        JMenu file = new JMenu("File");
-        JMenuItem open = new JMenuItem("Open");
-
+    private JTabbedPane constMenu(){
+        JTabbedPane menu = new JTabbedPane();
         GraphDisplay gd = new GraphDisplay(graph);
 
-        // Ecran Principale
-        JMenu mainScreen = new JMenu("Ecran principale");
-        JMenuItem main = new JMenuItem("Ecran principale");
-        mainScreen.add(main);
-        main.addActionListener(e -> {
-            f.getContentPane().removeAll();
-            f.getContentPane().add(new MainScreen(f, graph, gd));
-            f.revalidate();
-        });
-
-
-        // Ecran 0
-        JMenu screen_0 = new JMenu("Ecran 0");
-        JMenuItem item_0 = new JMenuItem("Ecran 0");
-        screen_0.add(item_0);
-        item_0.addActionListener(new ActionListener() {
+        JComponent mainTab = new MainScreen(f, graph, gd);
+        menu.addTab("Écran principal", mainTab);
+        menu.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenZero(f, graph, gd));
-                f.revalidate();
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 0){
+                    mainTab.removeAll();
+                    mainTab.add(new MainScreen(f, graph, gd));
+                    mainTab.revalidate();
+                }
             }
         });
 
-
-        // Ecran 1
-        JMenu screen_1 = new JMenu("Ecran 1");
-        JMenuItem item_1 = new JMenuItem("Ecran 1");
-        screen_1.add(item_1);
-        item_1.addActionListener(new ActionListener() {
+        JComponent tab0 = new JPanel();
+        menu.addTab("Écran 0", tab0);
+        menu.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenOne(f, graph, gd));
-                f.revalidate();
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 1){
+                    tab0.removeAll();
+                    tab0.add(new ScreenZero(f, graph, gd));
+                    tab0.revalidate();
+                }
             }
         });
 
-
-        // Ecran 2
-        JMenu screen_2 = new JMenu("Ecran 2");
-        JMenuItem item_2 = new JMenuItem("Ecran 2");
-        screen_2.add(item_2);
-        item_2.addActionListener(new ActionListener() {
+        JComponent tab1 = new JPanel();
+        menu.addTab("Écran 1", tab1);
+        menu.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenTwo(f, graph, gd));
-                f.revalidate();
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 2){
+                    tab1.removeAll();
+                    tab1.add(new ScreenOne(f, graph, gd));
+                    tab1.revalidate();
+                }
             }
         });
 
-
-        // Ecran 3
-        JMenu screen_3 = new JMenu("Ecran 3");
-        JMenuItem item_3 = new JMenuItem("Ecran 3");
-        screen_3.add(item_3);
-        item_3.addActionListener(new ActionListener() {
+        JComponent tab2 = new JPanel();
+        menu.addTab("Écran 2", tab2);
+        menu.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenThree(f, graph, gd));
-                f.revalidate();
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 3){
+                    tab2.removeAll();
+                    tab2.add(new ScreenTwo(f, graph, gd));
+                    tab2.revalidate();
+                }
             }
         });
 
-
-        // Ecran 4
-        JMenu screen_4 = new JMenu("Ecran 4");
-        JMenuItem item_4 = new JMenuItem("Ecran 4");
-        screen_4.add(item_4);
-        item_4.addActionListener(new ActionListener() {
+        JComponent tab3 = new JPanel();
+        menu.addTab("Écran 3", tab3);
+        menu.addChangeListener(new ChangeListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                f.getContentPane().removeAll();
-                f.getContentPane().add(new ScreenFour(f, graph, gd));
-                f.revalidate();
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 4){
+                    tab3.removeAll();
+                    tab3.add(new ScreenThree(f, graph, gd));
+                    tab3.revalidate();
+                }
             }
         });
 
-        JMenu help = new JMenu("Help");
+        JComponent tab4 = new JPanel();
+        menu.addTab("Écran 4", tab4);
+        menu.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(menu.getSelectedIndex() == 5){
+                    tab4.removeAll();
+                    tab4.add(new ScreenFour(f, graph, gd));
+                    tab4.revalidate();
+                }
+            }
+        });
 
-        //JMenuItem copy = new JMenuItem(new Copie("Copier", this));
-
-        file.add(open);
-
-
-        menubar.add(file);
-        menubar.add(mainScreen);
-        menubar.add(screen_0);
-        menubar.add(screen_1);
-        menubar.add(screen_2);
-        menubar.add(screen_3);
-        menubar.add(screen_4);
-        menubar.add(help);
-
-
-        return menubar;
+        return menu;
     }
 
 }

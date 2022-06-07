@@ -78,7 +78,7 @@ public class ScreenOne extends JPanel {
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
                 mxCell cell = (mxCell) panAffNoeuds.getCellAt(e.getX(), e.getY());
-                if (cell != null) {
+                if (cell != null && cell.isVertex()) {
                     node = (Node) cell.getValue();
                     nodeSelected.setText(node.getName());
                     // Select the cell

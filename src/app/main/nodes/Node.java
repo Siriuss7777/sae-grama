@@ -64,6 +64,9 @@ public class Node {
     public Link getClosestNeighbour(Node node){ // Dijkstra, retourne le lien le plus court entre les deux noeuds
 
         LinkedList<Link> neighboursList = this.getNeighbourLinksWithNode(node);
+        if(neighboursList.isEmpty()){
+            return null;
+        }
         Link minLink = neighboursList.element();
 
         if(neighboursList.size()!=1){

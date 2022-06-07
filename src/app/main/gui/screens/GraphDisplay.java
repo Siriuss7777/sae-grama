@@ -47,7 +47,8 @@ public class GraphDisplay extends JPanel {
     public mxGraphComponent initializeAffNoeuds(mxMouseAdapter mouseListener) {
 
         // Colouring vertices differently following their types
-        this.colourNodesAndLinks();
+        this.colourNodes();
+        this.colourLinks();
 
         // Make the graph zoomable and scrollable with ctrl-mousewheel
         this.makeScrollable();
@@ -59,12 +60,7 @@ public class GraphDisplay extends JPanel {
     }
 
 
-
-
     private void initGraph(){
-        int autId = 0;
-        int natId = 0;
-        int depId = 0;
         String linkName = null;
 
         ListenableGraph<Node, String> g = new DefaultListenableGraph<>(new DefaultUndirectedGraph<>(String.class));
@@ -77,16 +73,13 @@ public class GraphDisplay extends JPanel {
         for (Node node : graph.getNodes()) {
             for (Link neighbour : node.getAllNeighbours()) {
                 if(neighbour.getType() == LinkType.AUTOROUTE){
-                    autId++;
-                    linkName = "A" + autId;
+                    linkName = "A" + neighbour.getRoadNumber();
                 }
                 if(neighbour.getType() == LinkType.NATIONALE){
-                    natId++;
-                    linkName = "N" + natId;
+                    linkName = "N" + neighbour.getRoadNumber();
                 }
                 if(neighbour.getType() == LinkType.DEPARTEMENTALE){
-                    depId++;
-                    linkName = "D" + depId;
+                    linkName = "D" + neighbour.getRoadNumber();
                 }
 
                 g.addEdge(node, neighbour.getNode(), linkName + " (" + neighbour.getDistance()+"km)");
@@ -98,12 +91,8 @@ public class GraphDisplay extends JPanel {
         graphComponent = new mxGraphComponent(jgxa);
         graphComponent.setConnectable(false);
         graphComponent.setEnabled(false);
-        graphComponent.setAlignmentX(Component.CENTER_ALIGNMENT);
-        graphComponent.setAlignmentY(Component.CENTER_ALIGNMENT);
-        graphComponent.setPanning(true);
         graphComponent.setToolTips(true);
         jgxa.setCellsSelectable(true);
-
 
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxa);
@@ -112,20 +101,22 @@ public class GraphDisplay extends JPanel {
 
     }
 
-    private void colourNodesAndLinks() {
+    private void colourNodes() {
         for (Object vertex : graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())) {
             String type = String.valueOf(graphComponent.getGraph().getModel().getValue(vertex));
             if (type.charAt(0) == 'R') {
                 graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#3C64B9", new Object[]{vertex});
-            }
-            else if (type.charAt(0) == 'L') {
+            } else if (type.charAt(0) == 'L') {
                 graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FCA311", new Object[]{vertex});
-            }
-            else{
+            } else {
                 graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF3333", new Object[]{vertex});
             }
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", new Object[]{vertex});
 
         }
+    }
+
+    private void colourLinks(){
         for(Object edge: graphComponent.getGraph().getChildEdges(graphComponent.getGraph().getDefaultParent())){
             String type = String.valueOf(graphComponent.getGraph().getModel().getValue(edge));
             if (type.charAt(0) == 'D') {
@@ -139,7 +130,14 @@ public class GraphDisplay extends JPanel {
             }
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", new Object[]{edge});
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", new Object[]{edge});
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", new Object[]{edge});
         }
+
+    }
+
+    // Make the graph zoomable and scrollable with ctrl-mousewheel
+    private void makeScrollable2() {
+        graphComponent.setAutoScroll(true);
     }
 
     private void makeScrollable(){
