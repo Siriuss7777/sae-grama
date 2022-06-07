@@ -9,6 +9,8 @@ import com.mxgraph.swing.util.mxMouseAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ScreenFour extends JPanel {
     JFrame f;
@@ -155,8 +157,10 @@ public class ScreenFour extends JPanel {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                JOptionPane.showMessageDialog(ScreenFour.this, "Distance la plus courte entre les deux noeuds: " + graph.getMatrix().lowestDistance(nodeOne,nodeTwo)+ ". Le chemin est : "+ graph.getMatrix().getShortestPath(nodeOne, nodeTwo), "Success", JOptionPane.INFORMATION_MESSAGE);
-
+                ArrayList<Node> path = graph.getMatrix().getShortestPath(nodeOne, nodeTwo);
+                LinkedList<Node> pathLinked = new LinkedList<>(path);
+                graphDisplay.selectCells(pathLinked);
+                
             }
 
         });
