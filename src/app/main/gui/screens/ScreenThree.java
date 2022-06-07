@@ -33,6 +33,8 @@ public class ScreenThree extends JPanel {
     private Node nodeTwo;
     private Node returnNode;
 
+    private JButton reset = new JButton("Reset");
+
 
     private JButton gastronomique = new JButton("Gastronomique");
     private JButton ouverte = new JButton("Ouverte");
@@ -84,6 +86,7 @@ public class ScreenThree extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
+        panAffNodeSelected.add(reset);
 
         panActionNoeud.setLayout(new FlowLayout());
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -149,6 +152,13 @@ public class ScreenThree extends JPanel {
                 JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus culturelle !", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
             }
+        });
+
+        reset.addActionListener(e -> {
+            nodeOneSelected.setText("Pas de noeud sélectionné");
+            nodeTwoSelected.setText("Pas de noeud sélectionné");
+            nodeOne = null;
+            nodeTwo = null;
         });
 
 

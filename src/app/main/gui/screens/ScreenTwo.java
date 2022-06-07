@@ -32,6 +32,8 @@ public class ScreenTwo extends JPanel {
     private Node nodeOne;
     private Node nodeTwo;
 
+    private JButton reset = new JButton("Reset");
+
 
     private JButton _2distance = new JButton("Sont-ils à 2 distance ?");
 
@@ -80,6 +82,7 @@ public class ScreenTwo extends JPanel {
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
+        panAffNodeSelected.add(reset);
 
 
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -126,6 +129,13 @@ public class ScreenTwo extends JPanel {
                     JOptionPane.showMessageDialog(ScreenTwo.this, "Non, ils ne sont pas à 2 distance", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
+        });
+
+        reset.addActionListener(e -> {
+            nodeOneSelected.setText("Pas de noeud sélectionné");
+            nodeTwoSelected.setText("Pas de noeud sélectionné");
+            nodeOne = null;
+            nodeTwo = null;
         });
 
 

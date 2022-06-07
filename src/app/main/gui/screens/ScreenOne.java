@@ -30,6 +30,8 @@ public class ScreenOne extends JPanel {
 
     private Node node;
 
+    private JButton reset = new JButton("Reset");
+
     private JButton neighbours = new JButton("Voisins");
     private JButton nodeByLink = new JButton("Noeuds relié par le lien");
 
@@ -120,10 +122,16 @@ public class ScreenOne extends JPanel {
             }
         });
 
+        reset.addActionListener(e -> {
+            nodeSelected.setText("Pas de noeud sélectionné");
+            node = null;
+        });
+
 
 
         panAffNodeSel.add(nodeSelectedTxt);
         panAffNodeSel.add(nodeSelected);
+        panAffNodeSel.add(reset);
 
         panActionNoeud.add(neighbours);
         panActionNoeud.add(nodeByLink);

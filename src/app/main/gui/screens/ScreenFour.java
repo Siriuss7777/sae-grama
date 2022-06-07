@@ -40,6 +40,8 @@ public class ScreenFour extends JPanel {
     private Node nodeThree = null;
     private Node nodeFour = null;
 
+    private JButton reset = new JButton("Reset");
+
     private JButton floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
     private JButton nDistanceButton = new JButton("Distance entre les deux noeuds");
     private JLabel labelDistance = new JLabel("Distance entre les deux noeuds à tester : ");
@@ -100,6 +102,7 @@ public class ScreenFour extends JPanel {
         panAffNodeSelected.add(nodeThreeSelected);
         panAffNodeSelected.add(nodeFourSelectedTxt);
         panAffNodeSelected.add(nodeFourSelected);
+        panAffNodeSelected.add(reset);
 
 
 
@@ -198,6 +201,17 @@ public class ScreenFour extends JPanel {
                 JOptionPane.showMessageDialog(ScreenFour.this, "La distance minimum entre les deux noeuds est de : " + graph.Distance(nodeOne,nodeTwo,graph.getNodesCount()-1), "Success", JOptionPane.INFORMATION_MESSAGE);
             }
 
+        });
+
+        reset.addActionListener(e -> {
+            nodeOneSelected.setText("Pas de noeud sélectionné");
+            nodeTwoSelected.setText("Pas de noeud sélectionné");
+            nodeThreeSelected.setText("Pas de noeud sélectionné");
+            nodeFourSelected.setText("Pas de noeud sélectionné");
+            nodeOne = null;
+            nodeTwo = null;
+            nodeThree = null;
+            nodeFour = null;
         });
 
 
