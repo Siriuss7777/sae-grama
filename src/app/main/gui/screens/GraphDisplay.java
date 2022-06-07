@@ -2,7 +2,6 @@ package app.main.gui.screens;
 
 import app.main.map.Graph;
 import app.main.nodes.Link;
-import app.main.nodes.LinkType;
 import app.main.nodes.Node;
 import com.mxgraph.layout.mxFastOrganicLayout;
 import com.mxgraph.model.mxCell;
@@ -70,19 +69,18 @@ public class GraphDisplay extends JPanel {
             g.addVertex(node);
         }
 
-        // TODO: changer le chargement des liens:
         for (Link road : graph.getAutoroutes()) {
-            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            linkName = road.getType().toString() + road.getRoadNumber() + " (" + road.getDistance() + "km)";
             g.addEdge(road.getFromNode(), road.getNode(), linkName);
         }
 
         for (Link road : graph.getNationales()) {
-            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            linkName = road.getType().toString() + road.getRoadNumber() + " (" + road.getDistance() + "km)";
             g.addEdge(road.getFromNode(), road.getNode(), linkName);
         }
 
         for (Link road : graph.getDepartementales()) {
-            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            linkName = road.getType().toString() + road.getRoadNumber() + " (" + road.getDistance() + "km)";
             g.addEdge(road.getFromNode(), road.getNode(), linkName);
         }
 
@@ -105,18 +103,28 @@ public class GraphDisplay extends JPanel {
     }
 
     private void colourNodes() {
-        for (Object vertex : graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())) {
-            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(vertex));
-            if (type.charAt(0) == 'R') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#3C64B9", new Object[]{vertex});
-            } else if (type.charAt(0) == 'L') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FCA311", new Object[]{vertex});
-            } else {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF3333", new Object[]{vertex});
-            }
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", new Object[]{vertex});
+        Object[] restaurants = new Object[graph.getNodes().size()];
+        Object[] villes = new Object[graph.getNodes().size()];
+        Object[] loisirs = new Object[graph.getNodes().size()];
+        Object currentVertex;
+        for (int i = 0; i < graph.getNodesCount(); i++) {
 
+            currentVertex = this.getCells()[i];
+            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(currentVertex));
+
+            if (type.charAt(0) == 'R') {
+                restaurants[i] = currentVertex;
+            } else if (type.charAt(0) == 'L') {
+                loisirs[i] = currentVertex;
+            } else {
+                villes[i] = currentVertex;
+            }
         }
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#3C64B9", restaurants);
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FCA311", loisirs);
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF3333", villes);
+
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", this.getCells());
     }
 
     private void colourLinks(){
@@ -138,11 +146,6 @@ public class GraphDisplay extends JPanel {
 
     }
 
-    // Make the graph zoomable and scrollable with ctrl-mousewheel
-    private void makeScrollable2() {
-        graphComponent.setAutoScroll(true);
-    }
-
     private void makeScrollable(){
         graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -158,22 +161,22 @@ public class GraphDisplay extends JPanel {
                 else if (e.isShiftDown()) {
                     if (!e.isControlDown()) {
                         graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 3,
+                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 15,
                                 graphComponent.getViewport().getViewPosition().y));
                     } else {
                         graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 3,
+                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 15,
                                 graphComponent.getViewport().getViewPosition().y));
                     }
                 } else {
                     if (!e.isControlDown()) {
                         graphComponent.getViewport().setViewPosition(new Point(
                                 graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 3));
+                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 15));
                     } else {
                         graphComponent.getViewport().setViewPosition(new Point(
                                 graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 3));
+                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 15));
                     }
                 }
             }
@@ -220,22 +223,69 @@ public class GraphDisplay extends JPanel {
         graphComponent.getGraphControl().addMouseListener(mouseListener);
     }
 
-    public void selectCells(LinkedList<Node> cells){
+    public void highlightNodes(LinkedList<Node> nodes){
         this.colourNodes();
-        mxCell[] table = new mxCell[cells.size()];
-        for(int i=0; i<cells.size() ;i++){
-            table[i] = findCell((Node) cells.get(i));
+
+        int j = 0;
+
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "30", this.getVertices());
+        mxCell[] table = new mxCell[nodes.size()];
+        for(int i = 0; i< nodes.size() ; i++){
+            table[i] = findCell((Node) nodes.get(i));
         }
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", table);
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FFF300", table);
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", new Object[]{graphComponent.getGraph().getSelectionCell()});
+
+
     }
 
-    // Find a cell using a Node
+    public void highlightLinks(LinkedList<Link> links){
+        this.colourLinks();
+
+        int j = 0;
+
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "30", this.getEdges());
+        mxCell[] table = new mxCell[links.size()];
+        for(int i = 0; i< links.size(); i++){
+            table[i] = findCell((Link) links.get(i));
+        }
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "2", table);
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", table);
+
+
+    }
+
     public mxCell findCell(Node node){
-        for(Object cell: graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())){
+        for(Object cell: this.getCells()){
             if(graphComponent.getGraph().getModel().getValue(cell).equals(node)){
                 return (mxCell) cell;
             }
         }
         return null;
     }
+
+    public mxCell findCell(Link link){
+        String linkValue = link.getType().toString() + link.getRoadNumber() + " (" + link.getDistance() + "km)";
+        for(Object cell: this.getCells()){
+            if(graphComponent.getGraph().getModel().getValue(cell).equals(linkValue)){
+                return (mxCell) cell;
+            }
+        }
+        return null;
+    }
+
+    public Object[] getCells(){
+        return graphComponent.getGraph().getChildCells(graphComponent.getGraph().getDefaultParent());
+    }
+
+    public Object[] getVertices(){
+        return graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent());
+    }
+
+    public Object[] getEdges(){
+        return graphComponent.getGraph().getChildEdges(graphComponent.getGraph().getDefaultParent());
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
-import app.main.nodes.Link;
 import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
@@ -10,7 +9,6 @@ import com.mxgraph.swing.util.mxMouseAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 
 public class ScreenOne extends JPanel {
     JFrame f;
@@ -108,7 +106,9 @@ public class ScreenOne extends JPanel {
                 JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
 //                JOptionPane.showMessageDialog(null, "Voisins de " + node.getName() + " : " + node.getAllNeighbours());
-                graphDisplay.selectCells(node.getNeighboursAsNodes());
+                graphDisplay.highlightNodes(node.getNeighboursAsNodes());
+                graphDisplay.highlightLinks(node.getAllNeighbours());
+
             }
         });
 

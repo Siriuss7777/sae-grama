@@ -125,7 +125,7 @@ public class ScreenZero extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 listeNoeudsSelect.clear();
                 listeNoeudsSelect.add(graph.getNodeFromString("V," + listeVilleCombo.getSelectedItem().toString()));
-                graphDisplay.selectCells(listeNoeudsSelect);
+                graphDisplay.highlightNodes(listeNoeudsSelect);
             }
         });
 
@@ -134,7 +134,7 @@ public class ScreenZero extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 listeNoeudsSelect.clear();
                 listeNoeudsSelect.add(graph.getNodeFromString("R," + listeRestCombo.getSelectedItem().toString()));
-                graphDisplay.selectCells(listeNoeudsSelect);
+                graphDisplay.highlightNodes(listeNoeudsSelect);
             }
         });
 
@@ -143,7 +143,7 @@ public class ScreenZero extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 listeNoeudsSelect.clear();
                 listeNoeudsSelect.add(graph.getNodeFromString("L," + listeLoisirCombo.getSelectedItem().toString()));
-                graphDisplay.selectCells(listeNoeudsSelect);
+                graphDisplay.highlightNodes(listeNoeudsSelect);
             }
         });
 
