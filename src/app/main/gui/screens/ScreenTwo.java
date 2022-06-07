@@ -17,10 +17,18 @@ public class ScreenTwo extends JPanel {
     GraphDisplay graphDisplay;
 
     private JPanel contentPane = new JPanel();
+
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
+
+    private JPanel leftCorner = new JPanel();
+
+    private JPanel resetPan = new JPanel();
+
     private JPanel panAffNodeSelected = new JPanel();
+
     private JPanel panActionNoeud = new JPanel();
+
     private JPanel panListeNoeud = new JPanel();
     private mxGraphComponent panAffNoeuds;
 
@@ -73,16 +81,21 @@ public class ScreenTwo extends JPanel {
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
+        leftCorner.setLayout(new BorderLayout());
+        leftCorner.setBorder(BorderFactory.createEtchedBorder());
+
         panAffNodeSelected.setLayout(new GridLayout(3, 2));
-        panAffNodeSelected.setBorder(BorderFactory.createEtchedBorder());
-        panAffNodeSelected.setSize(0, 200);
-        panAffNodeSelected.setPreferredSize(new Dimension(0, 200));
+        panAffNodeSelected.setSize(0, 150);
+        panAffNodeSelected.setPreferredSize(new Dimension(0, 150));
 
         panAffNodeSelected.add(nodeOneSelectedTxt);
         panAffNodeSelected.add(nodeOneSelected);
         panAffNodeSelected.add(nodeTwoSelectedTxt);
         panAffNodeSelected.add(nodeTwoSelected);
-        panAffNodeSelected.add(reset);
+
+        resetPan.setSize(0, 46);
+        resetPan.setPreferredSize(new Dimension(0, 46));
+        resetPan.add(reset);
 
 
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
@@ -139,7 +152,10 @@ public class ScreenTwo extends JPanel {
         });
 
 
-        containerLeft.add(panAffNodeSelected, BorderLayout.NORTH);
+        leftCorner.add(panAffNodeSelected, BorderLayout.NORTH);
+        leftCorner.add(resetPan, BorderLayout.SOUTH);
+
+        containerLeft.add(leftCorner, BorderLayout.NORTH);
         containerLeft.add(panListeNoeud, BorderLayout.CENTER);
 
         containerRight.add(panActionNoeud, BorderLayout.NORTH);

@@ -17,9 +17,16 @@ public class ScreenOne extends JPanel {
     GraphDisplay graphDisplay;
 
     private JPanel contentPane = new JPanel();
+
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
+
+    private JPanel leftCorner = new JPanel();
+
+    private JPanel resetPan = new JPanel();
+
     private JPanel panAffNodeSel = new JPanel();
+
     private JPanel panActionNoeud = new JPanel();
     private JPanel panKey = new JPanel();
 
@@ -72,15 +79,26 @@ public class ScreenOne extends JPanel {
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
+        leftCorner.setLayout(new BorderLayout());
+        leftCorner.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNodeSel.setBorder(BorderFactory.createEtchedBorder());
-        panAffNodeSel.setSize(0, 200);
-        panAffNodeSel.setPreferredSize(new Dimension(0, 200));
+        panAffNodeSel.setLayout(new GridLayout(1, 2));
+        panAffNodeSel.setSize(0, 150);
+        panAffNodeSel.setPreferredSize(new Dimension(0, 150));
+        panAffNodeSel.add(nodeSelectedTxt);
+        panAffNodeSel.add(nodeSelected);
+        panAffNodeSel.add(reset);
+
+        resetPan.setSize(0, 46);
+        resetPan.setPreferredSize(new Dimension(0, 46));
+        resetPan.add(reset);
 
         panActionNoeud.setLayout(new FlowLayout());
         panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
         panActionNoeud.setSize(0, 200);
         panActionNoeud.setPreferredSize(new Dimension(0, 200));
+        panActionNoeud.add(neighbours);
+        panActionNoeud.add(nodeByLink);
 
         panKey.setBorder(BorderFactory.createEtchedBorder());
         panKey.add(new JLabel("Vous êtes sur la page 1"));
@@ -128,15 +146,10 @@ public class ScreenOne extends JPanel {
         });
 
 
+        leftCorner.add(panAffNodeSel, BorderLayout.NORTH);
+        leftCorner.add(resetPan, BorderLayout.SOUTH);
 
-        panAffNodeSel.add(nodeSelectedTxt);
-        panAffNodeSel.add(nodeSelected);
-        panAffNodeSel.add(reset);
-
-        panActionNoeud.add(neighbours);
-        panActionNoeud.add(nodeByLink);
-
-        containerLeft.add(panAffNodeSel, BorderLayout.NORTH);
+        containerLeft.add(leftCorner, BorderLayout.NORTH);
         containerLeft.add(panKey, BorderLayout.CENTER);
 
         containerRight.add(panActionNoeud, BorderLayout.NORTH);
