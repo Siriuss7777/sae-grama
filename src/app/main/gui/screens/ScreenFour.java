@@ -160,7 +160,6 @@ public class ScreenFour extends JPanel {
                 ArrayList<Node> path = graph.getMatrix().getShortestPath(nodeOne, nodeTwo);
                 LinkedList<Node> pathLinked = new LinkedList<>(path);
                 graphDisplay.selectCells(pathLinked);
-                
             }
 
         });
@@ -183,10 +182,12 @@ public class ScreenFour extends JPanel {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner au moins 3 noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else if (nodeFourSelected.getText().equals("Pas de noeud sélectionné")){
-                JOptionPane.showMessageDialog(ScreenFour.this, "Le chemin traversant le noeuds est : " + graph.getPathWith(nodeOne,nodeTwo,nodeThree), "Success", JOptionPane.INFORMATION_MESSAGE);
+                LinkedList<Node> path = graph.getPathWith(nodeOne, nodeTwo, nodeThree);
+                graphDisplay.selectCells(path);
             }
             else {
-                JOptionPane.showMessageDialog(ScreenFour.this, "Le chemin traversant les deux noeuds est : " + graph.getPathWith(nodeOne,nodeTwo,nodeThree,nodeFour), "Success", JOptionPane.INFORMATION_MESSAGE);
+                LinkedList<Node> path = graph.getPathWith(nodeOne, nodeTwo, nodeThree, nodeFour);
+                graphDisplay.selectCells(path);
             }
 
         });
