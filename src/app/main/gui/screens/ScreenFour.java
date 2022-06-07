@@ -40,14 +40,14 @@ public class ScreenFour extends JPanel {
     private Node nodeThree;
     private Node nodeFour;
 
-    private JButton floydWarshall = new JButton("Distance la plus courte entre les deux noeuds");
-    private JButton nDistance = new JButton("Distance entre les deux noeuds");
+    private JButton floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
+    private JButton nDistanceButton = new JButton("Distance entre les deux noeuds");
     private JLabel labelDistance = new JLabel("Distance entre les deux noeuds à tester : ");
     private JComboBox<Integer> distance = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5, 6});
 
-    private JButton pathWith = new JButton("Chemin traversant les deux noeuds");
+    private JButton pathWithButton = new JButton("Chemin traversant les deux noeuds");
 
-    private JButton nDistanceMin = new JButton("Distance minimum entre les deux noeuds");
+    private JButton nDistanceMinButton = new JButton("Distance minimum entre les deux noeuds");
 
     private JComboBox<String> nodeSelectedComboBox = new JComboBox<>(new String[]{"Noeud un", "Noeud deux", "Noeud à traverser un", "Noeud à traverser deux"});
 
@@ -110,14 +110,14 @@ public class ScreenFour extends JPanel {
         panActionNoeud.setSize(0, 200);
         panActionNoeud.setPreferredSize(new Dimension(0, 200));
 
-        panActionNoeud.add(floydWarshall);
+        panActionNoeud.add(floydWarshallButton);
 
-        panActionNoeud.add(nDistance);
+        panActionNoeud.add(nDistanceButton);
         panActionNoeud.add(distance);
 
-        panActionNoeud.add(pathWith);
+        panActionNoeud.add(pathWithButton);
 
-        panActionNoeud.add(nDistanceMin);
+        panActionNoeud.add(nDistanceMinButton);
 
 
 
@@ -152,20 +152,20 @@ public class ScreenFour extends JPanel {
             }
         });
 
-        floydWarshall.addActionListener(e -> {
+        floydWarshallButton.addActionListener(e -> {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 ArrayList<Node> path = graph.getMatrix().getShortestPath(nodeOne, nodeTwo);
                 LinkedList<Node> pathLinked = new LinkedList<>(path);
-                graphDisplay.selectCells(pathLinked);
+                graphDisplay.highlightNodes(pathLinked);
                 
             }
 
         });
 
-        nDistance.addActionListener(e -> {
+        nDistanceButton.addActionListener(e -> {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
@@ -178,7 +178,7 @@ public class ScreenFour extends JPanel {
 
         });
 
-        pathWith.addActionListener(e -> {
+        pathWithButton.addActionListener(e -> {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeThreeSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner au moins 3 noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
@@ -191,7 +191,7 @@ public class ScreenFour extends JPanel {
 
         });
 
-        nDistanceMin.addActionListener(e -> {
+        nDistanceMinButton.addActionListener(e -> {
             if (ScreenFour.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenFour.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenFour.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
