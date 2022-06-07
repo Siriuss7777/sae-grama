@@ -105,7 +105,7 @@ public class Node {
     }
 
     public Link addLink(Node node, LinkType type, int length){ // Ajoute un lien entre deux noeuds
-        Link tmpLink = new Link(node, type, length);
+        Link tmpLink = new Link(node, type, length, this);
         neighbours.add(tmpLink);
         return tmpLink;
     }

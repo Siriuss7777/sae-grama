@@ -5,12 +5,13 @@ import com.mxgraph.swing.mxGraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class ScreenZero extends JPanel {
     JFrame f;
 
-    Graph graph;
-    GraphDisplay graphDisplay;
+    private Graph graph;
+    private GraphDisplay graphDisplay;
     private JPanel contentPane = new JPanel();
     private JPanel containerLeft = new JPanel();
     private JPanel containerRight = new JPanel();
@@ -103,9 +104,17 @@ public class ScreenZero extends JPanel {
         panAffParType.add(new JComboBox<>(graph.getVillesNames()));
         panAffParType.add(new JComboBox<>(graph.getRestaurantsNames()));
         panAffParType.add(new JComboBox<>(graph.getLoisirsNames()));
-        panAffParType.add(new JComboBox<>(graph.getDepartementalesNames()));
-        panAffParType.add(new JComboBox<>(graph.getNationalesNames()));
-        panAffParType.add(new JComboBox<>(graph.getAutoroutesNames()));
+
+        String[] sortedDepartementales = graph.getDepartementalesNames();
+        Arrays.sort(sortedDepartementales);
+        String[] sortedNationales = graph.getNationalesNames();
+        Arrays.sort(sortedNationales);
+        String[] sortedAutoroutes = graph.getAutoroutesNames();
+        Arrays.sort(sortedAutoroutes);
+
+        panAffParType.add(new JComboBox<>(sortedDepartementales));
+        panAffParType.add(new JComboBox<>(sortedNationales));
+        panAffParType.add(new JComboBox<>(sortedAutoroutes));
 
 
 

@@ -15,6 +15,9 @@ import java.util.LinkedList;
 public class Graph {
     private LinkedList<Node> nodes;
     private LinkedList<Link> links;
+    private LinkedList<Link> autorouteLinks;
+    private LinkedList<Link> nationaleLinks;
+    private LinkedList<Link> departementaleLinks;
     private FloydWarshall matrix;
 
     static int autorouteNumber = 1, nationaleNumber = 1, departementaleNumber = 1;
@@ -23,6 +26,9 @@ public class Graph {
     public Graph() {
         this.nodes = new LinkedList<Node>();
         this.links = new LinkedList<Link>();
+        this.autorouteLinks = new LinkedList<Link>();
+        this.nationaleLinks = new LinkedList<Link>();
+        this.departementaleLinks = new LinkedList<Link>();
     }
 
     public void init(String filename) throws IOException {
@@ -74,6 +80,7 @@ public class Graph {
                 distance = Integer.parseInt(attributes[1]);
 
                 addedLink = currentNode.addLink(newNode, linkType, distance);
+
                 invertedLink = newNode.getClosestNeighbour(currentNode);
                 if(invertedLink != null){
                     addedLink.setRoadNumber(invertedLink.getRoadNumber());
@@ -81,14 +88,18 @@ public class Graph {
                     if(addedLink.getType() == LinkType.AUTOROUTE){
                         addedLink.setRoadNumber(autorouteNumber);
                         autorouteNumber++;
+                        this.autorouteLinks.add(addedLink);
                     }
                     if(addedLink.getType() == LinkType.DEPARTEMENTALE){
                         addedLink.setRoadNumber(departementaleNumber);
                         departementaleNumber++;
+                        this.departementaleLinks.add(addedLink);
+
                     }
                     if(addedLink.getType() == LinkType.NATIONALE){
                         addedLink.setRoadNumber(nationaleNumber);
                         nationaleNumber++;
+                        this.nationaleLinks.add(addedLink);
                     }
 
                 }
@@ -232,13 +243,7 @@ public class Graph {
     }
 
     public LinkedList<Link> getAutoroutes() {
-        LinkedList<Link> tempList = new LinkedList<Link>();
-        for (Link link : this.links) {
-            if (link.getType() == LinkType.AUTOROUTE) {
-                tempList.add(link);
-            }
-        }
-        return tempList;
+        return this.autorouteLinks;
     }
 
     public int getAutoroutesCount() {
@@ -246,7 +251,7 @@ public class Graph {
     }
 
     public String[] getAutoroutesNames() {
-        LinkedList<Link> tempList = this.getAutoroutes();
+        LinkedList<Link> tempList = this.autorouteLinks;
         String[] tempNames = new String[tempList.size()];
 
         for (int i = 0; i < tempList.size(); i++) {
@@ -256,13 +261,7 @@ public class Graph {
     }
 
     public LinkedList<Link> getNationales() {
-        LinkedList<Link> tempList = new LinkedList<Link>();
-        for (Link link : this.links) {
-            if (link.getType() == LinkType.NATIONALE) {
-                tempList.add(link);
-            }
-        }
-        return tempList;
+        return this.nationaleLinks;
     }
 
     public int getNationalesCount() {
@@ -270,7 +269,7 @@ public class Graph {
     }
 
     public String[] getNationalesNames() {
-        LinkedList<Link> tempList = this.getNationales();
+        LinkedList<Link> tempList = this.nationaleLinks;
         String[] tempNames = new String[tempList.size()];
 
         for (int i = 0; i < tempList.size(); i++) {
@@ -280,13 +279,7 @@ public class Graph {
     }
 
     public LinkedList<Link> getDepartementales() {
-        LinkedList<Link> tempList = new LinkedList<Link>();
-        for (Link link : this.links) {
-            if (link.getType()  == LinkType.DEPARTEMENTALE) {
-                tempList.add(link);
-            }
-        }
-        return tempList;
+        return this.departementaleLinks;
     }
 
     public int getDepartementalesCount() {
@@ -294,7 +287,7 @@ public class Graph {
     }
 
     public String[] getDepartementalesNames() {
-        LinkedList<Link> tempList = this.getDepartementales();
+        LinkedList<Link> tempList = departementaleLinks;
         String[] tempNames = new String[tempList.size()];
 
         for (int i = 0; i < tempList.size(); i++) {
@@ -303,31 +296,11 @@ public class Graph {
         return tempNames;
     }
 
+
     /*------------------------------------------------------------------------------------------------*/
     /*------------------------------------- OPÉRATIONS GÉNÉRALES -------------------------------------*/
     /*------------------------------------------------------------------------------------------------*/
 
-
-    public String toString() {
-        StringBuilder returnedString = new StringBuilder("Nodes:");
-        for (Node node : this.nodes) {
-            returnedString.append("\n\t").append(node.getName());
-        }
-        returnedString.append("\nLinks:");
-        for (Node node : this.nodes) {
-            for (Link neighbour : node.getAllNeighbours()) {
-                returnedString.append("\n\t")
-                        .append(node.getName())
-                        .append(" -")
-                        .append(neighbour.getType())
-                        .append(",")
-                        .append(neighbour.getDistance())
-                        .append("- ")
-                        .append(neighbour.getNode().getName());
-            }
-        }
-        return returnedString.toString();
-    }
 
     public void nDistance(Node fromNode, int distance, int tmpDistance) {
         if (tmpDistance == 0) {
@@ -434,8 +407,37 @@ public class Graph {
 
     }
 
-
-
+    public String toString() {
+        StringBuilder returnedString = new StringBuilder("Nodes:");
+        for (Node node : this.nodes) {
+            returnedString.append("\n\t").append(node.getName());
+        }
+        returnedString.append("\nLinks:");
+//        for (Node node : this.nodes) {
+//            for (Link neighbour : node.getAllNeighbours()) {
+//                returnedString.append("\n\t")
+//                        .append(node.getName())
+//                        .append(" -")
+//                        .append(neighbour.getType())
+//                        .append(",")
+//                        .append(neighbour.getDistance())
+//                        .append("- ")
+//                        .append(neighbour.getNode().getName());
+//            }
+//        }
+        for(Link link : this.links){
+            returnedString.append("\n\t")
+                    .append(link.getFromNode().getName())
+                    .append(" -")
+                    .append(link.getType())
+                    .append(link.getRoadNumber())
+                    .append(",")
+                    .append(link.getDistance())
+                    .append("- ")
+                    .append(link.getNode().getName());
+        }
+        return returnedString.toString();
+    }
 }
 
 

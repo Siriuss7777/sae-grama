@@ -17,6 +17,7 @@ import org.jgrapht.graph.DefaultListenableGraph;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 
 public class GraphDisplay extends JPanel {
 
@@ -69,22 +70,22 @@ public class GraphDisplay extends JPanel {
             g.addVertex(node);
         }
 
-
-        for (Node node : graph.getNodes()) {
-            for (Link neighbour : node.getAllNeighbours()) {
-                if(neighbour.getType() == LinkType.AUTOROUTE){
-                    linkName = "A" + neighbour.getRoadNumber();
-                }
-                if(neighbour.getType() == LinkType.NATIONALE){
-                    linkName = "N" + neighbour.getRoadNumber();
-                }
-                if(neighbour.getType() == LinkType.DEPARTEMENTALE){
-                    linkName = "D" + neighbour.getRoadNumber();
-                }
-
-                g.addEdge(node, neighbour.getNode(), linkName + " (" + neighbour.getDistance()+"km)");
-            }
+        // TODO: changer le chargement des liens:
+        for (Link road : graph.getAutoroutes()) {
+            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            g.addEdge(road.getFromNode(), road.getNode(), linkName);
         }
+
+        for (Link road : graph.getNationales()) {
+            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            g.addEdge(road.getFromNode(), road.getNode(), linkName);
+        }
+
+        for (Link road : graph.getDepartementales()) {
+            linkName = road.getType().toString() + road.getRoadNumber() + "(" + road.getDistance() + "km)";
+            g.addEdge(road.getFromNode(), road.getNode(), linkName);
+        }
+
 
 
         JGraphXAdapter<Node, String> jgxa = new JGraphXAdapter<>(g);
@@ -93,6 +94,8 @@ public class GraphDisplay extends JPanel {
         graphComponent.setEnabled(false);
         graphComponent.setToolTips(true);
         jgxa.setCellsSelectable(true);
+        graphComponent.add(new JScrollBar());
+        graphComponent.add(new JScrollBar(Adjustable.HORIZONTAL));
 
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxa);
@@ -155,22 +158,22 @@ public class GraphDisplay extends JPanel {
                 else if (e.isShiftDown()) {
                     if (!e.isControlDown()) {
                         graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 15,
+                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 3,
                                 graphComponent.getViewport().getViewPosition().y));
                     } else {
                         graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 15,
+                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 3,
                                 graphComponent.getViewport().getViewPosition().y));
                     }
                 } else {
                     if (!e.isControlDown()) {
                         graphComponent.getViewport().setViewPosition(new Point(
                                 graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 15));
+                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 3));
                     } else {
                         graphComponent.getViewport().setViewPosition(new Point(
                                 graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 15));
+                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 3));
                     }
                 }
             }
@@ -215,5 +218,24 @@ public class GraphDisplay extends JPanel {
 
     private void makeNodesSelectableJGX(mxMouseAdapter mouseListener){
         graphComponent.getGraphControl().addMouseListener(mouseListener);
+    }
+
+    public void selectCells(LinkedList<Node> cells){
+        this.colourNodes();
+        mxCell[] table = new mxCell[cells.size()];
+        for(int i=0; i<cells.size() ;i++){
+            table[i] = findCell((Node) cells.get(i));
+        }
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FFF300", table);
+    }
+
+    // Find a cell using a Node
+    public mxCell findCell(Node node){
+        for(Object cell: graphComponent.getGraph().getChildVertices(graphComponent.getGraph().getDefaultParent())){
+            if(graphComponent.getGraph().getModel().getValue(cell).equals(node)){
+                return (mxCell) cell;
+            }
+        }
+        return null;
     }
 }

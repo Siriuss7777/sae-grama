@@ -18,6 +18,7 @@ public class main {
         String filename = null;
         filename = "src/resources/map.csv";
         graph.init(filename);
+        System.out.println(graph);
 
 
         Window f1 = new Window(graph);

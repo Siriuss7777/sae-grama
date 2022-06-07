@@ -45,6 +45,6 @@ public class Link {
 
     @Override
     public String toString() {
-        return node.toString() + " " + type + " " + distance;
+        return type.toString() + roadNumber;
     }
 }
