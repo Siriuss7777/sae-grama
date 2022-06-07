@@ -123,6 +123,8 @@ public class ScreenZero extends JPanel {
         panAffParType.add(listeRestCombo);
         panAffParType.add(listeLoisirCombo);
 
+        // TODO : Régler le surglignage des noeuds
+        // TODO : Surligner les liens sélectionnés
         listeVilleCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

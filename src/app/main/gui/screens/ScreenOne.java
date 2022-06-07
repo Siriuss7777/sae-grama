@@ -1,6 +1,7 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import app.main.nodes.Link;
 import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
@@ -35,7 +36,11 @@ public class ScreenOne extends JPanel {
     private JLabel nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
     public JLabel nodeSelected = new JLabel("Pas de noeud sélectionné");
 
+    private JLabel linkSelectedTxt = new JLabel("Lien sélectionné : ");
+    public JLabel linkSelected = new JLabel("Pas de lien sélectionné");
+
     private Node node;
+    private Link link;
 
     private JButton reset = new JButton("Reset");
 
@@ -82,11 +87,13 @@ public class ScreenOne extends JPanel {
         leftCorner.setLayout(new BorderLayout());
         leftCorner.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNodeSel.setLayout(new GridLayout(1, 2));
+        panAffNodeSel.setLayout(new GridLayout(2, 2));
         panAffNodeSel.setSize(0, 150);
         panAffNodeSel.setPreferredSize(new Dimension(0, 150));
         panAffNodeSel.add(nodeSelectedTxt);
         panAffNodeSel.add(nodeSelected);
+        panAffNodeSel.add(linkSelectedTxt);
+        panAffNodeSel.add(linkSelected);
         panAffNodeSel.add(reset);
 
         resetPan.setSize(0, 46);
@@ -101,7 +108,6 @@ public class ScreenOne extends JPanel {
         panActionNoeud.add(nodeByLink);
 
         panKey.setBorder(BorderFactory.createEtchedBorder());
-        panKey.add(new JLabel("Vous êtes sur la page 1"));
 
 
         panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
@@ -115,6 +121,13 @@ public class ScreenOne extends JPanel {
                     // Select the cell
                     panAffNoeuds.getGraph().setSelectionCell(cell);
                 }
+                else if (cell != null && cell.isEdge()){
+                    link = graphDisplay.findLink(cell);
+                    linkSelected.setText(link.toString());
+                    // Select the cell
+                    panAffNoeuds.getGraph().setSelectionCell(cell);
+                }
+
                 else{
                     panAffNoeuds.getGraph().clearSelection();
                 }
@@ -125,7 +138,6 @@ public class ScreenOne extends JPanel {
             if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
             } else {
-//                JOptionPane.showMessageDialog(null, "Voisins de " + node.getName() + " : " + node.getAllNeighbours());
                 graphDisplay.highlightNodes(node.getNeighboursAsNodes());
                 graphDisplay.highlightLinks(node.getAllNeighbours());
 
@@ -133,16 +145,18 @@ public class ScreenOne extends JPanel {
         });
 
         nodeByLink.addActionListener(e -> {
-            if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
-                JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
+            if (linkSelected.getText().equals("Pas de lien sélectionné")) {
+                JOptionPane.showMessageDialog(null, "Pas de lien sélectionné");
             } else {
-                JOptionPane.showMessageDialog(null, "Node by link " + nodeSelected.getText() + ": " + "e");
+                graphDisplay.highlightNodesByLink(link);
             }
         });
 
         reset.addActionListener(e -> {
             nodeSelected.setText("Pas de noeud sélectionné");
+            linkSelected.setText("Pas de lien sélectionné");
             node = null;
+            link = null;
             graphDisplay.resetColours();
         });
 
