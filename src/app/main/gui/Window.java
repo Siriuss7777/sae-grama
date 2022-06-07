@@ -69,6 +69,7 @@ public class Window extends JFrame {
                 if(menu.getSelectedIndex() == 0){
                     mainTab.removeAll();
                     mainTab.add(new MainScreen(f, graph, gd));
+                    mainTab.revalidate();
                 }
             }
         });
@@ -81,6 +82,7 @@ public class Window extends JFrame {
                 if(menu.getSelectedIndex() == 1){
                     tab0.removeAll();
                     tab0.add(new ScreenZero(f, graph, gd));
+                    tab0.revalidate();
                 }
             }
         });
@@ -93,6 +95,7 @@ public class Window extends JFrame {
                 if(menu.getSelectedIndex() == 2){
                     tab1.removeAll();
                     tab1.add(new ScreenOne(f, graph, gd));
+                    tab1.revalidate();
                 }
             }
         });
@@ -105,6 +108,7 @@ public class Window extends JFrame {
                 if(menu.getSelectedIndex() == 3){
                     tab2.removeAll();
                     tab2.add(new ScreenTwo(f, graph, gd));
+                    tab2.revalidate();
                 }
             }
         });
@@ -117,6 +121,7 @@ public class Window extends JFrame {
                 if(menu.getSelectedIndex() == 4){
                     tab3.removeAll();
                     tab3.add(new ScreenThree(f, graph, gd));
+                    tab3.revalidate();
                 }
             }
         });

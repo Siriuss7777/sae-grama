@@ -91,9 +91,9 @@ public class GraphDisplay extends JPanel {
         graphComponent.setConnectable(false);
         graphComponent.setEnabled(false);
         graphComponent.setToolTips(true);
+        graphComponent.setCenterZoom(false);
+        graphComponent.setCenterPage(false);
         jgxa.setCellsSelectable(true);
-        graphComponent.add(new JScrollBar());
-        graphComponent.add(new JScrollBar(Adjustable.HORIZONTAL));
 
 
         mxFastOrganicLayout layout = new mxFastOrganicLayout(jgxa);
@@ -102,7 +102,7 @@ public class GraphDisplay extends JPanel {
 
     }
 
-    private void colourNodes() {
+    public void colourNodes() {
         Object[] restaurants = new Object[graph.getNodes().size()];
         Object[] villes = new Object[graph.getNodes().size()];
         Object[] loisirs = new Object[graph.getNodes().size()];
@@ -125,23 +125,39 @@ public class GraphDisplay extends JPanel {
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF3333", villes);
 
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", this.getCells());
+        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", this.getCells());
+
     }
 
-    private void colourLinks(){
-        for(Object edge: graphComponent.getGraph().getChildEdges(graphComponent.getGraph().getDefaultParent())){
-            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(edge));
-            if (type.charAt(0) == 'D') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#3C64B9", new Object[]{edge});
+    public void colourLinks(){
+        Object[] departementales = new Object[graph.getLinksCount()];
+        Object[] nationales = new Object[graph.getLinksCount()];
+        Object[] autoroutes = new Object[graph.getLinksCount()];
+        Object currentEdge = null;
+
+        for(int i=0; i < this.getEdges().length; i++){
+
+            currentEdge = this.getEdges()[i];
+            String type = String.valueOf(graphComponent.getGraph().getModel().getValue(currentEdge));
+
+            if(type.charAt(0) == 'D'){
+                departementales[i] = currentEdge;
             }
-            else if (type.charAt(0) == 'N') {
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FCA311", new Object[]{edge});
+            else if(type.charAt(0) == 'N'){
+                nationales[i] = currentEdge;
             }
             else{
-                graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", new Object[]{edge});
+                autoroutes[i] = currentEdge;
             }
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", new Object[]{edge});
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", new Object[]{edge});
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", new Object[]{edge});
+
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#3C64B9", departementales);
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FCA311", nationales);
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", autoroutes);
+
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", this.getEdges());
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", this.getEdges());
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", this.getEdges());
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", this.getEdges());
         }
 
     }
@@ -256,8 +272,7 @@ public class GraphDisplay extends JPanel {
     }
 
     public void highlightPath(LinkedList<Node> nodes) {
-        this.colourNodes();
-        this.colourLinks();
+        this.resetColours();
 
         this.highlightNodes(nodes);
 
@@ -300,6 +315,11 @@ public class GraphDisplay extends JPanel {
 
     public Object[] getEdges(){
         return graphComponent.getGraph().getChildEdges(graphComponent.getGraph().getDefaultParent());
+    }
+
+    public void resetColours(){
+        this.colourNodes();
+        this.colourLinks();
     }
 
 

@@ -52,9 +52,9 @@ public class ScreenZero extends JPanel {
         constpan();
     }
     private void constpan() {
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int hauteur = (int)tailleEcran.getHeight();
-        int largeur = (int)tailleEcran.getWidth();
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        int height = (int) screenSize.getHeight();
+        int width = (int) screenSize.getWidth();
 
         this.setLayout(new BorderLayout());
 
@@ -62,13 +62,16 @@ public class ScreenZero extends JPanel {
         this.add(containerRight, BorderLayout.CENTER);
 
 
-        containerLeft.setSize(400, hauteur);
-        containerLeft.setPreferredSize(new Dimension(400, hauteur));
+        containerLeft.setSize(400, 0);
+        containerLeft.setPreferredSize(new Dimension(400, 0));
 
-        int width = largeur - 400;
+        this.setSize(width, height-150);
+        this.setPreferredSize(new Dimension(width, height-150));
 
-        containerRight.setSize(width, hauteur);
-        containerRight.setPreferredSize(new Dimension(width, hauteur));
+        int newWidth = width - 400;
+
+        containerRight.setSize(newWidth, 0);
+        containerRight.setPreferredSize(new Dimension(newWidth, 0));
 
 
         containerRight.setLayout(new BorderLayout());

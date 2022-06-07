@@ -296,6 +296,14 @@ public class Graph {
         return tempNames;
     }
 
+    public LinkedList<Link> getLinks() {
+        return this.links;
+    }
+
+    public int getLinksCount() {
+        return this.getLinks().size();
+    }
+
 
     /*------------------------------------------------------------------------------------------------*/
     /*------------------------------------- OPÉRATIONS GÉNÉRALES -------------------------------------*/

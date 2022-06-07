@@ -74,21 +74,20 @@ public class ScreenFour extends JPanel {
         this.add(containerRight, BorderLayout.CENTER);
 
         Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int hauteur = (int)tailleEcran.getHeight();
-        int largeur = (int)tailleEcran.getWidth();
+        int height = (int)tailleEcran.getHeight();
+        int width = (int)tailleEcran.getWidth();
+
+        this.setSize(width, height-150);
+        this.setPreferredSize(new Dimension(width, height-150));
+
+        containerLeft.setSize(400, 0);
+        containerLeft.setPreferredSize(new Dimension(400, 0));
 
 
-        this.add(containerLeft, BorderLayout.WEST);
-        this.add(containerRight, BorderLayout.CENTER);
+        int newWidth = width - 400;
 
-
-        containerLeft.setSize(400, hauteur);
-        containerLeft.setPreferredSize(new Dimension(400, hauteur));
-
-        int width = largeur - 400;
-
-        containerRight.setSize(width, hauteur);
-        containerRight.setPreferredSize(new Dimension(width, hauteur));
+        containerRight.setSize(newWidth, height);
+        containerRight.setPreferredSize(new Dimension(newWidth, height));
 
 
         containerRight.setLayout(new BorderLayout());
@@ -222,6 +221,7 @@ public class ScreenFour extends JPanel {
             nodeTwo = null;
             nodeThree = null;
             nodeFour = null;
+            graphDisplay.resetColours();
         });
 
 
