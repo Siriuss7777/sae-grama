@@ -2,6 +2,7 @@ package app.main.gui.screens;
 
 import app.main.map.Graph;
 import app.main.nodes.Node;
+import app.main.nodes.NodeType;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
@@ -37,7 +38,7 @@ public class ScreenThree extends JPanel {
 
     private Node nodeOne;
     private Node nodeTwo;
-    private Node returnNode;
+    private Node bestNode;
 
     private JButton reset = new JButton("Reset");
 
@@ -138,10 +139,12 @@ public class ScreenThree extends JPanel {
             if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "GASTRONOMIQUE");
-                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus gastronomique !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
+            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+                bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "GASTRONOMIQUE");
+                JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus gastronomique !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -149,10 +152,12 @@ public class ScreenThree extends JPanel {
             if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "OUVERTE");
-                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus ouverte !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
+            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+                bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "OUVERTE");
+                JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus ouverte !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -160,10 +165,12 @@ public class ScreenThree extends JPanel {
             if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
-            else {
-                returnNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "CULTURELLE");
-                JOptionPane.showMessageDialog(ScreenThree.this, returnNode + " est plus culturelle !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
+            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+                bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "CULTURELLE");
+                JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus culturelle !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 

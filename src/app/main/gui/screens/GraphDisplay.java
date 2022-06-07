@@ -8,6 +8,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.util.mxConstants;
+import com.mxgraph.view.mxGraphSelectionModel;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultUndirectedGraph;
@@ -236,6 +237,7 @@ public class GraphDisplay extends JPanel {
     }
 
     private void makeNodesSelectableJGX(mxMouseAdapter mouseListener){
+        mxGraphSelectionModel selectionModel = graphComponent.getGraph().getSelectionModel();
         graphComponent.getGraphControl().addMouseListener(mouseListener);
     }
 
