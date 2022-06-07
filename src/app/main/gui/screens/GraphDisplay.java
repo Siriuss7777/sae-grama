@@ -253,6 +253,21 @@ public class GraphDisplay extends JPanel {
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "2", table);
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", table);
 
+    }
+
+    public void highlightPath(LinkedList<Node> nodes) {
+        this.colourNodes();
+        this.colourLinks();
+
+        this.highlightNodes(nodes);
+
+        LinkedList<Link> links = new LinkedList<Link>();
+
+        for(int i = 0; i < nodes.size() - 1; i++) {
+            links.add(nodes.get(i).getClosestNeighbour(nodes.get(i+1)));
+        }
+
+        this.highlightLinks(links);
 
     }
 

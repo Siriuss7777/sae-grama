@@ -184,11 +184,11 @@ public class ScreenFour extends JPanel {
             }
             else if (nodeFourSelected.getText().equals("Pas de noeud sélectionné")){
                 LinkedList<Node> path = graph.getPathWith(nodeOne, nodeTwo, nodeThree);
-                graphDisplay.selectCells(path);
+                graphDisplay.highlightPath(path);
             }
             else {
                 LinkedList<Node> path = graph.getPathWith(nodeOne, nodeTwo, nodeThree, nodeFour);
-                graphDisplay.selectCells(path);
+                graphDisplay.highlightPath(path);
             }
 
         });
