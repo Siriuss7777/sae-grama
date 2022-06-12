@@ -14,7 +14,6 @@ import java.util.LinkedList;
 
 public class Graph {
     private LinkedList<Node> nodes;
-    private LinkedList<Link> links;
     private LinkedList<Link> autorouteLinks;
     private LinkedList<Link> nationaleLinks;
     private LinkedList<Link> departementaleLinks;
@@ -25,7 +24,6 @@ public class Graph {
 
     public Graph() {
         this.nodes = new LinkedList<Node>();
-        this.links = new LinkedList<Link>();
         this.autorouteLinks = new LinkedList<Link>();
         this.nationaleLinks = new LinkedList<Link>();
         this.departementaleLinks = new LinkedList<Link>();
@@ -231,15 +229,23 @@ public class Graph {
     /*----------------------------------------------------------------------------------------------------*/
 
     public void addLink(Link link) {
-        this.links.add(link);
+        if(link.getType() == LinkType.AUTOROUTE){
+            this.autorouteLinks.add(link);
+        }
+        if(link.getType() == LinkType.DEPARTEMENTALE){
+            this.departementaleLinks.add(link);
+        }
+        if(link.getType() == LinkType.NATIONALE){
+            this.nationaleLinks.add(link);
+        }
     }
 
     public void linkNodes(Node node1, Node node2, LinkType type, int size) {
         Link link1 = node1.addLink(node2, type, size);
         Link link2 = node2.addLink(node1, type, size);
 
-        this.links.add(link1);
-        this.links.add(link2);
+        this.addLink(link1);
+        this.addLink(link2);
     }
 
     public LinkedList<Link> getAutoroutes() {
@@ -297,7 +303,11 @@ public class Graph {
     }
 
     public LinkedList<Link> getLinks() {
-        return this.links;
+        LinkedList<Link> tempList = new LinkedList<>();
+        tempList.addAll(this.autorouteLinks);
+        tempList.addAll(this.departementaleLinks);
+        tempList.addAll(this.nationaleLinks);
+        return tempList;
     }
 
     public int getLinksCount() {
@@ -433,7 +443,7 @@ public class Graph {
 //                        .append(neighbour.getNode().getName());
 //            }
 //        }
-        for(Link link : this.links){
+        for(Link link : this.getLinks()){
             returnedString.append("\n\t")
                     .append(link.getFromNode().getName())
                     .append(" -")
