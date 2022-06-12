@@ -168,7 +168,7 @@ public class ScreenFour extends JPanel {
             else {
                 ArrayList<Node> path = graph.getMatrix().getShortestPath(nodeOne, nodeTwo);
                 LinkedList<Node> pathLinked = new LinkedList<>(path);
-                graphDisplay.highlightNodes(pathLinked);
+                graphDisplay.highlightPath(pathLinked);
                 
             }
 
