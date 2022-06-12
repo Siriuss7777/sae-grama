@@ -68,6 +68,8 @@ public class ScreenFour extends JPanel {
 
     public void constpan(){
 
+        // TODO : Ajouter une JList pour afficher les noeuds pour les algos de path
+
         this.setLayout(new BorderLayout());
 
         this.add(containerLeft, BorderLayout.WEST);

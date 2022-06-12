@@ -8,6 +8,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.util.mxConstants;
+import com.mxgraph.view.mxGraphSelectionModel;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultUndirectedGraph;
@@ -236,6 +237,7 @@ public class GraphDisplay extends JPanel {
     }
 
     private void makeNodesSelectableJGX(mxMouseAdapter mouseListener){
+        mxGraphSelectionModel selectionModel = graphComponent.getGraph().getSelectionModel();
         graphComponent.getGraphControl().addMouseListener(mouseListener);
     }
 
@@ -287,22 +289,38 @@ public class GraphDisplay extends JPanel {
     }
 
     public mxCell findCell(Node node){
+        mxCell returnedCell = null;
         for(Object cell: this.getCells()){
             if(graphComponent.getGraph().getModel().getValue(cell).equals(node)){
-                return (mxCell) cell;
+                returnedCell = (mxCell) cell;
+                break;
             }
         }
-        return null;
+        return returnedCell;
     }
 
     public mxCell findCell(Link link){
+        mxCell returnedCell = null;
         String linkValue = link.getType().toString() + link.getRoadNumber() + " (" + link.getDistance() + "km)";
         for(Object cell: this.getCells()){
             if(graphComponent.getGraph().getModel().getValue(cell).equals(linkValue)){
-                return (mxCell) cell;
+                returnedCell = (mxCell) cell;
+                break;
             }
         }
-        return null;
+        return returnedCell;
+    }
+
+    public Link findLink(mxCell cell){
+        Link returnedLink = null;
+        String linkValue = graphComponent.getGraph().getModel().getValue(cell).toString();
+        for(Link link: graph.getLinks()){
+            if((link.getType().toString() + link.getRoadNumber() + " (" + link.getDistance() + "km)").equals(linkValue)){
+                returnedLink = link;
+                break;
+            }
+        }
+        return returnedLink;
     }
 
     public Object[] getCells(){
@@ -323,4 +341,11 @@ public class GraphDisplay extends JPanel {
     }
 
 
+    public void highlightNodesByLink(Link link) {
+        LinkedList<Node> vertices = new LinkedList<>();
+        vertices.add(link.getNode());
+        vertices.add(link.getFromNode());
+        this.highlightNodes(vertices);
+        this.highlightLinks(new LinkedList<Link>(){{add(link);}});
+    }
 }
