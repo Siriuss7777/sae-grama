@@ -101,7 +101,6 @@ public class Graph {
                     }
 
                 }
-                this.addLink(addedLink);
             }
 
         }
@@ -257,11 +256,10 @@ public class Graph {
     }
 
     public String[] getAutoroutesNames() {
-        LinkedList<Link> tempList = this.autorouteLinks;
-        String[] tempNames = new String[tempList.size()];
+        String[] tempNames = new String[autorouteLinks.size()];
 
-        for (int i = 0; i < tempList.size(); i++) {
-            tempNames[i] = tempList.get(i).toString();
+        for (int i = 0; i < autorouteLinks.size(); i++) {
+            tempNames[i] = autorouteLinks.get(i).toString();
         }
         return tempNames;
     }
@@ -275,11 +273,10 @@ public class Graph {
     }
 
     public String[] getNationalesNames() {
-        LinkedList<Link> tempList = this.nationaleLinks;
-        String[] tempNames = new String[tempList.size()];
+        String[] tempNames = new String[nationaleLinks.size()];
 
-        for (int i = 0; i < tempList.size(); i++) {
-            tempNames[i] = tempList.get(i).toString();
+        for (int i = 0; i < nationaleLinks.size(); i++) {
+            tempNames[i] = nationaleLinks.get(i).toString();
         }
         return tempNames;
     }
@@ -293,11 +290,10 @@ public class Graph {
     }
 
     public String[] getDepartementalesNames() {
-        LinkedList<Link> tempList = departementaleLinks;
-        String[] tempNames = new String[tempList.size()];
+        String[] tempNames = new String[departementaleLinks.size()];
 
-        for (int i = 0; i < tempList.size(); i++) {
-            tempNames[i] = tempList.get(i).toString();
+        for (int i = 0; i < departementaleLinks.size(); i++) {
+            tempNames[i] = departementaleLinks.get(i).toString();
         }
         return tempNames;
     }
@@ -312,6 +308,16 @@ public class Graph {
 
     public int getLinksCount() {
         return this.getLinks().size();
+    }
+
+    public Link getLinkFromString(String string){
+        Link returnedLink = null;
+        for(Link link : this.getLinks()){
+            if(link.toString().equals(string)){
+                returnedLink = link;
+            }
+        }
+        return returnedLink;
     }
 
 

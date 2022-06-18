@@ -1,6 +1,7 @@
 package app.main.gui.screens;
 
 import app.main.map.Graph;
+import app.main.nodes.Link;
 import app.main.nodes.Node;
 import com.mxgraph.swing.mxGraphComponent;
 
@@ -42,7 +43,12 @@ public class ScreenZero extends JPanel {
     private JComboBox<String> listeRestCombo;
     private JComboBox<String> listeLoisirCombo;
 
+    private JComboBox<String> listeDepCombo;
+    private JComboBox<String> listeNatCombo;
+    private JComboBox<String> listeAutCombo;
+
     private LinkedList<Node> listeNoeudsSelect = new LinkedList<>();
+    private LinkedList<Link> listeLienSelect = new LinkedList<>();
 
     public ScreenZero(JFrame f, Graph graph, GraphDisplay graphDisplay) {
         super();
@@ -152,18 +158,40 @@ public class ScreenZero extends JPanel {
             }
         });
 
-        String[] sortedDepartementales = graph.getDepartementalesNames();
-        Arrays.sort(sortedDepartementales);
-        String[] sortedNationales = graph.getNationalesNames();
-        Arrays.sort(sortedNationales);
-        String[] sortedAutoroutes = graph.getAutoroutesNames();
-        Arrays.sort(sortedAutoroutes);
+        listeDepCombo = new JComboBox<>(graph.getDepartementalesNames());
+        listeNatCombo = new JComboBox<>(graph.getNationalesNames());
+        listeAutCombo = new JComboBox<>(graph.getAutoroutesNames());
 
-        panAffParType.add(new JComboBox<>(sortedDepartementales));
-        panAffParType.add(new JComboBox<>(sortedNationales));
-        panAffParType.add(new JComboBox<>(sortedAutoroutes));
+        panAffParType.add(listeDepCombo);
+        panAffParType.add(listeNatCombo);
+        panAffParType.add(listeAutCombo);
 
+        listeDepCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeLienSelect.clear();
+                listeLienSelect.add(graph.getLinkFromString(listeDepCombo.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(listeLienSelect);
+            }
+        });
 
+        listeNatCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeLienSelect.clear();
+                listeLienSelect.add(graph.getLinkFromString(listeNatCombo.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(listeLienSelect);
+            }
+        });
+
+        listeAutCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listeLienSelect.clear();
+                listeLienSelect.add(graph.getLinkFromString(listeAutCombo.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(listeLienSelect);
+            }
+        });
 
         containerLeft.add(panAffGen, BorderLayout.NORTH);
         containerLeft.add(panListeNoeud, BorderLayout.CENTER);
