@@ -13,20 +13,20 @@ import java.util.LinkedList;
 
 
 public class Graph {
-    private LinkedList<Node> nodes;
-    private LinkedList<Link> autorouteLinks;
-    private LinkedList<Link> nationaleLinks;
-    private LinkedList<Link> departementaleLinks;
+    private final LinkedList<Node> nodes;
+    private final LinkedList<Link> autorouteLinks;
+    private final LinkedList<Link> nationaleLinks;
+    private final LinkedList<Link> departementaleLinks;
     private FloydWarshall matrix;
 
     static int autorouteNumber = 1, nationaleNumber = 1, departementaleNumber = 1;
     static private final int INFINITE = Integer.MAX_VALUE;
 
     public Graph() {
-        this.nodes = new LinkedList<Node>();
-        this.autorouteLinks = new LinkedList<Link>();
-        this.nationaleLinks = new LinkedList<Link>();
-        this.departementaleLinks = new LinkedList<Link>();
+        this.nodes = new LinkedList<>();
+        this.autorouteLinks = new LinkedList<>();
+        this.nationaleLinks = new LinkedList<>();
+        this.departementaleLinks = new LinkedList<>();
     }
 
     public void init(String filename) throws IOException {
@@ -339,7 +339,7 @@ public class Graph {
         }
     }
 
-    public int Distance(Node fromNode, Node toNode, int distance) { // Retourne vrai si la distance entre deux noeuds est inférieur à la distance demandée
+    public int Distance(Node fromNode, Node toNode, int distance) { // Retourne la distance si la distance entre deux noeuds est inférieur à la distance demandée
         int result = 0;
 
         if (fromNode == toNode) {
@@ -397,7 +397,7 @@ public class Graph {
 
     public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
 
-        ArrayList<Node> path = new ArrayList<>();
+        ArrayList<Node> path;
 
         path = matrix.getShortestPath(fromNode, throughNode);
         path.remove(path.size() - 1);

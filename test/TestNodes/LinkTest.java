@@ -1,4 +1,4 @@
-package app.main.nodesTest;
+package TestNodes;
 
 import app.main.map.Graph;
 import app.main.nodes.LinkType;
@@ -7,15 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LinkTest {
     static Graph graph = new Graph();
-
-    Scanner input = new Scanner(System.in);
 
     public LinkTest() {
     }

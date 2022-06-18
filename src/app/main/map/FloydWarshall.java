@@ -9,15 +9,15 @@ import java.util.LinkedList;
 public class FloydWarshall {
 
     private final static int INFINITE = Integer.MAX_VALUE;
-    private Graph map;
+    private Graph graph;
     private DistancePred[][] matrix;
 
     public FloydWarshall(Graph map) {
-        this.map = map;
+        this.graph = map;
     }
 
     private void initializeMatrix(DistancePred[][] matrix) {
-        LinkedList<Node> nodes = map.getNodes();
+        LinkedList<Node> nodes = graph.getNodes();
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = new DistancePred();
@@ -41,7 +41,7 @@ public class FloydWarshall {
     }
 
     public void floydWarshall(){
-        DistancePred[][] matrix = new DistancePred[map.getNodesCount()][map.getNodesCount()];
+        DistancePred[][] matrix = new DistancePred[graph.getNodesCount()][graph.getNodesCount()];
 
         this.initializeMatrix(matrix);
 

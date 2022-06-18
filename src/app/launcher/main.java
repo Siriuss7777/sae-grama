@@ -16,7 +16,7 @@ public class main {
     public static void main(String[] args) throws IOException {
 
         String filename = null;
-        filename = "src/resources/map.csv";
+        filename = "src/resources/test.csv";
         graph.init(filename);
 
 

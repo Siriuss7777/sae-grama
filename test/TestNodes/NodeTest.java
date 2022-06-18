@@ -1,23 +1,18 @@
-package app.main.nodesTest;
+package TestNodes;
 
 import app.main.map.Graph;
-import app.main.nodes.LinkType;
-import app.main.nodes.Node;
 import app.main.nodes.NodeType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class NodeTest {
     static Graph graph = new Graph();
-
-    Scanner input = new Scanner(System.in);
 
     public NodeTest() {
     }
