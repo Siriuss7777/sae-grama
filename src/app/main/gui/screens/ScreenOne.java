@@ -11,124 +11,80 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class ScreenOne extends JPanel {
-    JFrame f;
+public class ScreenOne extends Screen {
+    private final JLabel nodeSelectedTxt;
+    private final JLabel nodeSelected;
 
-    Graph graph;
-    GraphDisplay graphDisplay;
-
-    private JPanel contentPane = new JPanel();
-
-    private JPanel containerLeft = new JPanel();
-    private JPanel containerRight = new JPanel();
-
-    private JPanel leftCorner = new JPanel();
-
-    private JPanel resetPan = new JPanel();
-
-    private JPanel panAffNodeSel = new JPanel();
-
-    private JPanel panActionNoeud = new JPanel();
-    private JPanel panKey = new JPanel();
-
-    private mxGraphComponent panAffNoeuds;
-
-    private JLabel nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
-    public JLabel nodeSelected = new JLabel("Pas de noeud sélectionné");
-
-    private JLabel linkSelectedTxt = new JLabel("Lien sélectionné : ");
-    public JLabel linkSelected = new JLabel("Pas de lien sélectionné");
+    private final JLabel linkSelectedTxt;
+    private final JLabel linkSelected;
 
     private Node node;
     private Link link;
 
-    private JButton reset = new JButton("Reset");
+    private final JButton reset;
 
-    private JButton neighbours = new JButton("Voisins");
-    private JButton nodeByLink = new JButton("Noeuds relié par le lien");
+    private final JButton neighbours;
+    private final JButton nodeByLink;
 
-    public JLabel getNodeSelected() {
-        return nodeSelected;
-    }
 
     public ScreenOne(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super();
-        this.f = f;
+        super(f, graph, graphDisplay);
+        this.frame = f;
         this.graph = graph;
         this.graphDisplay = graphDisplay;
+
+        nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
+        nodeSelected = new JLabel("Pas de noeud sélectionné");
+        linkSelectedTxt = new JLabel("Lien sélectionné : ");
+        linkSelected = new JLabel("Pas de lien sélectionné");
+        reset = new JButton("Réinitialiser");
+        neighbours = new JButton("Voisins");
+        nodeByLink = new JButton("Noeuds relié par le lien");
+
         constpan();
     }
 
     private void constpan(){
-        this.setLayout(new BorderLayout());
+        panDispNodeSelected.setLayout(new GridLayout(2, 2));
 
-        this.add(containerLeft, BorderLayout.WEST);
-        this.add(containerRight, BorderLayout.CENTER);
-
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int)tailleEcran.getHeight();
-        int width = (int)tailleEcran.getWidth();
-
-        containerLeft.setSize(400, 0);
-        containerLeft.setPreferredSize(new Dimension(400, 0));
-
-        this.setSize(width, height-150);
-        this.setPreferredSize(new Dimension(width, height-150));
-
-        int newWidth = width - 400;
-
-        containerRight.setSize(newWidth, height);
-        containerRight.setPreferredSize(new Dimension(newWidth, height));
-
-
-        containerRight.setLayout(new BorderLayout());
-        containerLeft.setLayout(new BorderLayout());
-
-        leftCorner.setLayout(new BorderLayout());
-        leftCorner.setBorder(BorderFactory.createEtchedBorder());
-
-
-        panAffNodeSel.setPreferredSize(new Dimension(0, 150));
-        panAffNodeSel.add(nodeSelectedTxt);
-        panAffNodeSel.add(nodeSelected);
-        panAffNodeSel.add(linkSelectedTxt);
-        panAffNodeSel.add(linkSelected);
-        panAffNodeSel.add(reset);
+        panDispNodeSelected.add(nodeSelectedTxt);
+        panDispNodeSelected.add(nodeSelected);
+        panDispNodeSelected.add(linkSelectedTxt);
+        panDispNodeSelected.add(linkSelected);
+        panDispNodeSelected.add(reset);
 
         resetPan.setSize(0, 46);
         resetPan.setPreferredSize(new Dimension(0, 46));
         resetPan.add(reset);
 
-        panActionNoeud.setLayout(new FlowLayout());
-        panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
-        panActionNoeud.setSize(0, 200);
-        panActionNoeud.setPreferredSize(new Dimension(0, 200));
-        panActionNoeud.add(neighbours);
-        panActionNoeud.add(nodeByLink);
-
-        panKey.setBorder(BorderFactory.createEtchedBorder());
+        panActionNode.setLayout(new FlowLayout());
+        panActionNode.setBorder(BorderFactory.createEtchedBorder());
+        panActionNode.setSize(0, 200);
+        panActionNode.setPreferredSize(new Dimension(0, 200));
+        panActionNode.add(neighbours);
+        panActionNode.add(nodeByLink);
 
 
-        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
+        panDispGraph = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                mxCell cell = (mxCell) panAffNoeuds.getCellAt(e.getX(), e.getY());
+                mxCell cell = (mxCell) panDispGraph.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
                     node = (Node) cell.getValue();
                     nodeSelected.setText(node.getName());
                     // Select the cell
-                    panAffNoeuds.getGraph().setSelectionCell(cell);
+                    panDispGraph.getGraph().setSelectionCell(cell);
                 }
                 else if (cell != null && cell.isEdge()){
                     link = graphDisplay.findLink(cell);
                     linkSelected.setText(link.toString());
                     // Select the cell
-                    panAffNoeuds.getGraph().setSelectionCell(cell);
+                    panDispGraph.getGraph().setSelectionCell(cell);
                 }
 
                 else{
-                    panAffNoeuds.getGraph().clearSelection();
+                    panDispGraph.getGraph().clearSelection();
                 }
             }
         });
@@ -159,15 +115,7 @@ public class ScreenOne extends JPanel {
             graphDisplay.resetColours();
         });
 
-
-        leftCorner.add(panAffNodeSel, BorderLayout.NORTH);
-        leftCorner.add(resetPan, BorderLayout.SOUTH);
-
-        containerLeft.add(leftCorner, BorderLayout.NORTH);
-        containerLeft.add(panKey, BorderLayout.CENTER);
-
-        containerRight.add(panActionNoeud, BorderLayout.NORTH);
-        containerRight.add(panAffNoeuds, BorderLayout.CENTER);
+        addAllPanels();
     }
 
 }

@@ -13,33 +13,29 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ScreenFour extends Screen {
-
-    private mxGraphComponent panAffNoeuds;
-
-    private JLabel nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
-    private JLabel nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
-    private JLabel nodeThreeSelectedTxt = new JLabel("Noeud un à traverser : ");
-    private JLabel nodeFourSelectedTxt = new JLabel("Noeud deux à traverser : ");
-    private JLabel nodeOneSelected = new JLabel("Pas de noeud sélectionné");
-    private JLabel nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
-    private JLabel nodeThreeSelected = new JLabel("Pas de noeud sélectionné");
-    private JLabel nodeFourSelected = new JLabel("Pas de noeud sélectionné");
+    private final JLabel nodeOneSelectedTxt;
+    private final JLabel nodeTwoSelectedTxt;
+    private final JLabel nodeThreeSelectedTxt;
+    private final JLabel nodeFourSelectedTxt;
+    private final JLabel nodeOneSelected;
+    private final JLabel nodeTwoSelected;
+    private final JLabel nodeThreeSelected;
+    private final JLabel nodeFourSelected;
 
     private Node nodeOne = null;
     private Node nodeTwo = null;
     private Node nodeThree = null;
     private Node nodeFour = null;
 
-    private JButton resetButton = new JButton("Reset");
+    private final JButton resetButton;
 
-    private JButton floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
-    private JButton nDistanceButton = new JButton("Distance entre les deux noeuds");
-    private JLabel labelDistance = new JLabel("Distance entre les deux noeuds à tester : ");
-    private JComboBox<Integer> distance = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5, 6});
+    private final JButton floydWarshallButton;
+    private final JButton nDistanceButton;
+    private final JComboBox<Integer> distance;
 
-    private JButton pathWithButton = new JButton("Chemin traversant les deux noeuds");
+    private final JButton pathWithButton;
 
-    private JButton nDistanceMinButton = new JButton("Distance minimum entre les deux noeuds");
+    private final JButton nDistanceMinButton;
 
 
     public ScreenFour(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
@@ -47,22 +43,29 @@ public class ScreenFour extends Screen {
         this.frame = frame;
         this.graph = graph;
         this.graphDisplay = graphDisplay;
+
+        nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
+        nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
+        nodeThreeSelectedTxt = new JLabel("Noeud un à traverser : ");
+        nodeFourSelectedTxt = new JLabel("Noeud deux à traverser : ");
+        nodeOneSelected = new JLabel("Pas de noeud sélectionné");
+        nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
+        nodeThreeSelected = new JLabel("Pas de noeud sélectionné");
+        nodeFourSelected = new JLabel("Pas de noeud sélectionné");
+        resetButton = new JButton("Réinitialiser");
+        floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
+        nDistanceButton = new JButton("Distance entre les deux noeuds");
+        distance = new JComboBox<>(new Integer[]{1, 2, 3, 4, 5, 6});
+        pathWithButton = new JButton("Chemin traversant les deux noeuds");
+        nDistanceMinButton = new JButton("Distance minimum entre les deux noeuds");
+
         constpan();
     }
 
     public void constpan(){
-
         // TODO : Ajouter une JList pour afficher les noeuds pour les algos de path
 
-        containerRight.setLayout(new BorderLayout());
-        containerLeft.setLayout(new BorderLayout());
-
-        leftCorner.setLayout(new BorderLayout());
-        leftCorner.setBorder(BorderFactory.createEtchedBorder());
-
-        panDispNodeSelected.setLayout(new GridLayout(5, 2));
-        panDispNodeSelected.setSize(0, 150);
-        panDispNodeSelected.setPreferredSize(new Dimension(0, 150));
+        panDispNodeSelected.setLayout(new GridLayout(4, 2));
 
         panDispNodeSelected.add(nodeOneSelectedTxt);
         panDispNodeSelected.add(nodeOneSelected);
@@ -86,15 +89,11 @@ public class ScreenFour extends Screen {
 
         panActionNode.add(nDistanceMinButton);
 
-
-
-        panListNodes.setBorder(BorderFactory.createEtchedBorder());
-
-        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
+        panDispGraph = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                mxCell cell = (mxCell) ScreenFour.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
+                mxCell cell = (mxCell) ScreenFour.this.panDispGraph.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
                     if (!e.isControlDown() && !e.isShiftDown()) {
                         nodeOne = (Node) cell.getValue();
@@ -114,7 +113,7 @@ public class ScreenFour extends Screen {
                     }
                 }
                 else{
-                    panAffNoeuds.getGraph().clearSelection();
+                    panDispGraph.getGraph().clearSelection();
                 }
             }
         });
@@ -182,15 +181,6 @@ public class ScreenFour extends Screen {
             graphDisplay.resetColours();
         });
 
-
-
-        leftCorner.add(panDispNodeSelected, BorderLayout.CENTER);
-        leftCorner.add(resetPan, BorderLayout.SOUTH);
-
-        containerLeft.add(leftCorner, BorderLayout.NORTH);
-        containerLeft.add(panListNodes, BorderLayout.CENTER);
-
-        containerRight.add(panActionNode, BorderLayout.NORTH);
-        containerRight.add(panAffNoeuds, BorderLayout.CENTER);
+        addAllPanels();
     }
 }

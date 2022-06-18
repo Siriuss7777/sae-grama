@@ -11,8 +11,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ScreenTwo extends Screen {
-    private mxGraphComponent panAffNoeuds;
-
     private final JLabel nodeOneSelectedTxt;
     private final JLabel nodeTwoSelectedTxt;
     private final JLabel nodeOneSelected;
@@ -41,7 +39,7 @@ public class ScreenTwo extends Screen {
     }
 
     public void buildPanel(){
-
+        panDispNodeSelected.setLayout(new GridLayout(2,2));
 
         panDispNodeSelected.add(nodeOneSelectedTxt);
         panDispNodeSelected.add(nodeOneSelected);
@@ -59,28 +57,25 @@ public class ScreenTwo extends Screen {
 
         panActionNode.add(_2distanceButton);
 
-
-        panListNodes.setBorder(BorderFactory.createEtchedBorder());
-
-        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
+        panDispGraph = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                mxCell cell = (mxCell) ScreenTwo.this.panAffNoeuds.getCellAt(e.getX(), e.getY());
+                mxCell cell = (mxCell) ScreenTwo.this.panDispGraph.getCellAt(e.getX(), e.getY());
                 if (cell != null && cell.isVertex()) {
                     if (!e.isControlDown()) {
-                        panAffNoeuds.getGraph().setSelectionCell(cell);
+                        panDispGraph.getGraph().setSelectionCell(cell);
                         nodeOne = (Node) cell.getValue();
                         ScreenTwo.this.nodeOneSelected.setText(nodeOne.getName());
                     }
                     else if (e.isControlDown()) {
-                        panAffNoeuds.getGraph().setSelectionCell(cell);
+                        panDispGraph.getGraph().setSelectionCell(cell);
                         nodeTwo = (Node) cell.getValue();
                         ScreenTwo.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
                 }
                 else{
-                    panAffNoeuds.getGraph().clearSelection();
+                    panDispGraph.getGraph().clearSelection();
                 }
             }
         });
@@ -107,14 +102,6 @@ public class ScreenTwo extends Screen {
             graphDisplay.resetColours();
         });
 
-
-        leftCorner.add(panDispNodeSelected, BorderLayout.NORTH);
-        leftCorner.add(resetPan, BorderLayout.SOUTH);
-
-        containerLeft.add(leftCorner, BorderLayout.NORTH);
-        containerLeft.add(panListNodes, BorderLayout.CENTER);
-
-        containerRight.add(panActionNode, BorderLayout.NORTH);
-        containerRight.add(panAffNoeuds, BorderLayout.CENTER);
+        addAllPanels();
     }
 }
