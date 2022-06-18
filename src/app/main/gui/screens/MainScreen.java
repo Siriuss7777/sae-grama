@@ -8,9 +8,12 @@ import java.awt.*;
 
 public class MainScreen extends JPanel {
     JFrame f;
-    private JPanel containerTop = new JPanel();
-    private mxGraphComponent containerBot;
-    private JPanel panInfo = new JPanel();
+    private final JPanel containerTop;
+    private mxGraphComponent containerBottom;
+    JLabel failLabel;
+    JLabel successLabel;
+
+//    private JPanel panInfo = new JPanel();
 
     Graph graph;
     GraphDisplay graphDisplay;
@@ -20,9 +23,17 @@ public class MainScreen extends JPanel {
         this.f = f;
         this.graph = graph;
         this.graphDisplay = graphDisplay;
-        constpan();
+
+        containerTop = new JPanel();
+
+        successLabel = new JLabel("Chargé avec succès");
+        failLabel = new JLabel("Erreur de chargement");
+
+        buildPanel();
+
     }
-    private void constpan() {
+
+    private void buildPanel() {
 
         this.setLayout(new BorderLayout());
 
@@ -32,17 +43,15 @@ public class MainScreen extends JPanel {
         containerTop.setBorder(BorderFactory.createEtchedBorder());
 
 
-        containerBot = this.graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
+        containerBottom = this.graphDisplay.initNodeDisplay(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         // Dis si le graphe a bien été initialisé
-        if (containerBot != null) {
-            JLabel success = new JLabel("Chargé avec succès");
-            containerTop.add(success);
-            this.add(containerBot, BorderLayout.CENTER);
+        if (containerBottom != null) {
+            containerTop.add(successLabel);
+            this.add(containerBottom, BorderLayout.CENTER);
         } else {
-            JLabel fail = new JLabel("Erreur de chargement");
-            containerTop.add(fail);
+            containerTop.add(failLabel);
         }
 
         this.add(containerTop, BorderLayout.NORTH);

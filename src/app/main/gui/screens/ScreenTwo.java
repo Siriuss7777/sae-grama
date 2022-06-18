@@ -10,107 +10,59 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class ScreenTwo extends JPanel {
-    JFrame f;
-
-    Graph graph;
-    GraphDisplay graphDisplay;
-
-    private JPanel contentPane = new JPanel();
-
-    private JPanel containerLeft = new JPanel();
-    private JPanel containerRight = new JPanel();
-
-    private JPanel leftCorner = new JPanel();
-
-    private JPanel resetPan = new JPanel();
-
-    private JPanel panAffNodeSelected = new JPanel();
-
-    private JPanel panActionNoeud = new JPanel();
-
-    private JPanel panListeNoeud = new JPanel();
+public class ScreenTwo extends Screen {
     private mxGraphComponent panAffNoeuds;
 
-    private JLabel nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
-    private JLabel nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
-    private JLabel nodeOneSelected = new JLabel("Pas de noeud sélectionné");
-    private JLabel nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
+    private final JLabel nodeOneSelectedTxt;
+    private final JLabel nodeTwoSelectedTxt;
+    private final JLabel nodeOneSelected;
+    private final JLabel nodeTwoSelected;
 
     private Node nodeOne;
     private Node nodeTwo;
 
-    private JButton reset = new JButton("Reset");
+    private final JButton resetButton;
+    private final JButton _2distanceButton;
+
+    public ScreenTwo(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
+        super(frame, graph, graphDisplay);
+
+        nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
+        nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
+        nodeOneSelected = new JLabel("Pas de noeud sélectionné");
+        nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
+
+        resetButton = new JButton("Réinitialiser");
+
+        _2distanceButton = new JButton("Sont-ils à 2 distance ?");
 
 
-    private JButton _2distance = new JButton("Sont-ils à 2 distance ?");
-
-    public ScreenTwo(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super();
-        this.f = f;
-        this.graph = graph;
-        this.graphDisplay = graphDisplay;
-        constpan();
+        buildPanel();
     }
 
-    public void constpan(){
-
-        this.setLayout(new BorderLayout());
-
-        this.add(containerLeft, BorderLayout.WEST);
-        this.add(containerRight, BorderLayout.CENTER);
-
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int)tailleEcran.getHeight();
-        int width = (int)tailleEcran.getWidth();
+    public void buildPanel(){
 
 
-        this.add(containerLeft, BorderLayout.WEST);
-        this.add(containerRight, BorderLayout.CENTER);
-
-
-        containerLeft.setSize(400, 0);
-        containerLeft.setPreferredSize(new Dimension(400, 0));
-
-        this.setSize(width, height-150);
-        this.setPreferredSize(new Dimension(width, height-150));
-
-        int newWidth = width - 400;
-
-        containerRight.setSize(newWidth, height);
-        containerRight.setPreferredSize(new Dimension(newWidth, height));
-
-
-        containerRight.setLayout(new BorderLayout());
-        containerLeft.setLayout(new BorderLayout());
-
-        leftCorner.setLayout(new BorderLayout());
-        leftCorner.setBorder(BorderFactory.createEtchedBorder());
-
-        panAffNodeSelected.setLayout(new GridLayout(3, 2));
-        panAffNodeSelected.setSize(0, 150);
-        panAffNodeSelected.setPreferredSize(new Dimension(0, 150));
-
-        panAffNodeSelected.add(nodeOneSelectedTxt);
-        panAffNodeSelected.add(nodeOneSelected);
-        panAffNodeSelected.add(nodeTwoSelectedTxt);
-        panAffNodeSelected.add(nodeTwoSelected);
+        panDispNodeSelected.add(nodeOneSelectedTxt);
+        panDispNodeSelected.add(nodeOneSelected);
+        panDispNodeSelected.add(nodeTwoSelectedTxt);
+        panDispNodeSelected.add(nodeTwoSelected);
 
         resetPan.setSize(0, 46);
         resetPan.setPreferredSize(new Dimension(0, 46));
-        resetPan.add(reset);
+        resetPan.add(resetButton);
 
 
-        panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
-        panActionNoeud.setSize(0, 200);
-        panActionNoeud.setPreferredSize(new Dimension(0, 200));
+        panActionNode.setBorder(BorderFactory.createEtchedBorder());
+        panActionNode.setSize(0, 200);
+        panActionNode.setPreferredSize(new Dimension(0, 200));
 
-        panActionNoeud.add(_2distance);
+        panActionNode.add(_2distanceButton);
 
 
-        panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
+        panListNodes.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
+        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
@@ -133,7 +85,7 @@ public class ScreenTwo extends JPanel {
             }
         });
 
-        _2distance.addActionListener(e -> {
+        _2distanceButton.addActionListener(e -> {
             if (ScreenTwo.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenTwo.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
                 JOptionPane.showMessageDialog(ScreenTwo.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
@@ -147,7 +99,7 @@ public class ScreenTwo extends JPanel {
             }
         });
 
-        reset.addActionListener(e -> {
+        resetButton.addActionListener(e -> {
             nodeOneSelected.setText("Pas de noeud sélectionné");
             nodeTwoSelected.setText("Pas de noeud sélectionné");
             nodeOne = null;
@@ -156,13 +108,13 @@ public class ScreenTwo extends JPanel {
         });
 
 
-        leftCorner.add(panAffNodeSelected, BorderLayout.NORTH);
+        leftCorner.add(panDispNodeSelected, BorderLayout.NORTH);
         leftCorner.add(resetPan, BorderLayout.SOUTH);
 
         containerLeft.add(leftCorner, BorderLayout.NORTH);
-        containerLeft.add(panListeNoeud, BorderLayout.CENTER);
+        containerLeft.add(panListNodes, BorderLayout.CENTER);
 
-        containerRight.add(panActionNoeud, BorderLayout.NORTH);
+        containerRight.add(panActionNode, BorderLayout.NORTH);
         containerRight.add(panAffNoeuds, BorderLayout.CENTER);
     }
 }

@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ScreenZero extends JPanel {
@@ -98,7 +97,7 @@ public class ScreenZero extends JPanel {
 
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNoeuds = graphDisplay.initializeAffNoeuds(GraphDisplay.DEFAULT_MOUSELISTENER);
+        panAffNoeuds = graphDisplay.initNodeDisplay(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
         panAffGen.add(nbrVille);

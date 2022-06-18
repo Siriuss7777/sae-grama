@@ -12,23 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class ScreenFour extends JPanel {
-    JFrame f;
-
-    Graph graph;
-    GraphDisplay graphDisplay;
-
-    private JPanel contentPane = new JPanel();
-
-    private JPanel containerLeft = new JPanel();
-    private JPanel containerRight = new JPanel();
-
-    private JPanel leftCorner = new JPanel();
-    private JPanel panAffNodeSelected = new JPanel();
-    private JPanel resetPan = new JPanel();
-
-    private JPanel panActionNoeud = new JPanel();
-    private JPanel panListeNoeud = new JPanel();
+public class ScreenFour extends Screen {
 
     private mxGraphComponent panAffNoeuds;
 
@@ -46,7 +30,7 @@ public class ScreenFour extends JPanel {
     private Node nodeThree = null;
     private Node nodeFour = null;
 
-    private JButton reset = new JButton("Reset");
+    private JButton resetButton = new JButton("Reset");
 
     private JButton floydWarshallButton = new JButton("Distance la plus courte entre les deux noeuds");
     private JButton nDistanceButton = new JButton("Distance entre les deux noeuds");
@@ -58,9 +42,9 @@ public class ScreenFour extends JPanel {
     private JButton nDistanceMinButton = new JButton("Distance minimum entre les deux noeuds");
 
 
-    public ScreenFour(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super();
-        this.f = f;
+    public ScreenFour(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
+        super(frame, graph, graphDisplay);
+        this.frame = frame;
         this.graph = graph;
         this.graphDisplay = graphDisplay;
         constpan();
@@ -70,71 +54,43 @@ public class ScreenFour extends JPanel {
 
         // TODO : Ajouter une JList pour afficher les noeuds pour les algos de path
 
-        this.setLayout(new BorderLayout());
-
-        this.add(containerLeft, BorderLayout.WEST);
-        this.add(containerRight, BorderLayout.CENTER);
-
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int height = (int)tailleEcran.getHeight();
-        int width = (int)tailleEcran.getWidth();
-
-        this.setSize(width, height-150);
-        this.setPreferredSize(new Dimension(width, height-150));
-
-        containerLeft.setSize(400, 0);
-        containerLeft.setPreferredSize(new Dimension(400, 0));
-
-
-        int newWidth = width - 400;
-
-        containerRight.setSize(newWidth, height);
-        containerRight.setPreferredSize(new Dimension(newWidth, height));
-
-
         containerRight.setLayout(new BorderLayout());
         containerLeft.setLayout(new BorderLayout());
 
         leftCorner.setLayout(new BorderLayout());
         leftCorner.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNodeSelected.setLayout(new GridLayout(5, 2));
-        panAffNodeSelected.setSize(0, 150);
-        panAffNodeSelected.setPreferredSize(new Dimension(0, 150));
+        panDispNodeSelected.setLayout(new GridLayout(5, 2));
+        panDispNodeSelected.setSize(0, 150);
+        panDispNodeSelected.setPreferredSize(new Dimension(0, 150));
 
-        panAffNodeSelected.add(nodeOneSelectedTxt);
-        panAffNodeSelected.add(nodeOneSelected);
-        panAffNodeSelected.add(nodeTwoSelectedTxt);
-        panAffNodeSelected.add(nodeTwoSelected);
-        panAffNodeSelected.add(nodeThreeSelectedTxt);
-        panAffNodeSelected.add(nodeThreeSelected);
-        panAffNodeSelected.add(nodeFourSelectedTxt);
-        panAffNodeSelected.add(nodeFourSelected);
+        panDispNodeSelected.add(nodeOneSelectedTxt);
+        panDispNodeSelected.add(nodeOneSelected);
+        panDispNodeSelected.add(nodeTwoSelectedTxt);
+        panDispNodeSelected.add(nodeTwoSelected);
+        panDispNodeSelected.add(nodeThreeSelectedTxt);
+        panDispNodeSelected.add(nodeThreeSelected);
+        panDispNodeSelected.add(nodeFourSelectedTxt);
+        panDispNodeSelected.add(nodeFourSelected);
 
         resetPan.setSize(0, 46);
         resetPan.setPreferredSize(new Dimension(0, 46));
-        resetPan.add(reset);
+        resetPan.add(resetButton);
+
+        panActionNode.add(floydWarshallButton);
+
+        panActionNode.add(nDistanceButton);
+        panActionNode.add(distance);
+
+        panActionNode.add(pathWithButton);
+
+        panActionNode.add(nDistanceMinButton);
 
 
 
-        panActionNoeud.setBorder(BorderFactory.createEtchedBorder());
-        panActionNoeud.setSize(0, 200);
-        panActionNoeud.setPreferredSize(new Dimension(0, 200));
+        panListNodes.setBorder(BorderFactory.createEtchedBorder());
 
-        panActionNoeud.add(floydWarshallButton);
-
-        panActionNoeud.add(nDistanceButton);
-        panActionNoeud.add(distance);
-
-        panActionNoeud.add(pathWithButton);
-
-        panActionNoeud.add(nDistanceMinButton);
-
-
-
-        panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
-
-        panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
+        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
@@ -214,7 +170,7 @@ public class ScreenFour extends JPanel {
 
         });
 
-        reset.addActionListener(e -> {
+        resetButton.addActionListener(e -> {
             nodeOneSelected.setText("Pas de noeud sélectionné");
             nodeTwoSelected.setText("Pas de noeud sélectionné");
             nodeThreeSelected.setText("Pas de noeud sélectionné");
@@ -228,13 +184,13 @@ public class ScreenFour extends JPanel {
 
 
 
-        leftCorner.add(panAffNodeSelected, BorderLayout.CENTER);
+        leftCorner.add(panDispNodeSelected, BorderLayout.CENTER);
         leftCorner.add(resetPan, BorderLayout.SOUTH);
 
         containerLeft.add(leftCorner, BorderLayout.NORTH);
-        containerLeft.add(panListeNoeud, BorderLayout.CENTER);
+        containerLeft.add(panListNodes, BorderLayout.CENTER);
 
-        containerRight.add(panActionNoeud, BorderLayout.NORTH);
+        containerRight.add(panActionNode, BorderLayout.NORTH);
         containerRight.add(panAffNoeuds, BorderLayout.CENTER);
     }
 }

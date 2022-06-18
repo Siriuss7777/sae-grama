@@ -8,7 +8,6 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxGraphSelectionModel;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultUndirectedGraph;
@@ -45,24 +44,24 @@ public class GraphDisplay extends JPanel {
         this.initGraph();
     }
 
-    public mxGraphComponent initializeAffNoeuds(mxMouseAdapter mouseListener) {
+    public mxGraphComponent initNodeDisplay(mxMouseAdapter mouseListener) {
 
         // Colouring vertices differently following their types
         this.colourNodes();
         this.colourLinks();
 
         // Make the graph zoomable and scrollable with ctrl-mousewheel
-        this.makeScrollable();
+        this.enableScrolling();
 
         // Handle node (vertex) selection
-        this.makeNodesSelectableJGX(mouseListener);
+        this.enableSelection(mouseListener);
 
         return graphComponent;
     }
 
 
     private void initGraph(){
-        String linkName = null;
+        String linkName;
 
         ListenableGraph<Node, String> g = new DefaultListenableGraph<>(new DefaultUndirectedGraph<>(String.class));
 
@@ -131,10 +130,10 @@ public class GraphDisplay extends JPanel {
     }
 
     public void colourLinks(){
-        Object[] departementales = new Object[graph.getLinksCount()];
-        Object[] nationales = new Object[graph.getLinksCount()];
-        Object[] autoroutes = new Object[graph.getLinksCount()];
-        Object currentEdge = null;
+        Object[] departmentalRoads = new Object[graph.getLinksCount()];
+        Object[] nationalRoads = new Object[graph.getLinksCount()];
+        Object[] highways = new Object[graph.getLinksCount()];
+        Object currentEdge;
 
         for(int i=0; i < this.getEdges().length; i++){
 
@@ -142,18 +141,18 @@ public class GraphDisplay extends JPanel {
             String type = String.valueOf(graphComponent.getGraph().getModel().getValue(currentEdge));
 
             if(type.charAt(0) == 'D'){
-                departementales[i] = currentEdge;
+                departmentalRoads[i] = currentEdge;
             }
             else if(type.charAt(0) == 'N'){
-                nationales[i] = currentEdge;
+                nationalRoads[i] = currentEdge;
             }
             else{
-                autoroutes[i] = currentEdge;
+                highways[i] = currentEdge;
             }
 
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#3C64B9", departementales);
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FCA311", nationales);
-            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", autoroutes);
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#3C64B9", departmentalRoads);
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FCA311", nationalRoads);
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", highways);
 
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", this.getEdges());
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", this.getEdges());
@@ -163,93 +162,52 @@ public class GraphDisplay extends JPanel {
 
     }
 
-    private void makeScrollable(){
-        graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.isControlDown()) {
-                    if (e.getWheelRotation() < 0) {
-                        graphComponent.zoomIn();
-                    } else {
-                        graphComponent.zoomOut();
-                    }
-                }
-                // Normal scroll if control is not pressed
-                else if (e.isShiftDown()) {
-                    if (!e.isControlDown()) {
-                        graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 15,
-                                graphComponent.getViewport().getViewPosition().y));
-                    } else {
-                        graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 15,
-                                graphComponent.getViewport().getViewPosition().y));
-                    }
+    private void enableScrolling(){
+        graphComponent.getGraphControl().addMouseWheelListener(e -> {
+            if (e.isControlDown()) {
+                if (e.getWheelRotation() < 0) {
+                    graphComponent.zoomIn();
                 } else {
-                    if (!e.isControlDown()) {
-                        graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 15));
-                    } else {
-                        graphComponent.getViewport().setViewPosition(new Point(
-                                graphComponent.getViewport().getViewPosition().x,
-                                graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 15));
-                    }
+                    graphComponent.zoomOut();
+                }
+            }
+            // Normal scroll if control is not pressed
+            else if (e.isShiftDown()) {
+                if (!e.isControlDown()) {
+                    graphComponent.getViewport().setViewPosition(new Point(
+                            graphComponent.getViewport().getViewPosition().x + e.getWheelRotation() * 15,
+                            graphComponent.getViewport().getViewPosition().y));
+                } else {
+                    graphComponent.getViewport().setViewPosition(new Point(
+                            graphComponent.getViewport().getViewPosition().x - e.getWheelRotation() * 15,
+                            graphComponent.getViewport().getViewPosition().y));
+                }
+            } else {
+                if (!e.isControlDown()) {
+                    graphComponent.getViewport().setViewPosition(new Point(
+                            graphComponent.getViewport().getViewPosition().x,
+                            graphComponent.getViewport().getViewPosition().y + e.getWheelRotation() * 15));
+                } else {
+                    graphComponent.getViewport().setViewPosition(new Point(
+                            graphComponent.getViewport().getViewPosition().x,
+                            graphComponent.getViewport().getViewPosition().y - e.getWheelRotation() * 15));
                 }
             }
         });
     }
 
-    private void makeNodesSelectable(){
-        /*
 
-
-            Deprecated, use makeNodesSelectableJGX instead
-
-
-         */
-        final mxCell[] lastSelectedCell = {(mxCell) graphComponent.getGraph().getModel().getChildAt(graphComponent.getGraph().getDefaultParent(), 0)};   // CHOSE FIRST ELEMENT TO MAKE IT WORK
-
-        graphComponent.getGraphControl().addMouseListener(new mxMouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //Check if the mouse is over a cell
-                mxCell cell = ((mxCell) graphComponent.getCellAt(e.getX(), e.getY(), false));
-                if (cell != null) {
-                    //Check if the cell is a vertex
-                    if (graphComponent.getGraph().getModel().isVertex(cell)) {
-                        String type = String.valueOf(graphComponent.getGraph().getModel().getValue(lastSelectedCell[0]));
-                        if (type.charAt(0) == 'R') {
-                            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FF0000", new Object[]{lastSelectedCell[0]});
-                        }
-                        else if (type.charAt(0) == 'L') {
-                            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#00FF00", new Object[]{lastSelectedCell[0]});
-                        }
-                        else if(type.charAt(0) == 'V'){
-                            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#0000FF", new Object[]{lastSelectedCell[0]});
-                        }
-                        graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FFFF00", new Object[]{cell});
-                        lastSelectedCell[0] = cell;
-                    }
-                }
-            }
-        });
-    }
-
-    private void makeNodesSelectableJGX(mxMouseAdapter mouseListener){
-        mxGraphSelectionModel selectionModel = graphComponent.getGraph().getSelectionModel();
+    private void enableSelection(mxMouseAdapter mouseListener){
         graphComponent.getGraphControl().addMouseListener(mouseListener);
     }
 
     public void highlightNodes(LinkedList<Node> nodes){
         this.colourNodes();
 
-        int j = 0;
-
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "30", this.getVertices());
         mxCell[] table = new mxCell[nodes.size()];
         for(int i = 0; i< nodes.size() ; i++){
-            table[i] = findCell((Node) nodes.get(i));
+            table[i] = findCell(nodes.get(i));
         }
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", table);
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FILLCOLOR, "#FFF300", table);
@@ -261,12 +219,11 @@ public class GraphDisplay extends JPanel {
     public void highlightLinks(LinkedList<Link> links){
         this.colourLinks();
 
-        int j = 0;
 
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "30", this.getEdges());
         mxCell[] table = new mxCell[links.size()];
         for(int i = 0; i< links.size(); i++){
-            table[i] = findCell((Link) links.get(i));
+            table[i] = findCell(links.get(i));
         }
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "2", table);
         graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", table);
@@ -278,7 +235,7 @@ public class GraphDisplay extends JPanel {
 
         this.highlightNodes(nodes);
 
-        LinkedList<Link> links = new LinkedList<Link>();
+        LinkedList<Link> links = new LinkedList<>();
 
         for(int i = 0; i < nodes.size() - 1; i++) {
             links.add(nodes.get(i).getClosestNeighbour(nodes.get(i+1)));
@@ -346,6 +303,6 @@ public class GraphDisplay extends JPanel {
         vertices.add(link.getNode());
         vertices.add(link.getFromNode());
         this.highlightNodes(vertices);
-        this.highlightLinks(new LinkedList<Link>(){{add(link);}});
+        this.highlightLinks(new LinkedList<>(){{add(link);}});
     }
 }

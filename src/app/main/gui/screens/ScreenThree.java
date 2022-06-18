@@ -114,7 +114,7 @@ public class ScreenThree extends JPanel {
 
         panListeNoeud.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
+        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);

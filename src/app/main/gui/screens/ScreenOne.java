@@ -87,8 +87,7 @@ public class ScreenOne extends JPanel {
         leftCorner.setLayout(new BorderLayout());
         leftCorner.setBorder(BorderFactory.createEtchedBorder());
 
-        panAffNodeSel.setLayout(new GridLayout(2, 2));
-        panAffNodeSel.setSize(0, 150);
+
         panAffNodeSel.setPreferredSize(new Dimension(0, 150));
         panAffNodeSel.add(nodeSelectedTxt);
         panAffNodeSel.add(nodeSelected);
@@ -110,7 +109,7 @@ public class ScreenOne extends JPanel {
         panKey.setBorder(BorderFactory.createEtchedBorder());
 
 
-        panAffNoeuds = graphDisplay.initializeAffNoeuds(new mxMouseAdapter() {
+        panAffNoeuds = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
