@@ -48,12 +48,12 @@ public class GraphTest {
 
     @Test
     public void testVillesCount() {
-        assertEquals(5, graph.getVillesCount());
+        assertEquals(5, graph.getCitiesCount());
     }
 
     @Test
     public void testNationalesCount() {
-        assertEquals(8, graph.getNationalesCount());
+        assertEquals(8, graph.getNationalRoadsCount());
     }
 
     @Test

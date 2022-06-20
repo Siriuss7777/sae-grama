@@ -14,19 +14,19 @@ import java.util.LinkedList;
 
 public class Graph {
     private final LinkedList<Node> nodes;
-    private final LinkedList<Link> autorouteLinks;
-    private final LinkedList<Link> nationaleLinks;
-    private final LinkedList<Link> departementaleLinks;
+    private final LinkedList<Link> highwayLinks;
+    private final LinkedList<Link> nationalRoadsLinks;
+    private final LinkedList<Link> departmentalRoadsLinks;
     private FloydWarshall matrix;
 
-    static int autorouteNumber = 1, nationaleNumber = 1, departementaleNumber = 1;
+    static int highwayNumber = 1, nationalRoadsNumber = 1, departmentalRoadsNumber = 1;
     static private final int INFINITE = Integer.MAX_VALUE;
 
     public Graph() {
         this.nodes = new LinkedList<>();
-        this.autorouteLinks = new LinkedList<>();
-        this.nationaleLinks = new LinkedList<>();
-        this.departementaleLinks = new LinkedList<>();
+        this.highwayLinks = new LinkedList<>();
+        this.nationalRoadsLinks = new LinkedList<>();
+        this.departmentalRoadsLinks = new LinkedList<>();
     }
 
     public void init(String filename) throws IOException {
@@ -45,7 +45,7 @@ public class Graph {
 
         // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
 
-        while((line = file.readLine()) != null){
+        while ((line = file.readLine()) != null) {
             strType = line.substring(0, line.indexOf(','));
             name = line.substring(line.indexOf(',') + 1, line.indexOf(':'));
 
@@ -57,7 +57,7 @@ public class Graph {
             line = line.substring(line.indexOf(':') + 1); // Résultat: A,50::Paris;;
             links = line.split(";"); // Reste de la ligne: A,50::V,Paris
 
-            for(String link: links){
+            for (String link : links) {
                 dividedLink = link.split("::");
                 attributes = dividedLink[1].split(",");
 
@@ -67,7 +67,7 @@ public class Graph {
 
                 newNode = this.getNodeFromString(strType + "," + name);
 
-                if(newNode == null && nodeType != null){
+                if (newNode == null && nodeType != null) {
                     newNode = this.createNode(nodeType, name);
                 }
 
@@ -80,24 +80,24 @@ public class Graph {
                 addedLink = currentNode.addLink(newNode, linkType, distance);
 
                 invertedLink = newNode.getClosestNeighbour(currentNode);
-                if(invertedLink != null){
+                if (invertedLink != null) {
                     addedLink.setRoadNumber(invertedLink.getRoadNumber());
                 } else {
-                    if(addedLink.getType() == LinkType.AUTOROUTE){
-                        addedLink.setRoadNumber(autorouteNumber);
-                        autorouteNumber++;
-                        this.autorouteLinks.add(addedLink);
+                    if (addedLink.getType() == LinkType.HIGHWAY) {
+                        addedLink.setRoadNumber(highwayNumber);
+                        highwayNumber++;
+                        this.highwayLinks.add(addedLink);
                     }
-                    if(addedLink.getType() == LinkType.DEPARTEMENTALE){
-                        addedLink.setRoadNumber(departementaleNumber);
-                        departementaleNumber++;
-                        this.departementaleLinks.add(addedLink);
+                    if (addedLink.getType() == LinkType.DEPARTMENTAL) {
+                        addedLink.setRoadNumber(departmentalRoadsNumber);
+                        departmentalRoadsNumber++;
+                        this.departmentalRoadsLinks.add(addedLink);
 
                     }
-                    if(addedLink.getType() == LinkType.NATIONALE){
-                        addedLink.setRoadNumber(nationaleNumber);
-                        nationaleNumber++;
-                        this.nationaleLinks.add(addedLink);
+                    if (addedLink.getType() == LinkType.NATIONAL) {
+                        addedLink.setRoadNumber(nationalRoadsNumber);
+                        nationalRoadsNumber++;
+                        this.nationalRoadsLinks.add(addedLink);
                     }
 
                 }
@@ -111,7 +111,7 @@ public class Graph {
 
     }
 
-    public FloydWarshall getMatrix(){
+    public FloydWarshall getMatrix() {
         return this.matrix;
     }
 
@@ -141,18 +141,18 @@ public class Graph {
         this.nodes.add(node);
     }
 
-    public LinkedList<Node> getVilles() {
+    public LinkedList<Node> getCities() {
         LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
-            if (node.getType() == NodeType.VILLE) {
+            if (node.getType() == NodeType.CITY) {
                 tempList.add(node);
             }
         }
         return tempList;
     }
 
-    public String[] getVillesNames() {
-        LinkedList<Node> tempList = this.getVilles();
+    public String[] getCitiesNames() {
+        LinkedList<Node> tempList = this.getCities();
         String[] tempNames = new String[tempList.size()];
 
         for (int i = 0; i < tempList.size(); i++) {
@@ -161,8 +161,8 @@ public class Graph {
         return tempNames;
     }
 
-    public int getVillesCount() {
-        return this.getVilles().size();
+    public int getCitiesCount() {
+        return this.getCities().size();
     }
 
     public LinkedList<Node> getRestaurants() {
@@ -189,18 +189,18 @@ public class Graph {
         return this.getRestaurants().size();
     }
 
-    public LinkedList<Node> getLoisirs() {
+    public LinkedList<Node> getLeisures() {
         LinkedList<Node> tempList = new LinkedList<>();
         for (Node node : this.nodes) {
-            if (node.getType() == NodeType.LOISIRS) {
+            if (node.getType() == NodeType.LEISURE) {
                 tempList.add(node);
             }
         }
         return tempList;
     }
 
-    public String[] getLoisirsNames() {
-        LinkedList<Node> tempList = this.getLoisirs();
+    public String[] getLeisuresNames() {
+        LinkedList<Node> tempList = this.getLeisures();
         String[] tempNames = new String[tempList.size()];
 
         for (int i = 0; i < tempList.size(); i++) {
@@ -209,8 +209,8 @@ public class Graph {
         return tempNames;
     }
 
-    public int getLoisirsCount() {
-        return this.getLoisirs().size();
+    public int getLeisuresCount() {
+        return this.getLeisures().size();
     }
 
     public Node getNodeFromString(String string) {
@@ -227,82 +227,63 @@ public class Graph {
     /*------------------------------------- OPÉRATIONS SUR LES LIENS -------------------------------------*/
     /*----------------------------------------------------------------------------------------------------*/
 
-    public void addLink(Link link) {
-        if(link.getType() == LinkType.AUTOROUTE){
-            this.autorouteLinks.add(link);
-        }
-        if(link.getType() == LinkType.DEPARTEMENTALE){
-            this.departementaleLinks.add(link);
-        }
-        if(link.getType() == LinkType.NATIONALE){
-            this.nationaleLinks.add(link);
-        }
+
+    public LinkedList<Link> getHighways() {
+        return this.highwayLinks;
     }
 
-    public void linkNodes(Node node1, Node node2, LinkType type, int size) {
-        Link link1 = node1.addLink(node2, type, size);
-        Link link2 = node2.addLink(node1, type, size);
-
-        this.addLink(link1);
-        this.addLink(link2);
+    public int getHighwaysCount() {
+        return this.getHighways().size();
     }
 
-    public LinkedList<Link> getAutoroutes() {
-        return this.autorouteLinks;
-    }
+    public String[] getHighwaysNames() {
+        String[] tempNames = new String[highwayLinks.size()];
 
-    public int getAutoroutesCount() {
-        return this.getAutoroutes().size();
-    }
-
-    public String[] getAutoroutesNames() {
-        String[] tempNames = new String[autorouteLinks.size()];
-
-        for (int i = 0; i < autorouteLinks.size(); i++) {
-            tempNames[i] = autorouteLinks.get(i).toString();
+        for (int i = 0; i < highwayLinks.size(); i++) {
+            tempNames[i] = highwayLinks.get(i).toString();
         }
         return tempNames;
     }
 
-    public LinkedList<Link> getNationales() {
-        return this.nationaleLinks;
+    public LinkedList<Link> getNationalRoads() {
+        return this.nationalRoadsLinks;
     }
 
-    public int getNationalesCount() {
-        return this.getNationales().size();
+    public int getNationalRoadsCount() {
+        return this.getNationalRoads().size();
     }
 
-    public String[] getNationalesNames() {
-        String[] tempNames = new String[nationaleLinks.size()];
+    public String[] getNationalRoadsNames() {
+        String[] tempNames = new String[nationalRoadsLinks.size()];
 
-        for (int i = 0; i < nationaleLinks.size(); i++) {
-            tempNames[i] = nationaleLinks.get(i).toString();
+        for (int i = 0; i < nationalRoadsLinks.size(); i++) {
+            tempNames[i] = nationalRoadsLinks.get(i).toString();
         }
         return tempNames;
     }
 
-    public LinkedList<Link> getDepartementales() {
-        return this.departementaleLinks;
+    public LinkedList<Link> getDepartmentalRoads() {
+        return this.departmentalRoadsLinks;
     }
 
-    public int getDepartementalesCount() {
-        return this.getDepartementales().size();
+    public int getDepartmentalRoadsCount() {
+        return this.getDepartmentalRoads().size();
     }
 
-    public String[] getDepartementalesNames() {
-        String[] tempNames = new String[departementaleLinks.size()];
+    public String[] getDepartmentalRoadsNames() {
+        String[] tempNames = new String[departmentalRoadsLinks.size()];
 
-        for (int i = 0; i < departementaleLinks.size(); i++) {
-            tempNames[i] = departementaleLinks.get(i).toString();
+        for (int i = 0; i < departmentalRoadsLinks.size(); i++) {
+            tempNames[i] = departmentalRoadsLinks.get(i).toString();
         }
         return tempNames;
     }
 
     public LinkedList<Link> getLinks() {
         LinkedList<Link> tempList = new LinkedList<>();
-        tempList.addAll(this.autorouteLinks);
-        tempList.addAll(this.departementaleLinks);
-        tempList.addAll(this.nationaleLinks);
+        tempList.addAll(this.highwayLinks);
+        tempList.addAll(this.departmentalRoadsLinks);
+        tempList.addAll(this.nationalRoadsLinks);
         return tempList;
     }
 
@@ -310,10 +291,10 @@ public class Graph {
         return this.getLinks().size();
     }
 
-    public Link getLinkFromString(String string){
+    public Link getLinkFromString(String string) {
         Link returnedLink = null;
-        for(Link link : this.getLinks()){
-            if(link.toString().equals(string)){
+        for (Link link : this.getLinks()) {
+            if (link.toString().equals(string)) {
                 returnedLink = link;
             }
         }
@@ -346,7 +327,7 @@ public class Graph {
             return result;
         }
 
-        for (Node node : nodes){
+        for (Node node : nodes) {
             node.setDistance(10000);
         }
 
@@ -360,13 +341,13 @@ public class Graph {
         int count2ndNode = 0;
         NodeType tmpType = null;
         if (type.equals("OUVERTE")) {
-            tmpType = NodeType.VILLE;
+            tmpType = NodeType.CITY;
         }
         if (type.equals("GASTRONOMIQUE")) {
             tmpType = NodeType.RESTAURANT;
         }
         if (type.equals("CULTURELLE")) {
-            tmpType = NodeType.LOISIRS;
+            tmpType = NodeType.LEISURE;
         }
         Node nodeOpen = null;
         node1.setDistance(0);
@@ -449,7 +430,7 @@ public class Graph {
 //                        .append(neighbour.getNode().getName());
 //            }
 //        }
-        for(Link link : this.getLinks()){
+        for (Link link : this.getLinks()) {
             returnedString.append("\n\t")
                     .append(link.getFromNode().getName())
                     .append(" -")

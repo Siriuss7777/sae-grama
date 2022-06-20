@@ -4,7 +4,6 @@ import app.main.map.Graph;
 import app.main.nodes.Node;
 import app.main.nodes.NodeType;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 
 import javax.swing.*;
@@ -28,25 +27,23 @@ public class ScreenThree extends Screen {
     private final JButton ouverte;
     private final JButton culturel;
 
-    public ScreenThree(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super(f, graph, graphDisplay);
-        this.frame = f;
-        this.graph = graph;
-        this.graphDisplay = graphDisplay;
+    public ScreenThree(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
 
-        nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
-        nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
-        nodeOneSelected = new JLabel("Pas de noeud sélectionné");
-        nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
-        reset = new JButton("Réinitialiser");
+        super(frame, graph, graphDisplay);
+
+        nodeOneSelectedTxt = new JLabel(FIRST_SELECTED_NODE_LABEL);
+        nodeTwoSelectedTxt = new JLabel(SECOND_SELECTED_NODE_LABEL);
+        nodeOneSelected = new JLabel(NO_SELECTED_NODE);
+        nodeTwoSelected = new JLabel(NO_SELECTED_NODE);
+        reset = new JButton(RESET_LABEL);
         gastronomique = new JButton("Gastronomique");
         ouverte = new JButton("Ouverte");
         culturel = new JButton("Culturel");
 
-        constpan();
+        buildPanel();
     }
 
-    public void constpan(){
+    public void buildPanel() {
         panDispNodeSelected.setLayout(new GridLayout(2, 2));
 
         panDispNodeSelected.add(nodeOneSelectedTxt);
@@ -75,60 +72,52 @@ public class ScreenThree extends Screen {
                     if (!e.isControlDown()) {
                         nodeOne = (Node) cell.getValue();
                         ScreenThree.this.nodeOneSelected.setText(nodeOne.getName());
-                    }
-                    else if (e.isControlDown()) {
+                    } else if (e.isControlDown()) {
                         nodeTwo = (Node) cell.getValue();
                         ScreenThree.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
-                }
-                else{
+                } else {
                     panDispGraph.getGraph().clearSelection();
                 }
             }
         });
 
         gastronomique.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals(NO_SELECTED_NODE) || ScreenThree.this.nodeTwoSelected.getText().equals(NO_SELECTED_NODE)) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+            } else if (this.nodeOne.getType() == NodeType.CITY && this.nodeTwo.getType() == NodeType.CITY) {
                 bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "GASTRONOMIQUE");
                 JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus gastronomique !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         ouverte.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals(NO_SELECTED_NODE) || ScreenThree.this.nodeTwoSelected.getText().equals(NO_SELECTED_NODE)) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+            } else if (this.nodeOne.getType() == NodeType.CITY && this.nodeTwo.getType() == NodeType.CITY) {
                 bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "OUVERTE");
                 JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus ouverte !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         culturel.addActionListener(e -> {
-            if (ScreenThree.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenThree.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
+            if (ScreenThree.this.nodeOneSelected.getText().equals(NO_SELECTED_NODE) || ScreenThree.this.nodeTwoSelected.getText().equals(NO_SELECTED_NODE)) {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-            else if(this.nodeOne.getType() == NodeType.VILLE && this.nodeTwo.getType() == NodeType.VILLE){
+            } else if (this.nodeOne.getType() == NodeType.CITY && this.nodeTwo.getType() == NodeType.CITY) {
                 bestNode = ScreenThree.this.graph.isBetterThan(nodeOne, nodeTwo, "CULTURELLE");
                 JOptionPane.showMessageDialog(ScreenThree.this, bestNode + " est plus culturelle !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(ScreenThree.this, "Veuillez sélectionner deux noeuds de type Ville", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         reset.addActionListener(e -> {
-            nodeOneSelected.setText("Pas de noeud sélectionné");
-            nodeTwoSelected.setText("Pas de noeud sélectionné");
+            nodeOneSelected.setText(NO_SELECTED_NODE);
+            nodeTwoSelected.setText(NO_SELECTED_NODE);
             nodeOne = null;
             nodeTwo = null;
             graphDisplay.resetColours();

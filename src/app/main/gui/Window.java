@@ -16,13 +16,13 @@ import com.formdev.flatlaf.*;
 public class Window extends JFrame {
     // TODO : Sélectionner le fichier
     // TODO : Popup d'aide
-    private JFrame f;
-    private JPanel containerPan = new JPanel();
+    private final JFrame f;
+    private final JPanel containerPan = new JPanel();
 
 
-    private Graph graph;
+    private final Graph graph;
 
-    public Window(Graph graph){
+    public Window(Graph graph) {
         super();
         this.graph = graph;
         this.f = this;
@@ -31,20 +31,21 @@ public class Window extends JFrame {
 
 
     public void init() {
-        try{
+        try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
-        }catch(Exception e){
-            System.out.println("Erreur lors de l'utilisation du LaF");
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement du LaF");
+        } finally {
+            setTitle("SAE GRAMA - Guenot/Le Gall");
+            setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+            setMinimumSize(new Dimension(800, 600));
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            //setContentPane(constrPan());
+            add(constMenu());
+            setVisible(true);
         }
-        setTitle("SAE GRAMA - Guenot/Le Gall");
-        setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
-        setMinimumSize(new Dimension(800,600));
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //setContentPane(constrPan());
-        add(constMenu());
-        setVisible(true);
     }
 /*
     private JPanel constrPan(){
@@ -59,7 +60,7 @@ public class Window extends JFrame {
 
  */
 
-    private JTabbedPane constMenu(){
+    private JTabbedPane constMenu() {
         JTabbedPane menu = new JTabbedPane();
         GraphDisplay gd = new GraphDisplay(graph);
 
@@ -68,7 +69,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 0){
+                if (menu.getSelectedIndex() == 0) {
                     mainTab.removeAll();
                     mainTab.add(new MainScreen(f, graph, gd));
                     mainTab.revalidate();
@@ -81,7 +82,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 1){
+                if (menu.getSelectedIndex() == 1) {
                     tab0.removeAll();
                     tab0.add(new ScreenZero(f, graph, gd));
                     tab0.revalidate();
@@ -94,7 +95,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 2){
+                if (menu.getSelectedIndex() == 2) {
                     tab1.removeAll();
                     tab1.add(new ScreenOne(f, graph, gd));
                     tab1.revalidate();
@@ -107,7 +108,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 3){
+                if (menu.getSelectedIndex() == 3) {
                     tab2.removeAll();
                     tab2.add(new ScreenTwo(f, graph, gd));
                     tab2.revalidate();
@@ -120,7 +121,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 4){
+                if (menu.getSelectedIndex() == 4) {
                     tab3.removeAll();
                     tab3.add(new ScreenThree(f, graph, gd));
                     tab3.revalidate();
@@ -133,7 +134,7 @@ public class Window extends JFrame {
         menu.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                if(menu.getSelectedIndex() == 5){
+                if (menu.getSelectedIndex() == 5) {
                     tab4.removeAll();
                     tab4.add(new ScreenFour(f, graph, gd));
                     tab4.revalidate();

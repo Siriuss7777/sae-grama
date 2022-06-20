@@ -1,9 +1,9 @@
 package app.main.nodes;
 
 public class Link {
-    private Node node;
-    private LinkType type; /* D: "Departementale", N: "Nationale", A: "Autoroute" */
-    private int distance;
+    private final Node node;
+    private final LinkType type; /* D: "Departementale", N: "Nationale", A: "Autoroute" */
+    private final int distance;
 
     private int roadNumber;
     private Node fromNode;
@@ -21,7 +21,9 @@ public class Link {
         this.fromNode = fromNode;
     }
 
-    public Node getNode(){ return this.node; }
+    public Node getNode() {
+        return this.node;
+    }
 
     public Node getFromNode() {
         return fromNode;
@@ -39,9 +41,13 @@ public class Link {
         this.roadNumber = roadNumber;
     }
 
-    public LinkType getType() { return type; }
+    public LinkType getType() {
+        return type;
+    }
 
-    public int getDistance() { return distance; }
+    public int getDistance() {
+        return distance;
+    }
 
     @Override
     public String toString() {

@@ -1,21 +1,22 @@
 package app.main.nodes;
 
 import java.util.Locale;
-import java.util.Map;
 
 public enum LinkType {
-    DEPARTEMENTALE("D"),
-    NATIONALE("N"),
-    AUTOROUTE("A");
+    DEPARTMENTAL("D"),
+    NATIONAL("N"),
+    HIGHWAY("A");
 
 
     String type;
 
-    LinkType(String type){
+    LinkType(String type) {
         this.type = type;
     }
 
-    public String getType(){ return this.type; }
+    public String getType() {
+        return this.type;
+    }
 
     public static LinkType getTypeWithVal(String s) {
         s = s.toUpperCase(Locale.ROOT);
@@ -27,7 +28,7 @@ public enum LinkType {
         return null;
     }
 
-    public String toString(){
+    public String toString() {
         return this.type;
     }
 

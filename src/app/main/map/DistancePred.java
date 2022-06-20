@@ -5,10 +5,10 @@ import app.main.nodes.Node;
 public class DistancePred {
     private int distance;
     private Node pred;
-    private int MAX = 100000;
+    private final int INFINITE = 100000;
 
     public DistancePred() {
-        this.distance = MAX;
+        this.distance = INFINITE;
         this.pred = null;
     }
 

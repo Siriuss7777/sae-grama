@@ -4,7 +4,6 @@ import app.main.map.Graph;
 import app.main.nodes.Link;
 import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 
 import javax.swing.*;
@@ -12,7 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ScreenOne extends Screen {
-    private final JLabel nodeSelectedTxt;
+    private final JLabel labelNodeSelected;
     private final JLabel nodeSelected;
 
     private final JLabel linkSelectedTxt;
@@ -21,48 +20,48 @@ public class ScreenOne extends Screen {
     private Node node;
     private Link link;
 
-    private final JButton reset;
+    private final JButton resetButton;
 
-    private final JButton neighbours;
-    private final JButton nodeByLink;
+    private final JButton neighboursButton;
+    private final JButton nodeByLinkButton;
 
 
-    public ScreenOne(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super(f, graph, graphDisplay);
-        this.frame = f;
-        this.graph = graph;
-        this.graphDisplay = graphDisplay;
+    public ScreenOne(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
 
-        nodeSelectedTxt = new JLabel("Noeud sélectionné : ");
-        nodeSelected = new JLabel("Pas de noeud sélectionné");
-        linkSelectedTxt = new JLabel("Lien sélectionné : ");
-        linkSelected = new JLabel("Pas de lien sélectionné");
-        reset = new JButton("Réinitialiser");
-        neighbours = new JButton("Voisins");
-        nodeByLink = new JButton("Noeuds relié par le lien");
+        super(frame, graph, graphDisplay);
 
-        constpan();
+        labelNodeSelected = new JLabel(SELECTED_NODE_LABEL);
+        nodeSelected = new JLabel(NO_SELECTED_NODE);
+        linkSelectedTxt = new JLabel(SELECTED_LINK_LABEL);
+        linkSelected = new JLabel(NO_SELECTED_NODE);
+
+        resetButton = new JButton(RESET_LABEL);
+
+        neighboursButton = new JButton("Voisins");
+        nodeByLinkButton = new JButton("Noeuds relié par le lien");
+
+        buildPanel();
     }
 
-    private void constpan(){
+    private void buildPanel() {
         panDispNodeSelected.setLayout(new GridLayout(2, 2));
 
-        panDispNodeSelected.add(nodeSelectedTxt);
+        panDispNodeSelected.add(labelNodeSelected);
         panDispNodeSelected.add(nodeSelected);
         panDispNodeSelected.add(linkSelectedTxt);
         panDispNodeSelected.add(linkSelected);
-        panDispNodeSelected.add(reset);
+        panDispNodeSelected.add(resetButton);
 
         resetPan.setSize(0, 46);
         resetPan.setPreferredSize(new Dimension(0, 46));
-        resetPan.add(reset);
+        resetPan.add(resetButton);
 
         panActionNode.setLayout(new FlowLayout());
         panActionNode.setBorder(BorderFactory.createEtchedBorder());
         panActionNode.setSize(0, 200);
         panActionNode.setPreferredSize(new Dimension(0, 200));
-        panActionNode.add(neighbours);
-        panActionNode.add(nodeByLink);
+        panActionNode.add(neighboursButton);
+        panActionNode.add(nodeByLinkButton);
 
 
         panDispGraph = graphDisplay.initNodeDisplay(new mxMouseAdapter() {
@@ -75,23 +74,20 @@ public class ScreenOne extends Screen {
                     nodeSelected.setText(node.getName());
                     // Select the cell
                     panDispGraph.getGraph().setSelectionCell(cell);
-                }
-                else if (cell != null && cell.isEdge()){
+                } else if (cell != null && cell.isEdge()) {
                     link = graphDisplay.findLink(cell);
                     linkSelected.setText(link.toString());
                     // Select the cell
                     panDispGraph.getGraph().setSelectionCell(cell);
-                }
-
-                else{
+                } else {
                     panDispGraph.getGraph().clearSelection();
                 }
             }
         });
 
-        neighbours.addActionListener(e -> {
-            if (nodeSelected.getText().equals("Pas de noeud sélectionné")) {
-                JOptionPane.showMessageDialog(null, "Pas de noeud sélectionné");
+        neighboursButton.addActionListener(e -> {
+            if (nodeSelected.getText().equals(NO_SELECTED_NODE)) {
+                JOptionPane.showMessageDialog(null, NO_SELECTED_NODE);
             } else {
                 graphDisplay.highlightNodes(node.getNeighboursAsNodes());
                 graphDisplay.highlightLinks(node.getAllNeighbours());
@@ -99,17 +95,17 @@ public class ScreenOne extends Screen {
             }
         });
 
-        nodeByLink.addActionListener(e -> {
-            if (linkSelected.getText().equals("Pas de lien sélectionné")) {
-                JOptionPane.showMessageDialog(null, "Pas de lien sélectionné");
+        nodeByLinkButton.addActionListener(e -> {
+            if (linkSelected.getText().equals(NO_SELECTED_LINK)) {
+                JOptionPane.showMessageDialog(null, NO_SELECTED_LINK);
             } else {
                 graphDisplay.highlightNodesByLink(link);
             }
         });
 
-        reset.addActionListener(e -> {
-            nodeSelected.setText("Pas de noeud sélectionné");
-            linkSelected.setText("Pas de lien sélectionné");
+        resetButton.addActionListener(e -> {
+            nodeSelected.setText(NO_SELECTED_NODE);
+            linkSelected.setText(NO_SELECTED_LINK);
             node = null;
             link = null;
             graphDisplay.resetColours();

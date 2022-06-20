@@ -30,7 +30,7 @@ public class LinkTest {
 
     @Test
     public void testGetLinkType() {
-        assertEquals(LinkType.NATIONALE, graph.getLinkFromString("N1").getType());
+        assertEquals(LinkType.NATIONAL, graph.getLinkFromString("N1").getType());
     }
 
     @Test

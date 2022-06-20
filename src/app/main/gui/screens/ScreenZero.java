@@ -3,7 +3,6 @@ package app.main.gui.screens;
 import app.main.map.Graph;
 import app.main.nodes.Link;
 import app.main.nodes.Node;
-import com.mxgraph.swing.mxGraphComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,55 +11,60 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 public class ScreenZero extends Screen {
-    private final JLabel nbrVille;
-    private final JLabel nbrRest;
-    private final JLabel nbrLoisir;
-    private final JLabel nbrNat;
-    private final JLabel nbrAuto;
-    private final JLabel nbrDep;
+    private final JLabel citiesCountLabel;
+    private final JLabel restaurantCountLabel;
+    private final JLabel leisureCountLabel;
+    private final JLabel nationalRoadsCountLabel;
+    private final JLabel highwayCountLabel;
+    private final JLabel departmentalRoadsCountLabel;
 
-    private final JLabel listeVille;
-    private final JLabel listeRest;
-    private final JLabel listeLoisir;
-    private final JLabel listeNat;
-    private final JLabel listeAuto;
-    private final JLabel listeDep;
+    private final JLabel citiesListLabel;
+    private final JLabel restaurantListLabel;
+    private final JLabel leisureListLabel;
+    private final JLabel nationalRoadsListLabel;
+    private final JLabel highwayListLabel;
+    private final JLabel departmentalRoadsListLabel;
 
-    private JComboBox<String> listeVilleCombo;
-    private JComboBox<String> listeRestCombo;
-    private JComboBox<String> listeLoisirCombo;
+    private JComboBox<String> cityListComboBox;
+    private JComboBox<String> restaurantListComboBox;
+    private JComboBox<String> leisureListComboBox;
 
-    private JComboBox<String> listeDepCombo;
-    private JComboBox<String> listeNatCombo;
-    private JComboBox<String> listeAutCombo;
+    private JComboBox<String> departmentalRoadsListComboBox;
+    private JComboBox<String> nationalRoadsListComboBox;
+    private JComboBox<String> highwayListComboBox;
 
-    private final LinkedList<Node> listeNoeudsSelect;
-    private final LinkedList<Link> listeLienSelect;
+    private final LinkedList<Node> selectedNodesList;
+    private final LinkedList<Link> selectedLinksList;
 
-    public ScreenZero(JFrame f, Graph graph, GraphDisplay graphDisplay) {
-        super(f, graph, graphDisplay);
-        this.frame = f;
-        this.graph = graph;
-        this.graphDisplay = graphDisplay;
+    public ScreenZero(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
 
-        nbrVille = new JLabel("Nombre de villes : ");
-        nbrRest = new JLabel("Nombre de restaurants : ");
-        nbrLoisir = new JLabel("Nombre de centres de loisir : ");
-        nbrNat = new JLabel("Nombre de nationales : ");
-        nbrAuto = new JLabel("Nombre d'autoroutes : ");
-        nbrDep = new JLabel("Nombre de départementales : ");
-        listeVille = new JLabel("Liste des villes : ");
-        listeRest = new JLabel("Liste des restaurants : ");
-        listeLoisir = new JLabel("Liste des centres de loisir : ");
-        listeNat = new JLabel("Liste des nationales : ");
-        listeAuto = new JLabel("Liste des autoroutes : ");
-        listeDep = new JLabel("Liste des départementales : ");
-        listeNoeudsSelect = new LinkedList<>();
-        listeLienSelect = new LinkedList<>();
+        super(frame, graph, graphDisplay);
 
-        constpan();
+        citiesCountLabel = new JLabel("Nombre de villes : ");
+        restaurantCountLabel = new JLabel("Nombre de restaurants : ");
+        leisureCountLabel = new JLabel("Nombre de centres de loisir : ");
+
+        citiesListLabel = new JLabel("Liste des villes : ");
+        restaurantListLabel = new JLabel("Liste des restaurants : ");
+        leisureListLabel = new JLabel("Liste des centres de loisir : ");
+
+
+        nationalRoadsCountLabel = new JLabel("Nombre de nationales : ");
+        highwayCountLabel = new JLabel("Nombre d'autoroutes : ");
+        departmentalRoadsCountLabel = new JLabel("Nombre de départementales : ");
+
+        nationalRoadsListLabel = new JLabel("Liste des nationales : ");
+        highwayListLabel = new JLabel("Liste des autoroutes : ");
+        departmentalRoadsListLabel = new JLabel("Liste des départementales : ");
+
+
+        selectedNodesList = new LinkedList<>();
+        selectedLinksList = new LinkedList<>();
+
+        buildPanel();
     }
-    private void constpan() {
+
+    private void buildPanel() {
         leftCorner.setLayout(new GridLayout(6, 2));
 
         leftCorner.setSize(0, 200);
@@ -74,95 +78,94 @@ public class ScreenZero extends Screen {
 
         panDispGraph = graphDisplay.initNodeDisplay(GraphDisplay.DEFAULT_MOUSELISTENER);
 
-        leftCorner.add(nbrVille);
-        leftCorner.add(new JLabel(String.valueOf(graph.getVillesCount()))); // Recupere le nbr de ville et le met en String
-        leftCorner.add(nbrRest);
+        leftCorner.add(citiesCountLabel);
+        leftCorner.add(new JLabel(String.valueOf(graph.getCitiesCount())));
+        leftCorner.add(restaurantCountLabel);
         leftCorner.add(new JLabel(String.valueOf(graph.getRestaurantsCount())));
-        leftCorner.add(nbrLoisir);
-        leftCorner.add(new JLabel(String.valueOf(graph.getLoisirsCount())));
-        leftCorner.add(nbrDep);
-        leftCorner.add(new JLabel(String.valueOf(graph.getDepartementalesCount())));
-        leftCorner.add(nbrNat);
-        leftCorner.add(new JLabel(String.valueOf(graph.getNationalesCount())));
-        leftCorner.add(nbrAuto);
-        leftCorner.add(new JLabel(String.valueOf(graph.getAutoroutesCount())));
+        leftCorner.add(leisureCountLabel);
+        leftCorner.add(new JLabel(String.valueOf(graph.getLeisuresCount())));
+        leftCorner.add(departmentalRoadsCountLabel);
+        leftCorner.add(new JLabel(String.valueOf(graph.getDepartmentalRoadsCount())));
+        leftCorner.add(nationalRoadsCountLabel);
+        leftCorner.add(new JLabel(String.valueOf(graph.getNationalRoadsCount())));
+        leftCorner.add(highwayCountLabel);
+        leftCorner.add(new JLabel(String.valueOf(graph.getHighwaysCount())));
 
-        panActionNode.add(listeVille);
-        panActionNode.add(listeRest);
-        panActionNode.add(listeLoisir);
-        panActionNode.add(listeDep);
-        panActionNode.add(listeNat);
-        panActionNode.add(listeAuto);
+        panActionNode.add(citiesListLabel);
+        panActionNode.add(restaurantListLabel);
+        panActionNode.add(leisureListLabel);
+        panActionNode.add(departmentalRoadsListLabel);
+        panActionNode.add(nationalRoadsListLabel);
+        panActionNode.add(highwayListLabel);
 
-        listeVilleCombo = new JComboBox<>(graph.getVillesNames());
-        listeRestCombo = new JComboBox<>(graph.getRestaurantsNames());
-        listeLoisirCombo = new JComboBox<>(graph.getLoisirsNames());
+        cityListComboBox = new JComboBox<>(graph.getCitiesNames());
+        restaurantListComboBox = new JComboBox<>(graph.getRestaurantsNames());
+        leisureListComboBox = new JComboBox<>(graph.getLeisuresNames());
 
-        panActionNode.add(listeVilleCombo);
-        panActionNode.add(listeRestCombo);
-        panActionNode.add(listeLoisirCombo);
+        panActionNode.add(cityListComboBox);
+        panActionNode.add(restaurantListComboBox);
+        panActionNode.add(leisureListComboBox);
 
-        // TODO : Régler le surglignage des noeuds
-        // TODO : Surligner les liens sélectionnés
-        listeVilleCombo.addActionListener(new ActionListener() {
+
+        cityListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeNoeudsSelect.clear();
-                listeNoeudsSelect.add(graph.getNodeFromString("V," + listeVilleCombo.getSelectedItem().toString()));
-                graphDisplay.highlightNodes(listeNoeudsSelect);
+                selectedNodesList.clear();
+                selectedNodesList.add(graph.getNodeFromString("V," + cityListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightNodes(selectedNodesList);
             }
         });
 
-        listeRestCombo.addActionListener(new ActionListener() {
+        restaurantListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeNoeudsSelect.clear();
-                listeNoeudsSelect.add(graph.getNodeFromString("R," + listeRestCombo.getSelectedItem().toString()));
-                graphDisplay.highlightNodes(listeNoeudsSelect);
+                selectedNodesList.clear();
+                selectedNodesList.add(graph.getNodeFromString("R," + restaurantListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightNodes(selectedNodesList);
             }
         });
 
-        listeLoisirCombo.addActionListener(new ActionListener() {
+        leisureListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeNoeudsSelect.clear();
-                listeNoeudsSelect.add(graph.getNodeFromString("L," + listeLoisirCombo.getSelectedItem().toString()));
-                graphDisplay.highlightNodes(listeNoeudsSelect);
+                selectedNodesList.clear();
+                selectedNodesList.add(graph.getNodeFromString("L," + leisureListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightNodes(selectedNodesList);
             }
         });
 
-        listeDepCombo = new JComboBox<>(graph.getDepartementalesNames());
-        listeNatCombo = new JComboBox<>(graph.getNationalesNames());
-        listeAutCombo = new JComboBox<>(graph.getAutoroutesNames());
+        departmentalRoadsListComboBox = new JComboBox<>(graph.getDepartmentalRoadsNames());
+        nationalRoadsListComboBox = new JComboBox<>(graph.getNationalRoadsNames());
+        highwayListComboBox = new JComboBox<>(graph.getHighwaysNames());
 
-        panActionNode.add(listeDepCombo);
-        panActionNode.add(listeNatCombo);
-        panActionNode.add(listeAutCombo);
+        panActionNode.add(departmentalRoadsListComboBox);
+        panActionNode.add(nationalRoadsListComboBox);
+        panActionNode.add(highwayListComboBox);
 
-        listeDepCombo.addActionListener(new ActionListener() {
+        departmentalRoadsListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeLienSelect.clear();
-                listeLienSelect.add(graph.getLinkFromString(listeDepCombo.getSelectedItem().toString()));
-                graphDisplay.highlightLinks(listeLienSelect);
+                selectedLinksList.clear();
+                selectedLinksList.add(graph.getLinkFromString(departmentalRoadsListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(selectedLinksList);
             }
         });
 
-        listeNatCombo.addActionListener(new ActionListener() {
+        nationalRoadsListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeLienSelect.clear();
-                listeLienSelect.add(graph.getLinkFromString(listeNatCombo.getSelectedItem().toString()));
-                graphDisplay.highlightLinks(listeLienSelect);
+                selectedLinksList.clear();
+                selectedLinksList.add(graph.getLinkFromString(nationalRoadsListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(selectedLinksList);
             }
         });
 
-        listeAutCombo.addActionListener(new ActionListener() {
+        highwayListComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listeLienSelect.clear();
-                listeLienSelect.add(graph.getLinkFromString(listeAutCombo.getSelectedItem().toString()));
-                graphDisplay.highlightLinks(listeLienSelect);
+                selectedLinksList.clear();
+                selectedLinksList.add(graph.getLinkFromString(highwayListComboBox.getSelectedItem().toString()));
+                graphDisplay.highlightLinks(selectedLinksList);
             }
         });
 

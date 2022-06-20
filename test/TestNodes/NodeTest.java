@@ -31,7 +31,7 @@ public class NodeTest {
 
     @Test
     public void testGetNodeType() {
-        assertEquals(NodeType.VILLE, graph.getNodeFromString("V,a").getType());
+        assertEquals(NodeType.CITY, graph.getNodeFromString("V,a").getType());
     }
 
     @Test

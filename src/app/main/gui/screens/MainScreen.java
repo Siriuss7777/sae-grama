@@ -7,20 +7,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainScreen extends JPanel {
-    JFrame f;
+    JFrame frame;
     private final JPanel containerTop;
     private mxGraphComponent containerBottom;
     JLabel failLabel;
     JLabel successLabel;
 
-//    private JPanel panInfo = new JPanel();
-
     Graph graph;
     GraphDisplay graphDisplay;
 
-    public MainScreen(JFrame f, Graph graph, GraphDisplay graphDisplay) {
+    public MainScreen(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
         super();
-        this.f = f;
+        this.frame = frame;
         this.graph = graph;
         this.graphDisplay = graphDisplay;
 
@@ -46,7 +44,6 @@ public class MainScreen extends JPanel {
         containerBottom = this.graphDisplay.initNodeDisplay(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
-        // Dis si le graphe a bien été initialisé
         if (containerBottom != null) {
             containerTop.add(successLabel);
             this.add(containerBottom, BorderLayout.CENTER);

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class FloydWarshall {
 
     private final static int INFINITE = Integer.MAX_VALUE;
-    private Graph graph;
+    private final Graph graph;
     private DistancePred[][] matrix;
 
     public FloydWarshall(Graph map) {
@@ -40,17 +40,17 @@ public class FloydWarshall {
 
     }
 
-    public void floydWarshall(){
+    public void floydWarshall() {
         DistancePred[][] matrix = new DistancePred[graph.getNodesCount()][graph.getNodesCount()];
 
         this.initializeMatrix(matrix);
 
         for (int k = 0; k < matrix.length; k++) {
-            for (int i = 0; i < matrix.length; i++) {
+            for (DistancePred[] distancePreds : matrix) {
                 for (int j = 0; j < matrix.length; j++) {
-                    if (matrix[i][j].getDistance() > matrix[i][k].getDistance() + matrix[k][j].getDistance()) {
-                        matrix[i][j].setDistance(matrix[i][k].getDistance() + matrix[k][j].getDistance());
-                        matrix[i][j].setPredecessor(matrix[k][j].getPredecessor());
+                    if (distancePreds[j].getDistance() > distancePreds[k].getDistance() + matrix[k][j].getDistance()) {
+                        distancePreds[j].setDistance(distancePreds[k].getDistance() + matrix[k][j].getDistance());
+                        distancePreds[j].setPredecessor(matrix[k][j].getPredecessor());
                     }
 
                 }
@@ -63,30 +63,30 @@ public class FloydWarshall {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < this.matrix.length; i++) {
-            for(int j = 0; j < this.matrix.length; j++){
-                sb.append(this.matrix[i][j]).append(" ");
+        for (DistancePred[] distancePreds : this.matrix) {
+            for (int j = 0; j < this.matrix.length; j++) {
+                sb.append(distancePreds[j]).append(" ");
             }
             sb.append("\n");
         }
         return sb.toString();
     }
 
-    public String getLine(int index){
+    public String getLine(int index) {
         StringBuilder sb = new StringBuilder();
-        for(int i =0; i<this.matrix.length; i++){
+        for (int i = 0; i < this.matrix.length; i++) {
             sb.append(this.matrix[index][i]).append(" ");
         }
         return sb.toString();
     }
 
-    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode){ // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
+    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode) { // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();
         ArrayList<Node> path = new ArrayList<>();
         path.add(toNode);
 
-        while(nodeId != targetId){ // Tant que l'on n'est pas arrivé au noeud de destination on ajoute.
+        while (nodeId != targetId) { // Tant que l'on n'est pas arrivé au noeud de destination on ajoute.
             path.add(this.matrix[nodeId][targetId].getPredecessor());
             targetId = this.matrix[nodeId][targetId].getPredecessor().getId();
         }
@@ -96,7 +96,7 @@ public class FloydWarshall {
         return path;
     }
 
-    public int lowestDistance(Node fromNode, Node toNode){
+    public int lowestDistance(Node fromNode, Node toNode) {
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();
         return this.matrix[nodeId][targetId].getDistance();

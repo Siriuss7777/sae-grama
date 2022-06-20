@@ -24,7 +24,13 @@ public class Screen extends JPanel {
     final JPanel panDispNodeSelected;
     final JPanel resetPan;
 
-    final String NO_SELECTED_NODES = "Pas de noeud sélectionné";
+    final static String NO_SELECTED_NODE = "Pas de noeud sélectionné";
+    final static String NO_SELECTED_LINK = "Pas de lien sélectionné";
+    final static String SELECTED_NODE_LABEL = "Noeud sélectionné: ";
+    final static String SELECTED_LINK_LABEL = "Lien sélectionné: ";
+    final static String FIRST_SELECTED_NODE_LABEL = "Noeud un sélectionné: ";
+    final static String SECOND_SELECTED_NODE_LABEL = "Noeud deux sélectionné: ";
+    final static String RESET_LABEL = "Réinitialiser";
 
     public Screen(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
         super();

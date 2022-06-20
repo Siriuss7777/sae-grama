@@ -3,7 +3,6 @@ package app.main.gui.screens;
 import app.main.map.Graph;
 import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMouseAdapter;
 
 import javax.swing.*;
@@ -23,14 +22,15 @@ public class ScreenTwo extends Screen {
     private final JButton _2distanceButton;
 
     public ScreenTwo(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
+
         super(frame, graph, graphDisplay);
 
-        nodeOneSelectedTxt = new JLabel("Noeud un sélectionné : ");
-        nodeTwoSelectedTxt = new JLabel("Noeud deux sélectionné : ");
-        nodeOneSelected = new JLabel("Pas de noeud sélectionné");
-        nodeTwoSelected = new JLabel("Pas de noeud sélectionné");
+        nodeOneSelectedTxt = new JLabel(FIRST_SELECTED_NODE_LABEL);
+        nodeTwoSelectedTxt = new JLabel(SECOND_SELECTED_NODE_LABEL);
+        nodeOneSelected = new JLabel(NO_SELECTED_NODE);
+        nodeTwoSelected = new JLabel(NO_SELECTED_NODE);
 
-        resetButton = new JButton("Réinitialiser");
+        resetButton = new JButton(RESET_LABEL);
 
         _2distanceButton = new JButton("Sont-ils à 2 distance ?");
 
@@ -38,8 +38,8 @@ public class ScreenTwo extends Screen {
         buildPanel();
     }
 
-    public void buildPanel(){
-        panDispNodeSelected.setLayout(new GridLayout(2,2));
+    public void buildPanel() {
+        panDispNodeSelected.setLayout(new GridLayout(2, 2));
 
         panDispNodeSelected.add(nodeOneSelectedTxt);
         panDispNodeSelected.add(nodeOneSelected);
@@ -67,36 +67,32 @@ public class ScreenTwo extends Screen {
                         panDispGraph.getGraph().setSelectionCell(cell);
                         nodeOne = (Node) cell.getValue();
                         ScreenTwo.this.nodeOneSelected.setText(nodeOne.getName());
-                    }
-                    else if (e.isControlDown()) {
+                    } else if (e.isControlDown()) {
                         panDispGraph.getGraph().setSelectionCell(cell);
                         nodeTwo = (Node) cell.getValue();
                         ScreenTwo.this.nodeTwoSelected.setText(nodeTwo.getName());
                     }
-                }
-                else{
+                } else {
                     panDispGraph.getGraph().clearSelection();
                 }
             }
         });
 
         _2distanceButton.addActionListener(e -> {
-            if (ScreenTwo.this.nodeOneSelected.getText().equals("Pas de noeud sélectionné") || ScreenTwo.this.nodeTwoSelected.getText().equals("Pas de noeud sélectionné")) {
+            if (ScreenTwo.this.nodeOneSelected.getText().equals(NO_SELECTED_NODE) || ScreenTwo.this.nodeTwoSelected.getText().equals(NO_SELECTED_NODE)) {
                 JOptionPane.showMessageDialog(ScreenTwo.this, "Veuillez sélectionner deux noeuds", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-            else {
+            } else {
                 if (graph.Distance(nodeOne, nodeTwo, 2) == 2) {
                     JOptionPane.showMessageDialog(ScreenTwo.this, "Oui, ils sont à 2 distance", "Succès", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(ScreenTwo.this, "Non, ils ne sont pas à 2 distance", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         resetButton.addActionListener(e -> {
-            nodeOneSelected.setText("Pas de noeud sélectionné");
-            nodeTwoSelected.setText("Pas de noeud sélectionné");
+            nodeOneSelected.setText(NO_SELECTED_NODE);
+            nodeTwoSelected.setText(NO_SELECTED_NODE);
             nodeOne = null;
             nodeTwo = null;
             graphDisplay.resetColours();
