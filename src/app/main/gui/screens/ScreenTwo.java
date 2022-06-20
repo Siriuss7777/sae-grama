@@ -1,5 +1,6 @@
 package app.main.gui.screens;
 
+import app.main.gui.utils.GraphDisplay;
 import app.main.map.Graph;
 import app.main.nodes.Node;
 import com.mxgraph.model.mxCell;

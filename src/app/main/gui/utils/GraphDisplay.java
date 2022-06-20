@@ -1,4 +1,4 @@
-package app.main.gui.screens;
+package app.main.gui.utils;
 
 import app.main.map.Graph;
 import app.main.nodes.Link;

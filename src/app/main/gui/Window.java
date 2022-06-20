@@ -4,11 +4,11 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.*;
-import java.lang.reflect.Member;
 
 
 import app.main.gui.screens.*;
+import app.main.gui.utils.GraphDisplay;
+import app.main.gui.screens.MainScreen;
 import app.main.map.*;
 import com.formdev.flatlaf.*;
 
