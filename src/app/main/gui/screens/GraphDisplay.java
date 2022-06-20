@@ -150,6 +150,7 @@ public class GraphDisplay extends JPanel {
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKECOLOR, "#FF3333", highways);
 
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_STROKEWIDTH, "1.5", this.getEdges());
+            graphComponent.getGraph().setCellStyles(mxConstants.STYLE_EDGE, mxConstants.EDGESTYLE_ENTITY_RELATION, this.getEdges());
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_ENDARROW, "none", this.getEdges());
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_FONTCOLOR, "#A9B7C6", this.getEdges());
             graphComponent.getGraph().setCellStyles(mxConstants.STYLE_OPACITY, "100", this.getEdges());

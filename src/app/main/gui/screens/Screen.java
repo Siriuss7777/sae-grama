@@ -45,7 +45,7 @@ public class Screen extends JPanel {
         resetPan = new JPanel();
         panDispNodeSelected = new JPanel();
         panActionNode = new JPanel();
-        panKey = new JPanel();
+        panKey = new Key();
 
 
         buildPanel();

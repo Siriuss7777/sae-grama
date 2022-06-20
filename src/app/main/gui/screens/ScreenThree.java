@@ -22,7 +22,6 @@ public class ScreenThree extends Screen {
 
     private final JButton reset;
 
-
     private final JButton gastronomique;
     private final JButton ouverte;
     private final JButton culturel;

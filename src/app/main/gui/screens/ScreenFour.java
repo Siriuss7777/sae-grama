@@ -37,6 +37,8 @@ public class ScreenFour extends Screen {
     private final JButton nDistanceMinButton;
 
 
+
+
     public ScreenFour(JFrame frame, Graph graph, GraphDisplay graphDisplay) {
         super(frame, graph, graphDisplay);
         this.frame = frame;

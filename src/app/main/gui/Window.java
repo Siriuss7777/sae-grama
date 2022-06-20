@@ -14,8 +14,8 @@ import com.formdev.flatlaf.*;
 
 
 public class Window extends JFrame {
-    // TODO : Sélectionner le fichier
-    // TODO : Popup d'aide
+    // TODO : Sélectionner le fichier dans un JMenuBar
+    // TODO : Popup d'aide dans un JMenuBar aussi
     private final JFrame f;
     private final JPanel containerPan = new JPanel();
 
