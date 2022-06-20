@@ -1,5 +1,9 @@
 package app.main.nodes;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
+
 public class Link {
     private final Node node;
     private final LinkType type; /* D: "Departementale", N: "Nationale", A: "Autoroute" */
@@ -14,6 +18,12 @@ public class Link {
         this.distance = distance;
     }
 
+    /**
+     * @param node : Node to which the link is connected
+     * @param type : Type of the link
+     * @param distance : Distance between the two nodes
+     * @param fromNode : Node from which the link is connected
+     */
     public Link(Node node, LinkType type, int distance, Node fromNode) {
         this.node = node;
         this.type = type;

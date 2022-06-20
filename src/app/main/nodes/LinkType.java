@@ -2,6 +2,10 @@ package app.main.nodes;
 
 import java.util.Locale;
 
+/**
+ * @author Bastien Le Gall
+ */
+
 public enum LinkType {
     DEPARTMENTAL("D"),
     NATIONAL("N"),

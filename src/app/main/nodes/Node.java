@@ -2,6 +2,10 @@ package app.main.nodes;
 
 import java.util.LinkedList;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
+
 public class Node {
     private int id;
     private static int id_increment;
@@ -12,6 +16,10 @@ public class Node {
     private static final int INFINITE = 100000;
 
 
+    /**
+     * @param type : Ville, Restaurant, Centre de loisirs
+     * @param name : Nom de la ville, du restaurant, du centre de loisirs
+     */
     public Node(NodeType type, String name) {
         this.type = type;
         this.name = name;
@@ -55,6 +63,9 @@ public class Node {
         return neighbours;
     }
 
+    /**
+     * @return list of neighbours (node)
+     */
     public LinkedList<Node> getNeighboursAsNodes() {
         LinkedList<Node> returnedList = new LinkedList<>();
         for (Link link : this.getAllNeighbours()) {
@@ -64,7 +75,11 @@ public class Node {
     }
 
 
-    public LinkedList<Link> getNeighbourLinksWithNode(Node node) { // Dijkstra, retourne le(s) lien(s) entre les deux noeuds
+    /**
+     * @param node : Node to compare
+     * @return list of links to node
+     */
+    public LinkedList<Link> getNeighbourLinksWithNode(Node node) {
         LinkedList<Link> returnedList = new LinkedList<>();
         for (Link link : this.neighbours) {
             if (link.getNode() == node) {
@@ -75,6 +90,10 @@ public class Node {
         return returnedList;
     }
 
+    /**
+     * @param node : Node to compare
+     * @return closest link to node
+     */
     public Link getClosestNeighbour(Node node) { // Dijkstra, retourne le lien le plus court entre les deux noeuds
 
         LinkedList<Link> neighboursList = this.getNeighbourLinksWithNode(node);
@@ -93,6 +112,10 @@ public class Node {
         return minLink;
     }
 
+    /**
+     * @param node : Node to compare
+     * @return farthest link to node
+     */
     public Link getFarthestNeighbour(Node node) { // Dijkstra, retourne le lien le plus court entre les deux noeuds
 
         LinkedList<Link> neighboursList = this.getNeighbourLinksWithNode(node);
@@ -108,6 +131,10 @@ public class Node {
         return maxLink;
     }
 
+    /**
+     * @param node : Node to compare
+     * @return true if node is neighbour
+     */
     public boolean isNeighbour(Node node) { // Dijkstra, retourne true si le noeud est voisin
         boolean state = false;
         for (Link neighbour : neighbours) {

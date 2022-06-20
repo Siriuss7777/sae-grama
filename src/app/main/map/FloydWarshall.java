@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
+
 public class FloydWarshall {
 
     private final static int INFINITE = Integer.MAX_VALUE;
@@ -16,6 +20,10 @@ public class FloydWarshall {
         this.graph = map;
     }
 
+    /**
+     * @param matrix : DistancePred matrix
+     *               Initialize the matrix with the distances between each nodes
+     */
     private void initializeMatrix(DistancePred[][] matrix) {
         LinkedList<Node> nodes = graph.getNodes();
         for (int i = 0; i < matrix.length; i++) {
@@ -80,7 +88,12 @@ public class FloydWarshall {
         return sb.toString();
     }
 
-    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode) { // Retourne la liste des noeuds constituant le plus court chemin entre deux noeuds
+    /**
+     * @param fromNode : Node from which we want to know the shortest path to another node
+     * @param toNode  : Node to which we want to know the shortest path
+     * @return : Lsit of nodes that represent the shortest path
+     */
+    public ArrayList<Node> getShortestPath(Node fromNode, Node toNode) {
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();
         ArrayList<Node> path = new ArrayList<>();
@@ -96,6 +109,11 @@ public class FloydWarshall {
         return path;
     }
 
+    /**
+     * @param fromNode : Node from which we want to know the shortest path to another node
+     * @param toNode : Node to which we want to know the shortest path
+     * @return : The lowest distance between the two nodes
+     */
     public int lowestDistance(Node fromNode, Node toNode) {
         int nodeId = fromNode.getId();
         int targetId = toNode.getId();

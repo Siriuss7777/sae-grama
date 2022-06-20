@@ -6,6 +6,10 @@ import app.main.map.Graph;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
+
 public class GRAMALauncher {
 
     static Graph graph = new Graph();
@@ -26,10 +30,9 @@ public class GRAMALauncher {
         System.out.println("Pour ouvrir le graphe que nous avons créé, saisissez \"map\". Pour la map de test, saisissez \"test\".");
         System.out.println("Entrez le nom du fichier à ouvrir : ");
         filename = input.nextLine();
-        if(filename.toLowerCase(Locale.ROOT).equals("map")) {
+        if (filename.toLowerCase(Locale.ROOT).equals("map")) {
             filename = "src/resources/map.csv";
-        }
-        else if(filename.toLowerCase(Locale.ROOT).equals("test")) {
+        } else if (filename.toLowerCase(Locale.ROOT).equals("test")) {
             filename = "src/resources/test.csv";
         }
 
@@ -43,6 +46,6 @@ public class GRAMALauncher {
 
         long endTime = System.currentTimeMillis();
 
-        System.out.println("Fichier chargé ! ("+ (endTime - startTime) + "ms)");
+        System.out.println("Fichier chargé ! (" + (endTime - startTime) + "ms)");
     }
 }

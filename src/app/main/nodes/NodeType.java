@@ -2,6 +2,10 @@ package app.main.nodes;
 
 import java.util.Locale;
 
+/**
+ * @author Bastien Le Gall
+ */
+
 public enum NodeType {
     CITY("V"),
     RESTAURANT("R"),

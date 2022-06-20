@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
 
 public class Graph {
     private final LinkedList<Node> nodes;
@@ -307,6 +310,9 @@ public class Graph {
     /*------------------------------------------------------------------------------------------------*/
 
 
+    /**
+     * Use for Distance
+     */
     public void nDistance(Node fromNode, int distance, int tmpDistance) {
         if (tmpDistance == 0) {
             return;
@@ -320,6 +326,12 @@ public class Graph {
         }
     }
 
+    /**
+     * @param fromNode : Node from which we start the search
+     * @param toNode  : Node to which we want to find the distance
+     * @param distance : Distance we want to test
+     * @return : The nDistance from the fromNode to the toNode
+     */
     public int Distance(Node fromNode, Node toNode, int distance) { // Retourne la distance si la distance entre deux noeuds est inférieur à la distance demandée
         int result = 0;
 
@@ -336,7 +348,13 @@ public class Graph {
         return toNode.getDistance();
     }
 
-    public Node isBetterThan(Node node1, Node node2, String type) { // Retourne le noeud le plus OUVERT / GASTRONOMIQUE / CULTUREL
+    /**
+     * @param node1 : First node to compare
+     * @param node2 : Second node to compare
+     * @param type : Type to compare
+     * @return : The better node between the two
+     */
+    public Node isBetterThan(Node node1, Node node2, String type) {
         int count1stNode = 0;
         int count2ndNode = 0;
         NodeType tmpType = null;
@@ -376,6 +394,12 @@ public class Graph {
         return nodeOpen;
     }
 
+    /**
+     * @param fromNode : Node from which we start the search
+     * @param toNode : Node to which we want to find the distance
+     * @param throughNode : Node that we want to pass through
+     * @return : The shortest path from the fromNode to the toNode through the throughNode
+     */
     public LinkedList<Node> getPathWith(Node fromNode, Node toNode, Node throughNode) { // Retourne le chemin le plus court entre deux noeuds et passant par un autre
 
         ArrayList<Node> path;

@@ -2,6 +2,10 @@ package app.main.map;
 
 import app.main.nodes.Node;
 
+/**
+ * @author Matéo Guenot, Bastien Le Gall
+ */
+
 public class DistancePred {
     private int distance;
     private Node pred;
