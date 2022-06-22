@@ -33,6 +33,7 @@ public class Graph {
     }
 
     public void init(String filename) throws IOException {
+
         BufferedReader file = new BufferedReader(new FileReader(filename));
 
         String line, strType, name;
@@ -48,6 +49,7 @@ public class Graph {
 
         // Traitement des nodes ligne par ligne, node créé quand on le rencontre s'il n'existe pas
 
+        try{
         while ((line = file.readLine()) != null) {
             strType = line.substring(0, line.indexOf(','));
             name = line.substring(line.indexOf(',') + 1, line.indexOf(':'));
@@ -108,6 +110,10 @@ public class Graph {
 
         }
         file.close();
+        } catch (Exception e) {
+            return;
+        }
+
 
         this.matrix = new FloydWarshall(this);
         this.matrix.floydWarshall();
@@ -328,7 +334,7 @@ public class Graph {
 
     /**
      * @param fromNode : Node from which we start the search
-     * @param toNode  : Node to which we want to find the distance
+     * @param toNode   : Node to which we want to find the distance
      * @param distance : Distance we want to test
      * @return : The nDistance from the fromNode to the toNode
      */
@@ -351,7 +357,7 @@ public class Graph {
     /**
      * @param node1 : First node to compare
      * @param node2 : Second node to compare
-     * @param type : Type to compare
+     * @param type  : Type to compare
      * @return : The better node between the two
      */
     public Node isBetterThan(Node node1, Node node2, String type) {
@@ -395,8 +401,8 @@ public class Graph {
     }
 
     /**
-     * @param fromNode : Node from which we start the search
-     * @param toNode : Node to which we want to find the distance
+     * @param fromNode    : Node from which we start the search
+     * @param toNode      : Node to which we want to find the distance
      * @param throughNode : Node that we want to pass through
      * @return : The shortest path from the fromNode to the toNode through the throughNode
      */

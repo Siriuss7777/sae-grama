@@ -62,8 +62,8 @@ public class Screen extends JPanel {
 
         this.setLayout(new BorderLayout());
 
-        this.setSize(width, height-150);
-        this.setPreferredSize(new Dimension(width, height-150));
+        this.setSize(width, height-110);
+        this.setPreferredSize(new Dimension(width, height-110));
 
         this.add(containerLeft, BorderLayout.WEST);
         this.add(containerRight, BorderLayout.CENTER);

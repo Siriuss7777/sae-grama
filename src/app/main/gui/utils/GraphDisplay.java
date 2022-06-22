@@ -88,8 +88,6 @@ public class GraphDisplay extends JPanel {
         graphComponent.setConnectable(false);
         graphComponent.setEnabled(false);
         graphComponent.setToolTips(true);
-        graphComponent.setCenterZoom(false);
-        graphComponent.setCenterPage(false);
         jgxa.setCellsSelectable(true);
 
 

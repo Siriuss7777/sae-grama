@@ -45,11 +45,12 @@ public class MainScreen extends JPanel {
         containerBottom = this.graphDisplay.initNodeDisplay(GraphDisplay.DEFAULT_MOUSELISTENER);
 
 
-        if (containerBottom != null) {
+        if (containerBottom.getGraph().getChildEdges(containerBottom.getGraph().getDefaultParent()).length != 0) {
             containerTop.add(successLabel);
             this.add(containerBottom, BorderLayout.CENTER);
         } else {
             containerTop.add(failLabel);
+
         }
 
         this.add(containerTop, BorderLayout.NORTH);
