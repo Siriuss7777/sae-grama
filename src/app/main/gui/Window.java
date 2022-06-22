@@ -83,8 +83,8 @@ public class Window extends JFrame {
                     "Zoom : Ctrl + molette de la souris\n" +
                     "Sélection du premier noeud : Clic gauche\n" +
                     "Sélection du second noeud : Ctrl + Clic gauche\n" +
-                    "Sélection des noeuds secondaires (écran 4) : Shift + Clic gauche\n"
-            );
+                    "Sélection des noeuds secondaires (écran 4) : Shift + Clic gauche\n",
+                    "Raccourcis clavier", JOptionPane.INFORMATION_MESSAGE);
 
         });
 
@@ -92,10 +92,11 @@ public class Window extends JFrame {
         aboutMenuItem.addActionListener(e ->{
             JOptionPane.showMessageDialog(f,
                     "GRAMA est un logiciel de visualisation et d’analyse de graphes. Il aura pour but de permettre la visualisation et la manipulation de cartes sous forme d’un graphe.\n" +
-                            "\nProjet réalisé par :\n         GUENOT Matéo\n          LE GALL Bastien\n" +
+                            "\nProjet réalisé par :\n         GUENOT Matéo\n         LE GALL Bastien\n" +
                     "\nVersion : 1.0\n" +
                     "© 2022 Tous droits réservés\n" + 
-                    "Licences utilisées : FlatLaF, JGraphX, mxGraph");
+                    "Licences utilisées : FlatLaF, JGraphX, mxGraph",
+                    "À propos", JOptionPane.INFORMATION_MESSAGE);
         });
 
 

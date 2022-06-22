@@ -17,7 +17,7 @@ public class Node {
 
 
     /**
-     * @param type : Ville, Restaurant, Centre de loisirs
+     * @param type : Ville , Restaurant, Centre de loisirs
      * @param name : Nom de la ville, du restaurant, du centre de loisirs
      */
     public Node(NodeType type, String name) {
